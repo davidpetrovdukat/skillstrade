@@ -1,0 +1,2477 @@
+export interface Review {
+  id: string
+  author: string
+  text: string
+  rating: number
+  date: string
+  avatar?: string
+  role?: string
+}
+
+export interface ServicePackage {
+  id: string
+  title: string
+  description?: string
+  features?: string[]
+  price_tokens: number
+  delivery_days: number
+  rating: number
+  reviews_count: number
+  popular?: boolean
+}
+
+export interface PortfolioItem {
+  id: string
+  title: string
+  category: string
+  image_url: string
+}
+
+export interface FreelancerProfile {
+  id: string
+  meta: {
+    name: string
+    role: string
+    location: string
+    flag: string
+    timezone: string
+    avatar_url: string
+    hero_url?: string
+    is_available: boolean
+    verified: boolean
+  }
+  stats: {
+    job_success_score: number
+    jobs_completed: number
+    avg_response_time: string
+    total_earned_display: string
+  }
+  bio: {
+    tagline: string
+    about_text: string
+    skills: string[]
+    languages: string[]
+  }
+  portfolio: PortfolioItem[]
+  active_services: ServicePackage[]
+  reviews: Review[]
+}
+
+const BATCH_1: FreelancerProfile[] = [
+  {
+    "id": "user_01_arthur",
+    "meta": {
+      "name": "Arthur Sterling",
+      "role": "Strategic Brand Identity",
+      "location": "London, UK",
+      "flag": "🇬🇧",
+      "timezone": "GMT (London)",
+      "avatar_url": "/avatars/arthur-uk.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 98,
+      "jobs_completed": 42,
+      "avg_response_time": "2 hours",
+      "total_earned_display": "€58k+"
+    },
+    "bio": {
+      "tagline": "Ex-Pentagram designer. I help fintechs and luxury brands look like market leaders.",
+      "about_text": "Ex-Pentagram designer. I help fintechs and luxury brands look like market leaders before they even launch. I don't just 'draw logos'. I deconstruct your business goals and reconstruct them into a visual system that commands authority.",
+      "skills": [
+        "Branding",
+        "Logo Design",
+        "Strategy",
+        "Typography",
+        "Minimalism"
+      ],
+      "languages": [
+        "English (Native)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Crypto Exchange ID",
+        "category": "Fintech",
+        "image_url": "/brand_identity.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Luxury Hotel Rebrand",
+        "category": "Hospitality",
+        "image_url": "/brand_identity.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Tech Startup Logo",
+        "category": "B2B SaaS",
+        "image_url": "/brand_identity.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Fashion Label",
+        "category": "Fashion",
+        "image_url": "/brand_identity.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Architecture Firm",
+        "category": "Real Estate",
+        "image_url": "/brand_identity.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Coffee Roaster",
+        "category": "F&B",
+        "image_url": "/brand_identity.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_01",
+        "title": "Strategic Brand Identity Suite",
+        "description": "Stop blending in. In a crowded market, clarity is your only currency. I don't just 'draw logos'. I deconstruct your business goals and reconstruct them into a visual system that commands authority. This package is designed for Seed/Series A startups and premium boutiques.",
+        "features": [
+          "Primary Logomark & Wordmark",
+          "Typography System & Font Selection",
+          "Curated Color Palette (Hex/CMYK)",
+          "20-Page Brand Guidelines PDF",
+          "Social Media Assets Kit",
+          "Full IP Transfer"
+        ],
+        "price_tokens": 2800,
+        "delivery_days": 14,
+        "rating": 5.0,
+        "reviews_count": 42,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r01",
+        "author": "Mark E.",
+        "text": "Arthur operates on a different level. He didn't just give us a logo; he gave us a soul.",
+        "rating": 5,
+        "date": "2 weeks ago"
+      }
+    ]
+  },
+  {
+    "id": "user_02_elena",
+    "meta": {
+      "name": "Elena Richter",
+      "role": "SaaS UI/UX Design",
+      "location": "Berlin, Germany",
+      "flag": "🇩🇪",
+      "timezone": "CET (Berlin)",
+      "avatar_url": "/avatars/elena-de.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 99,
+      "jobs_completed": 36,
+      "avg_response_time": "1 hour",
+      "total_earned_display": "€45k+"
+    },
+    "bio": {
+      "tagline": "Obsessed with grid systems and atomic design. I build interfaces that scale.",
+      "about_text": "Obsessed with grid systems and atomic design. I build interfaces that scale without breaking. I turn your complex software requirements into a clean, strictly organized Design System using Atomic Design principles.",
+      "skills": [
+        "UI/UX",
+        "Figma",
+        "SaaS",
+        "Design Systems",
+        "Prototyping"
+      ],
+      "languages": [
+        "German (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "CRM Dashboard",
+        "category": "SaaS",
+        "image_url": "/saas_ui_ux.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Fintech Mobile App",
+        "category": "Mobile",
+        "image_url": "/saas_ui_ux.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Design System Kit",
+        "category": "System",
+        "image_url": "/saas_ui_ux.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Analytics Platform",
+        "category": "Data",
+        "image_url": "/saas_ui_ux.webp"
+      },
+      {
+        "id": "p05",
+        "title": "E-learning Platform",
+        "category": "EdTech",
+        "image_url": "/saas_ui_ux.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Medicare Portal",
+        "category": "HealthTech",
+        "image_url": "/saas_ui_ux.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_02",
+        "title": "Scalable SaaS Design System & UI Kit",
+        "description": "Chaos is a bug. I turn your complex software requirements into a clean, strictly organized Design System. Using Atomic Design principles, I create a component library (Variables, Auto-layout) that your developers will actually love to implement. Perfect for products scaling from MVP to V1.",
+        "features": [
+          "Full Figma Source File",
+          "Global Style Guide (Tokens)",
+          "Atomic Component Library (Buttons, Inputs, etc.)",
+          "5 Key Screen High-Fidelity Mockups",
+          "Interactive Clickable Prototype",
+          "Dev Handoff Documentation"
+        ],
+        "price_tokens": 3500,
+        "delivery_days": 21,
+        "rating": 4.9,
+        "reviews_count": 36,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r02",
+        "author": "Jonas K.",
+        "text": "Elena's organization is insane. Our dev velocity doubled because the components were so clear.",
+        "rating": 5,
+        "date": "1 month ago"
+      }
+    ]
+  },
+  {
+    "id": "user_03_julien",
+    "meta": {
+      "name": "Julien Dubois",
+      "role": "3D Motion Graphics",
+      "location": "Paris, France",
+      "flag": "🇫🇷",
+      "timezone": "CET (Paris)",
+      "avatar_url": "/avatars/julien-fr.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 100,
+      "jobs_completed": 18,
+      "avg_response_time": "3 hours",
+      "total_earned_display": "€28k+"
+    },
+    "bio": {
+      "tagline": "Digital artist blurring the line between reality and render. Tech product reveals.",
+      "about_text": "Digital artist blurring the line between reality and render. Specializing in tech product reveals. Whether it's a sleek hardware reveal or an abstract software visualization, I bring the 'French Touch' aesthetic to your marketing assets.",
+      "skills": [
+        "3D Animation",
+        "Cinema4D",
+        "Redshift",
+        "Motion Design",
+        "Product Viz"
+      ],
+      "languages": [
+        "French (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Headphone Reveal",
+        "category": "Tech",
+        "image_url": "/3d_motion.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Abstract Shapes",
+        "category": "Art",
+        "image_url": "/3d_motion.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Sneaker Concept",
+        "category": "Fashion",
+        "image_url": "/3d_motion.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Logo Animation",
+        "category": "Branding",
+        "image_url": "/3d_motion.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Liquid Simulation",
+        "category": "VFX",
+        "image_url": "/3d_motion.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Watch Render",
+        "category": "luxury",
+        "image_url": "/3d_motion.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_03",
+        "title": "Cinematic 3D Product Animation (15s)",
+        "description": "Static images don't convert. I create physics-based, photorealistic 3D animations that showcase your product's best angles. Whether it's a sleek hardware reveal or an abstract software visualization, I bring the 'French Touch' aesthetic to your marketing assets.",
+        "features": [
+          "15-Second 4K Animation (60fps)",
+          "Sound Design & SFX Basic Mix",
+          "3 Static Hero Renders (4000px)",
+          "Social Media Cut (9:16 vertical)",
+          "Source Files (C4D / Blender)"
+        ],
+        "price_tokens": 1800,
+        "delivery_days": 10,
+        "rating": 5.0,
+        "reviews_count": 18,
+        "popular": false
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r03",
+        "author": "Sophie M.",
+        "text": "The lighting in Julien's work is just beautiful. It made our new headphones look like a masterpiece.",
+        "rating": 5,
+        "date": "3 weeks ago"
+      }
+    ]
+  },
+  {
+    "id": "user_04_lars",
+    "meta": {
+      "name": "Lars Jensen",
+      "role": "Industrial Design Renders",
+      "location": "Copenhagen, Denmark",
+      "flag": "🇩🇰",
+      "timezone": "CET (Copenhagen)",
+      "avatar_url": "/avatars/lars-dk.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 96,
+      "jobs_completed": 24,
+      "avg_response_time": "4 hours",
+      "total_earned_display": "€32k+"
+    },
+    "bio": {
+      "tagline": "Minimalist by nature. I visualize physical products with Scandinavian simplicity.",
+      "about_text": "Minimalist by nature. I visualize physical products with Scandinavian simplicity and precision. I focus on texture accuracy, lighting, and composition to make your prototype look like a finished product.",
+      "skills": [
+        "KeyShot",
+        "Industrial Design",
+        "3D Modeling",
+        "Rendering",
+        "Product Design"
+      ],
+      "languages": [
+        "Danish (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Furniture Chair",
+        "category": "Furniture",
+        "image_url": "/product_renders.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Smart Speaker",
+        "category": "Tech",
+        "image_url": "/product_renders.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Coffee Machine",
+        "category": "Appliance",
+        "image_url": "/product_renders.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Earbuds Case",
+        "category": "Tech",
+        "image_url": "/product_renders.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Glass Bottle",
+        "category": "Packaging",
+        "image_url": "/product_renders.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Ceramic Vase",
+        "category": "Decor",
+        "image_url": "/product_renders.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_04",
+        "title": "Photorealistic Product Visualization",
+        "description": "If your customers can't hold it, they must feel it with their eyes. I specialize in studio-quality rendering for physical products—packaging, electronics, or furniture. I focus on texture accuracy, lighting, and composition to make your prototype look like a finished product.",
+        "features": [
+          "5 Studio Angle Renders (White/Transparent BG)",
+          "2 Lifestyle/Context Scenes",
+          "High-Resolution for Print (300 DPI)",
+          "3D Model Optimization",
+          "Color Variations (up to 3)"
+        ],
+        "price_tokens": 1200,
+        "delivery_days": 7,
+        "rating": 4.8,
+        "reviews_count": 24,
+        "popular": false
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r04",
+        "author": "Erik B.",
+        "text": "Lars nailed the texture of our recycled plastic material. Looks 100% real.",
+        "rating": 5,
+        "date": "1 month ago"
+      }
+    ]
+  },
+  {
+    "id": "user_05_sophie",
+    "meta": {
+      "name": "Sophie Caldwell",
+      "role": "Pitch Deck Design",
+      "location": "Manchester, UK",
+      "flag": "🇬🇧",
+      "timezone": "GMT (London)",
+      "avatar_url": "/avatars/sophie-uk.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 99,
+      "jobs_completed": 52,
+      "avg_response_time": "2 hours",
+      "total_earned_display": "€70k+"
+    },
+    "bio": {
+      "tagline": "I turn boring data into funding. Helped clients raise over £15M combined last year.",
+      "about_text": "I turn boring data into funding. Helped clients raise over £15M combined last year. This isn't just 'making slides pretty'—it's narrative structuring. I take your raw content and transform it into a compelling visual story that drives FOMO and clarity.",
+      "skills": [
+        "Pitch Decks",
+        "PowerPoint",
+        "Storytelling",
+        "Infographics",
+        "Fundraising"
+      ],
+      "languages": [
+        "English (Native)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Fintech Series A",
+        "category": "Finance",
+        "image_url": "/pitch_Decks.webp"
+      },
+      {
+        "id": "p02",
+        "title": "HealthTech Seed",
+        "category": "Health",
+        "image_url": "/pitch_Decks.webp"
+      },
+      {
+        "id": "p03",
+        "title": "SaaS Growth Deck",
+        "category": "SaaS",
+        "image_url": "/pitch_Decks.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Marketplace Slide",
+        "category": "Consumer",
+        "image_url": "/pitch_Decks.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Financial Data Viz",
+        "category": "Data",
+        "image_url": "/pitch_Decks.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Crypto Whitepaper",
+        "category": "Web3",
+        "image_url": "/pitch_Decks.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_05",
+        "title": "Series A Investment Pitch Deck",
+        "description": "Investors spend less than 3 minutes on a deck. I make those minutes count. This isn't just 'making slides pretty'—it's narrative structuring. I take your raw content and transform it into a compelling visual story that drives FOMO and clarity. Essential for Seed and Series A rounds.",
+        "features": [
+          "15-20 Slide Master Deck",
+          "Custom Iconography & Data Viz",
+          "Editable Source File (Figma or PowerPoint)",
+          "PDF Export for Emailing",
+          "Defiant/Challenger Brand aesthetic"
+        ],
+        "price_tokens": 950,
+        "delivery_days": 5,
+        "rating": 4.9,
+        "reviews_count": 52,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r05",
+        "author": "Tom W.",
+        "text": "We got the term sheet. Sophie's redesign of our financial slide was the game changer.",
+        "rating": 5,
+        "date": "1 month ago"
+      }
+    ]
+  },
+  {
+    "id": "user_06_giulia",
+    "meta": {
+      "name": "Giulia Rossi",
+      "role": "Mobile App UI/UX",
+      "location": "Milan, Italy",
+      "flag": "🇮🇹",
+      "timezone": "CET (Milan)",
+      "avatar_url": "/avatars/giulia-it.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 97,
+      "jobs_completed": 29,
+      "avg_response_time": "2 hours",
+      "total_earned_display": "€38k+"
+    },
+    "bio": {
+      "tagline": "Designing fluid mobile experiences that feel native. Gesture-driven interfaces.",
+      "about_text": "Designing fluid mobile experiences that feel native. I focus on gesture-driven interfaces and thumb-zone ergonomics. I design interfaces that feel like an extension of the finger, adhering strictly to Apple's HIG and Material Design 3.",
+      "skills": [
+        "Mobile Apps",
+        "iOS Design",
+        "Interaction Design",
+        "Prototyping",
+        "Figma"
+      ],
+      "languages": [
+        "Italian (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Fitness App",
+        "category": "Health",
+        "image_url": "/mobile_app.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Banking App",
+        "category": "Fintech",
+        "image_url": "/mobile_app.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Food Delivery",
+        "category": "Consumer",
+        "image_url": "/mobile_app.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Travel Guide",
+        "category": "Travel",
+        "image_url": "/mobile_app.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Social Network",
+        "category": "Social",
+        "image_url": "/mobile_app.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Meditation App",
+        "category": "Wellness",
+        "image_url": "/mobile_app.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_06",
+        "title": "Premium Mobile App UI/UX (iOS & Android)",
+        "description": "Users delete apps that confuse them. I design interfaces that feel like an extension of the finger. This service covers the full visual design of a mobile application, adhering strictly to Apple's Human Interface Guidelines and Material Design 3, while infusing your unique brand DNA. Perfect for MVPs aiming for the App Store.",
+        "features": [
+          "10-15 Key App Screens (Dark/Light Mode)",
+          "Clickable Figma Prototype (Flows)",
+          "Design System for Mobile (Buttons, Icons)",
+          "Handoff specs for iOS/Android Developers",
+          "Custom App Icon Design"
+        ],
+        "price_tokens": 2100,
+        "delivery_days": 12,
+        "rating": 4.9,
+        "reviews_count": 29,
+        "popular": false
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r06",
+        "author": "Marco T.",
+        "text": "Giulia understands 'feel'. The swiping interactions she designed changed the whole vibe of our fintech app.",
+        "rating": 5,
+        "date": "2 weeks ago"
+      }
+    ]
+  },
+  {
+    "id": "user_07_marcus",
+    "meta": {
+      "name": "Marcus Thorne",
+      "role": "Webflow Development",
+      "location": "London, UK",
+      "flag": "🇬🇧",
+      "timezone": "GMT (London)",
+      "avatar_url": "/avatars/marcus-uk.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 100,
+      "jobs_completed": 64,
+      "avg_response_time": "1 hour",
+      "total_earned_display": "€95k+"
+    },
+    "bio": {
+      "tagline": "Webflow Expert. I turn static Figma designs into award-winning sites. No spaghetti code.",
+      "about_text": "Webflow Expert. I turn static Figma designs into award-winning, interactive live sites. No spaghetti code. I specialize in complex interactions (GSAP/Lottie) that make your site feel alive without killing performance scores.",
+      "skills": [
+        "Webflow",
+        "GSAP",
+        "JavaScript",
+        "HTML/CSS",
+        "Figma to Webflow"
+      ],
+      "languages": [
+        "English (Native)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Agency Portfolio",
+        "category": "Agency",
+        "image_url": "/webflow.webp"
+      },
+      {
+        "id": "p02",
+        "title": "SaaS Landing",
+        "category": "SaaS",
+        "image_url": "/webflow.webp"
+      },
+      {
+        "id": "p03",
+        "title": "E-commerce Site",
+        "category": "Shop",
+        "image_url": "/webflow.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Restaurant Site",
+        "category": "Local",
+        "image_url": "/webflow.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Blog Template",
+        "category": "Content",
+        "image_url": "/webflow.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Event Page",
+        "category": "Events",
+        "image_url": "/webflow.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_07",
+        "title": "Custom Webflow Development & Interactions",
+        "description": "Your design is only as good as its code. I build pixel-perfect Webflow sites using the 'Client-First' naming convention, ensuring your site is scalable and easy to manage. I specialize in complex interactions (GSAP/Lottie) that make your site feel alive without killing performance scores.",
+        "features": [
+          "Pixel-Perfect Conversion from Figma to Webflow",
+          "Responsive Adaptation (Desktop to Mobile)",
+          "Advanced CMS Setup for Blog/Portfolio",
+          "SEO Basics & Speed Optimization (90+ score)",
+          "Custom Interactions & Lottie Integration",
+          "1 Hour Training Session"
+        ],
+        "price_tokens": 1600,
+        "delivery_days": 7,
+        "rating": 5.0,
+        "reviews_count": 64,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r07",
+        "author": "Dave R.",
+        "text": "Marcus is a wizard. The scroll animations are buttery smooth and the CMS is so easy to use.",
+        "rating": 5,
+        "date": "1 month ago"
+      }
+    ]
+  },
+  {
+    "id": "user_08_stefan",
+    "meta": {
+      "name": "Stefan Kovac",
+      "role": "React / Next.js Dev",
+      "location": "Prague, Czech Republic",
+      "flag": "🇨🇿",
+      "timezone": "CET (Prague)",
+      "avatar_url": "/avatars/stefan-cz.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 95,
+      "jobs_completed": 15,
+      "avg_response_time": "5 hours",
+      "total_earned_display": "€22k+"
+    },
+    "bio": {
+      "tagline": "Senior Front-end Engineer. Specializing in performant, SEO-ready web applications.",
+      "about_text": "Senior Front-end Engineer. Specializing in performant, SEO-ready web applications using modern stacks. I build robust front-end architectures using Next.js and TypeScript. This isn't a template; it's custom engineering.",
+      "skills": [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "GraphQL"
+      ],
+      "languages": [
+        "Czech (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Crypto Dashboard",
+        "category": "Web3",
+        "image_url": "/react_next.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Booking System",
+        "category": "SaaS",
+        "image_url": "/react_next.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Corporate Site",
+        "category": "Business",
+        "image_url": "/react_next.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Admin Panel",
+        "category": "Dashboard",
+        "image_url": "/react_next.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Job Board",
+        "category": "Platform",
+        "image_url": "/react_next.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Documentation",
+        "category": "Docs",
+        "image_url": "/react_next.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_08",
+        "title": "Modern Front-End Development (Next.js)",
+        "description": "Need a web app, not just a website? I build robust front-end architectures using Next.js and TypeScript. This isn't a template; it's custom engineering. I focus on Server Side Rendering (SSR) for speed and SEO, ensuring your application is ready for scale and integrates seamlessly with your backend.",
+        "features": [
+          "Fully Functional Front-End Application",
+          "Next.js 14 App Router Architecture",
+          "Responsive Tailwind CSS Styling",
+          "API Integration (REST or GraphQL)",
+          "Performance Optimization (Core Web Vitals)",
+          "Clean, Documented Code Repository"
+        ],
+        "price_tokens": 2500,
+        "delivery_days": 14,
+        "rating": 4.8,
+        "reviews_count": 15,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r08",
+        "author": "Lucas P.",
+        "text": "Clean code, strict types, fast delivery. Stefan fixed our rendering issues in 2 days.",
+        "rating": 5,
+        "date": "1 month ago"
+      }
+    ]
+  },
+]
+
+const BATCH_2: FreelancerProfile[] = [
+  {
+    "id": "user_09_erik",
+    "meta": {
+      "name": "Erik Tamm",
+      "role": "Smart Contracts (Solidity)",
+      "location": "Tallinn, Estonia",
+      "flag": "🇪🇪",
+      "timezone": "EET (Tallinn)",
+      "avatar_url": "/avatars/erik-ee.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 98,
+      "jobs_completed": 21,
+      "avg_response_time": "1 hour",
+      "total_earned_display": "€65k+"
+    },
+    "bio": {
+      "tagline": "Audited solidity developer. Gas optimization specialist.",
+      "about_text": "Audited solidity developer. Gas optimization specialist. I write secure, gas-efficient smart contracts for DeFi protocols and NFT collections. Audited by CertiK and Hacken.",
+      "skills": [
+        "Solidity",
+        "Web3",
+        "Ethereum",
+        "Smart Contracts",
+        "DeFi"
+      ],
+      "languages": [
+        "Estonian (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "DeFi Protocol",
+        "category": "DeFi",
+        "image_url": "/smart_contracts.webp"
+      },
+      {
+        "id": "p02",
+        "title": "NFT Marketplace",
+        "category": "NFT",
+        "image_url": "/smart_contracts.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Crowdsale Contract",
+        "category": "Token",
+        "image_url": "/smart_contracts.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Staking Rewards",
+        "category": "DeFi",
+        "image_url": "/smart_contracts.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Voting DAO",
+        "category": "Governance",
+        "image_url": "/smart_contracts.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Bridge Protocol",
+        "category": "Infra",
+        "image_url": "/smart_contracts.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_09",
+        "title": "Smart Contract Development & Basic Audit",
+        "description": "Security is not optional in Web3. I write secure, gas-efficient smart contracts for DeFi protocols and NFT collections. Includes a comprehensive unit test suite (Hardhat/Foundry) and a preliminary security audit to catch common vulnerabilities (Reentrancy, Overflow) before mainnet.",
+        "features": [
+          "ERC20 / ERC721 / ERC1155 Token Standards",
+          "Custom Logic (Staking, Vesting, Governance)",
+          "Gas Optimization Report",
+          "100% Test Coverage (Hardhat/Foundry)",
+          "Deployment Script & Verification on Etherscan",
+          "2 Weeks Post-Deployment Support"
+        ],
+        "price_tokens": 3000,
+        "delivery_days": 14,
+        "rating": 5.0,
+        "reviews_count": 21,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r09",
+        "author": "Alex D.",
+        "text": "Erik saved us thousands in gas fees with his optimizations. Highly recommended.",
+        "rating": 5,
+        "date": "2 weeks ago"
+      }
+    ]
+  },
+  {
+    "id": "user_10_bram",
+    "meta": {
+      "name": "Bram Visser",
+      "role": "Shopify Liquid Developer",
+      "location": "Amsterdam, Netherlands",
+      "flag": "🇳🇱",
+      "timezone": "CET (Amsterdam)",
+      "avatar_url": "/avatars/bram-nl.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 100,
+      "jobs_completed": 55,
+      "avg_response_time": "2 hours",
+      "total_earned_display": "€48k+"
+    },
+    "bio": {
+      "tagline": "I build high-converting Shopify themes. Speed and CRO focused.",
+      "about_text": "I build high-converting Shopify themes. Speed and CRO focused. I don't use page builders that slow down your site; I code custom Liquid sections that load instantly and convert visitors into buyers.",
+      "skills": [
+        "Shopify",
+        "Liquid",
+        "E-commerce",
+        "JavaScript",
+        "CRO"
+      ],
+      "languages": [
+        "Dutch (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Fashion Store",
+        "category": "Fashion",
+        "image_url": "/shopify.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Skincare Brand",
+        "category": "Beauty",
+        "image_url": "/shopify.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Tech Accessories",
+        "category": "Tech",
+        "image_url": "/shopify.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Furniture Shop",
+        "category": "Home",
+        "image_url": "/shopify.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Subscription Box",
+        "category": "Food",
+        "image_url": "/shopify.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Digital Products",
+        "category": "Digital",
+        "image_url": "/shopify.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_10",
+        "title": "Custom Shopify Theme Development (Liquid)",
+        "description": "Page builders kill your speed (and your SEO). I build custom 2.0 Shopify themes using clean Liquid code that load instantly. This service focuses on high-performance e-commerce: seamless checkout flows, custom product filtering, and mobile-first design that maximizes Conversion Rate (CRO).",
+        "features": [
+          "Custom Shopify 2.0 Theme (JSON Templates)",
+          "3 Custom Sections (Hero, Product Grid, Testimonials)",
+          "App Integration (Reviews, Upsell, subscriptions)",
+          "Speed Score Optimization (90+ Mobile)",
+          "Dynamic Cart Drawer & AJAX filtering",
+          "SEO Meta Data Config"
+        ],
+        "price_tokens": 1900,
+        "delivery_days": 10,
+        "rating": 5.0,
+        "reviews_count": 55,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r10",
+        "author": "Sarah L.",
+        "text": "Our conversion rate went up by 30% after switching to Bram's custom theme.",
+        "rating": 5,
+        "date": "1 month ago"
+      }
+    ]
+  },
+  {
+    "id": "user_11_thomas",
+    "meta": {
+      "name": "Thomas Weber",
+      "role": "Python Automation",
+      "location": "Vienna, Austria",
+      "flag": "🇦🇹",
+      "timezone": "CET (Vienna)",
+      "avatar_url": "/avatars/thomas-at.webp",
+      "is_available": false,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 94,
+      "jobs_completed": 30,
+      "avg_response_time": "6 hours",
+      "total_earned_display": "€35k+"
+    },
+    "bio": {
+      "tagline": "I automate boring tasks. Scraping, bots, and workflow automation.",
+      "about_text": "I automate boring tasks. Scraping, bots, and workflow automation. Whether it's scraping leads from LinkedIn, automating data entry, or building a custom Slack bot, I write clean Python scripts that run 24/7.",
+      "skills": [
+        "Python",
+        "Selenium",
+        "API Integration",
+        "Automation",
+        "Data Scraping"
+      ],
+      "languages": [
+        "German (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Lead Scraper",
+        "category": "Sales",
+        "image_url": "/python_automation.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Instagram Bot",
+        "category": "Social",
+        "image_url": "/python_automation.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Price Tracker",
+        "category": "E-com",
+        "image_url": "/python_automation.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Data Cleaner",
+        "category": "Data",
+        "image_url": "/python_automation.webp"
+      },
+      {
+        "id": "p05",
+        "title": "PDF Generator",
+        "category": "Admin",
+        "image_url": "/python_automation.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Auto-Reply Bot",
+        "category": "Support",
+        "image_url": "/python_automation.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_11",
+        "title": "Business Workflow Automation Script",
+        "description": "Stop doing repetitive work manually. I build robust Python scripts to automate your business processes. Whether it's scraping leads from LinkedIn, synchronizing data between CRMs (HubSpot/Salesforce) via API, or generating automated PDF reports, I create 'headless' employees that work 24/7.",
+        "features": [
+          "Custom Python Script (.py or Executable)",
+          "API Integration (Google Sheets, Airtable, Notion)",
+          "Web Scraping (Selenium / BeautifulSoup)",
+          "Error Handling & Logging System",
+          "Daily Scheduled Run Setup (Cron job)",
+          "Video Guide on How to Use"
+        ],
+        "price_tokens": 800,
+        "delivery_days": 5,
+        "rating": 4.9,
+        "reviews_count": 30,
+        "popular": false
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r11",
+        "author": "Mike T.",
+        "text": "Thomas saved me about 10 hours a week with this script. Worth every penny.",
+        "rating": 5,
+        "date": "2 months ago"
+      }
+    ]
+  },
+  {
+    "id": "user_12_andreas",
+    "meta": {
+      "name": "Andreas Fischer",
+      "role": "Cybersecurity Audit",
+      "location": "Zurich, Switzerland",
+      "flag": "🇨🇭",
+      "timezone": "CET (Zurich)",
+      "avatar_url": "/avatars/andreas-ch.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 100,
+      "jobs_completed": 12,
+      "avg_response_time": "3 hours",
+      "total_earned_display": "€50k+"
+    },
+    "bio": {
+      "tagline": "Certified Ethical Hacker (CEH). I find vulnerabilities before the bad guys do.",
+      "about_text": "Certified Ethical Hacker (CEH). I find vulnerabilities before the bad guys do. I perform penetration testing and security audits for web applications and networks, providing detailed reports and remediation steps.",
+      "skills": [
+        "Penetration Testing",
+        "Network Security",
+        "OWASP Top 10",
+        "Consulting",
+        "Compliance"
+      ],
+      "languages": [
+        "German (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Bank Audit",
+        "category": "Finance",
+        "image_url": "/security_audit.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Crypto Exchange",
+        "category": "Web3",
+        "image_url": "/security_audit.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Hospital Network",
+        "category": "Health",
+        "image_url": "/security_audit.webp"
+      },
+      {
+        "id": "p04",
+        "title": "SaaS Platform",
+        "category": "Tech",
+        "image_url": "/security_audit.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Gov Portal",
+        "category": "Public",
+        "image_url": "/security_audit.webp"
+      },
+      {
+        "id": "p06",
+        "title": "IoT Device",
+        "category": "Hardware",
+        "image_url": "/security_audit.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_12",
+        "title": "Web Application Penetration Test",
+        "description": "A single data breach can bankrupt a startup. I perform a rigorous 'Black Box' penetration test on your web application to find critical vulnerabilities (SQLi, XSS, IDOR). delivered with a professional industry-standard report (accepted by compliance partners) and step-by-step fix instructions.",
+        "features": [
+          "OWASP Top 10 Vulnerability Scan",
+          "Manual Logic Flaw Testing",
+          "API Security Testing (REST/GraphQL)",
+          "Detailed PDF Report with PoC (Proof of Concept)",
+          "Remediation Strategy Call (1 Hour)",
+          "One Retest after fixes"
+        ],
+        "price_tokens": 4000,
+        "delivery_days": 10,
+        "rating": 5.0,
+        "reviews_count": 12,
+        "popular": false
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r12",
+        "author": "Daniel S.",
+        "text": "Extremely professional. Andreas found a critical flaw in our login system that we missed.",
+        "rating": 5,
+        "date": "1 month ago"
+      }
+    ]
+  },
+  {
+    "id": "user_13_claire",
+    "meta": {
+      "name": "Claire O'Connell",
+      "role": "Technical SEO Strategy",
+      "location": "Dublin, Ireland",
+      "flag": "🇮🇪",
+      "timezone": "GMT (Dublin)",
+      "avatar_url": "/avatars/claire-ie.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 98,
+      "jobs_completed": 45,
+      "avg_response_time": "2 hours",
+      "total_earned_display": "€42k+"
+    },
+    "bio": {
+      "tagline": "Ranking is math, not magic. I fix site architecture for maximum crawlability.",
+      "about_text": "Ranking is math, not magic. I fix site architecture for maximum crawlability. I specialize in technical SEO audits, schema markup implementation, and core web vitals optimization to help you rank higher on Google.",
+      "skills": [
+        "Technical SEO",
+        "Google Analytics",
+        "Content Strategy",
+        "Backlink Audit",
+        "Keyword Research"
+      ],
+      "languages": [
+        "English (Native)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "E-com Audit",
+        "category": "Shop",
+        "image_url": "/seo.webp"
+      },
+      {
+        "id": "p02",
+        "title": "SaaS Blog Growth",
+        "category": "SaaS",
+        "image_url": "/seo.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Local SEO Setup",
+        "category": "Local",
+        "image_url": "/seo.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Migration",
+        "category": "Tech",
+        "image_url": "/seo.webp"
+      },
+      {
+        "id": "p05",
+        "title": "News Site",
+        "category": "Media",
+        "image_url": "/seo.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Schema Markup",
+        "category": "Code",
+        "image_url": "/seo.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_13",
+        "title": "Comprehensive Technical SEO Audit",
+        "description": "Content is king, but code is queen. If Google can't crawl your site, you don't exist. I perform a deep-dive technical audit to find indexation issues, canonical errors, and performance bottlenecks. I provide a prioritized action plan for your developer to fix, ensuring your foundation is solid.",
+        "features": [
+          "Full Site Crawl (Screaming Frog)",
+          "Core Web Vitals Performance Analysis",
+          "Indexation & Sitemap Review",
+          "Internal Linking Structure Strategy",
+          "Schema.org / Rich Snippet implementation plan",
+          "30-Minute Video Walkthrough of findings"
+        ],
+        "price_tokens": 1500,
+        "delivery_days": 7,
+        "rating": 5.0,
+        "reviews_count": 45,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r13",
+        "author": "Liam N.",
+        "text": "Claire's audit was eye-opening. We fixed the issues and traffic grew 40% in 3 months.",
+        "rating": 5,
+        "date": "2 weeks ago"
+      }
+    ]
+  },
+  {
+    "id": "user_14_hugo",
+    "meta": {
+      "name": "Hugo Silva",
+      "role": "Google Ads Specialist",
+      "location": "Lisbon, Portugal",
+      "flag": "🇵🇹",
+      "timezone": "WET (Lisbon)",
+      "avatar_url": "/avatars/hugo-pt.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 96,
+      "jobs_completed": 70,
+      "avg_response_time": "1 hour",
+      "total_earned_display": "€88k+"
+    },
+    "bio": {
+      "tagline": "Official Google Partner. I manage €500k+ in monthly ad spend.",
+      "about_text": "Official Google Partner. I manage €500k+ in monthly ad spend across e-commerce and lead gen clients. I focus on ROAS (Return on Ad Spend) and scaling profitable campaigns using data-driven bidding strategies.",
+      "skills": [
+        "Google Ads",
+        "PPC",
+        "SEM",
+        "Analytics",
+        "Copywriting"
+      ],
+      "languages": [
+        "Portuguese (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "E-com Scale",
+        "category": "Fashion",
+        "image_url": "/google_ads.webp"
+      },
+      {
+        "id": "p02",
+        "title": "SaaS Leads",
+        "category": "B2B",
+        "image_url": "/google_ads.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Local Service",
+        "category": "Service",
+        "image_url": "/google_ads.webp"
+      },
+      {
+        "id": "p04",
+        "title": "App Install",
+        "category": "App",
+        "image_url": "/google_ads.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Youtube Ads",
+        "category": "Video",
+        "image_url": "/google_ads.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Remarketing",
+        "category": "Display",
+        "image_url": "/google_ads.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_14",
+        "title": "Google Ads Campaign Setup & Optimization",
+        "description": "Stop burning budget on irrelevant clicks. I structure granular campaigns (SKAGs or STAGs) that target high-intent keywords with high Quality Scores. This service includes full account setup, conversion tracking verification, and the first month of weekly optimizations to dial in your ROAS.",
+        "features": [
+          "Keyword Research & Negative Keyword List",
+          "3 Campaign Setups (Search / PMax)",
+          "Ad Copywriting (A/B Testing variations)",
+          "Conversion Tracking Setup (GTM)",
+          "Audience Targeting Setup",
+          "Bi-Weekly Performance Report"
+        ],
+        "price_tokens": 1200,
+        "delivery_days": 7,
+        "rating": 4.9,
+        "reviews_count": 70,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r14",
+        "author": "Pedro A.",
+        "text": "Hugo turned our account around. We were losing money, now we have a 4x ROAS.",
+        "rating": 5,
+        "date": "1 week ago"
+      }
+    ]
+  },
+  {
+    "id": "user_15_lucia",
+    "meta": {
+      "name": "Lucia Garcia",
+      "role": "Social Media Manager",
+      "location": "Barcelona, Spain",
+      "flag": "🇪🇸",
+      "timezone": "CET (Madrid)",
+      "avatar_url": "/avatars/lucia-es.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 97,
+      "jobs_completed": 40,
+      "avg_response_time": "2 hours",
+      "total_earned_display": "€30k+"
+    },
+    "bio": {
+      "tagline": "Building communities, not just follower counts. Content that resonates.",
+      "about_text": "Building communities, not just follower counts. Content that resonates. I create organic social media strategies that engage your audience and build brand loyalty on Instagram, TikTok, and LinkedIn.",
+      "skills": [
+        "Instagram",
+        "TikTok",
+        "Content Strategy",
+        "Community Mgmt",
+        "Reels Editing"
+      ],
+      "languages": [
+        "Spanish (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Jewelry Brand",
+        "category": "Fashion",
+        "image_url": "/social_media.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Healthy Food",
+        "category": "F&B",
+        "image_url": "/social_media.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Tech Startup",
+        "category": "SaaS",
+        "image_url": "/social_media.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Influencer Kit",
+        "category": "PR",
+        "image_url": "/social_media.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Viral Reels",
+        "category": "Video",
+        "image_url": "/social_media.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Event Coverage",
+        "category": "Events",
+        "image_url": "/social_media.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_15",
+        "title": "Monthly Social Media Content Management",
+        "description": "Consistency is the only algorithm hack. I take over your Instagram/LinkedIn for a month. I plan the calendar, design the posts (Canva/Figma), write the captions, and engage with comments to warm up your community. You just approve the posts.",
+        "features": [
+          "12 Feed Posts (Carousel or Static)",
+          "8 Stories / Reels",
+          "Caption Copywriting & Hashtag Strategy",
+          "Community Engagement (30 mins/day)",
+          "Monthly Analytics Report",
+          "Bio & Highlight Optimization"
+        ],
+        "price_tokens": 1500,
+        "delivery_days": 30,
+        "rating": 4.8,
+        "reviews_count": 40,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r15",
+        "author": "Maria R.",
+        "text": "Lucia has a great eye for aesthetics. Our feed looks consistent and professional now.",
+        "rating": 5,
+        "date": "2 weeks ago"
+      }
+    ]
+  },
+  {
+    "id": "user_16_oliver",
+    "meta": {
+      "name": "Oliver Twist",
+      "role": "Email Marketing CRM",
+      "location": "London, UK",
+      "flag": "🇬🇧",
+      "timezone": "GMT (London)",
+      "avatar_url": "/avatars/oliver-uk.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 94,
+      "jobs_completed": 35,
+      "avg_response_time": "4 hours",
+      "total_earned_display": "€40k+"
+    },
+    "bio": {
+      "tagline": "Klaviyo Master. I help e-com brands generate 30% of revenue from email.",
+      "about_text": "Klaviyo Master. I help e-com brands generate 30% of revenue from email. I set up automated flows (Welcome, Abandoned Cart, Win-back) and design high-converting newsletters that land in the primary inbox.",
+      "skills": [
+        "Klaviyo",
+        "Copywriting",
+        "CRM",
+        "Automation",
+        "Design"
+      ],
+      "languages": [
+        "English (Native)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Welcome Flow",
+        "category": "E-com",
+        "image_url": "/email_crm.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Black Friday",
+        "category": "Promo",
+        "image_url": "/email_crm.webp"
+      },
+      {
+        "id": "p03",
+        "title": "B2B Cold Email",
+        "category": "Sales",
+        "image_url": "/email_crm.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Newsletter",
+        "category": "Content",
+        "image_url": "/email_crm.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Win-back Flow",
+        "category": "Retention",
+        "image_url": "/email_crm.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Segment Setup",
+        "category": "Data",
+        "image_url": "/email_crm.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_16",
+        "title": "Klaviyo Automated Flows Setup",
+        "description": "The money is in the list, but only if you automate it. I set up the 3 proven 'money-making' flows for your e-commerce store (Welcome Series, Abandoned Cart, Post-Purchase Upsell). I handle the logic, the design, and the copywriting. Once it's live, it makes money while you sleep.",
+        "features": [
+          "Welcome Series (3 emails)",
+          "Abandoned Cart Flow (3 emails)",
+          "Customer Win-back Flow (2 emails)",
+          "Professional Responsive Design (Figma)",
+          "Persuasive Copywriting",
+          "Klaviyo Account Audit"
+        ],
+        "price_tokens": 1400,
+        "delivery_days": 10,
+        "rating": 4.9,
+        "reviews_count": 35,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r16",
+        "author": "James H.",
+        "text": "Our abandoned cart recovery rate doubled. Oliver knows his stuff.",
+        "rating": 5,
+        "date": "1 month ago"
+      }
+    ]
+  }
+]
+
+const BATCH_3: FreelancerProfile[] = [
+  {
+    "id": "user_17_james",
+    "meta": {
+      "name": "James Sterling",
+      "role": "Fractional CFO",
+      "location": "London, UK",
+      "flag": "🇬🇧",
+      "timezone": "GMT (London)",
+      "avatar_url": "/avatars/james-uk.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 100,
+      "jobs_completed": 14,
+      "avg_response_time": "4 hours",
+      "total_earned_display": "€90k+"
+    },
+    "bio": {
+      "tagline": "I help startups manage burn rate and prepare for Series A.",
+      "about_text": "I help startups manage burn rate and prepare for Series A. Former Big 4 consultant turned fractional CFO for SaaS and Fintech startups. I build financial models that investors actually believe.",
+      "skills": [
+        "Financial Modeling",
+        "Fundraising",
+        "Accounting",
+        "SaaS Metrics",
+        "Due Diligence"
+      ],
+      "languages": [
+        "English (Native)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Series A Model",
+        "category": "Finance",
+        "image_url": "/finance_cfo.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Burn Rate Analysis",
+        "category": "Audit",
+        "image_url": "/finance_cfo.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Investor Deck Data",
+        "category": "Fundraising",
+        "image_url": "/finance_cfo.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Cash Flow Forecast",
+        "category": "Planning",
+        "image_url": "/finance_cfo.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Cap Table Mgmt",
+        "category": "Legal",
+        "image_url": "/finance_cfo.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Exit Strategy",
+        "category": "M&A",
+        "image_url": "/finance_cfo.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_17",
+        "title": "Fractional CFO & Financial Modeling",
+        "description": "Don't face investors with a 'guesswork' spreadsheet. I build institutional-grade financial models (P&L, Cash Flow, Balance Sheet) that stand up to VC due diligence. I also act as your strategic partner to optimize burn rate and extend your runway.",
+        "features": [
+          "5-Year Financial Projections (Excel/Sheets)",
+          "Unit Economics Analysis (LTV:CAC, Churn)",
+          "Burn Rate & Runway Optimization",
+          "Investor Q&A Prep",
+          "One Month Retainer for updates"
+        ],
+        "price_tokens": 3500,
+        "delivery_days": 10,
+        "rating": 5.0,
+        "reviews_count": 14,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r17",
+        "author": "David K.",
+        "text": "The financial model James built was the key to closing our seed round. Investors loved the clarity.",
+        "rating": 5,
+        "date": "2 weeks ago"
+      }
+    ]
+  },
+  {
+    "id": "user_18_antoine",
+    "meta": {
+      "name": "Antoine Martin",
+      "role": "Tech Legal Counsel",
+      "location": "Paris, France",
+      "flag": "🇫🇷",
+      "timezone": "CET (Paris)",
+      "avatar_url": "/avatars/antoine-fr.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 98,
+      "jobs_completed": 25,
+      "avg_response_time": "12 hours",
+      "total_earned_display": "€55k+"
+    },
+    "bio": {
+      "tagline": "IP & Data Privacy Lawyer for Tech. GDPR checks and SaaS agreements.",
+      "about_text": "IP & Data Privacy Lawyer for Tech. I specialize in GDPR compliance, SaaS terms of service, and IP protection for European startups. I write contracts that protect you without scaring off your customers.",
+      "skills": [
+        "GDPR",
+        "Contract Law",
+        "IP Protection",
+        "SaaS",
+        "Compliance"
+      ],
+      "languages": [
+        "French (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "SaaS Terms",
+        "category": "Contracts",
+        "image_url": "/legal.webp"
+      },
+      {
+        "id": "p02",
+        "title": "GDPR Policy",
+        "category": "Privacy",
+        "image_url": "/legal.webp"
+      },
+      {
+        "id": "p03",
+        "title": "IP Transfer",
+        "category": "Intellectual",
+        "image_url": "/legal.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Trademark Filing",
+        "category": "Brand",
+        "image_url": "/legal.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Data Processing",
+        "category": "DPA",
+        "image_url": "/legal.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Non-Disclosure",
+        "category": "NDA",
+        "image_url": "/legal.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_18",
+        "title": "SaaS Legal Pack (GDPR + Terms)",
+        "description": "Copy-pasting legal templates is a liability. I draft custom Terms of Service, Privacy Policies, and Data Processing Agreements (DPA) tailored to your specific SaaS business logic and jurisdiction (EU/UK/US compliant). Protect your IP and limit your liability.",
+        "features": [
+          "Custom Terms of Service",
+          "Privacy Policy (GDPR/CCPA compliant)",
+          "Cookie Policy",
+          "Data Processing Agreement (DPA)",
+          "1 Hour Legal Consultation"
+        ],
+        "price_tokens": 1800,
+        "delivery_days": 7,
+        "rating": 5.0,
+        "reviews_count": 25,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r18",
+        "author": "Pierre L.",
+        "text": "Antoine made the legal side of our launch stress-free. Clear, concise, and protective.",
+        "rating": 5,
+        "date": "1 month ago"
+      }
+    ]
+  },
+  {
+    "id": "user_19_petra",
+    "meta": {
+      "name": "Petra Kowalski",
+      "role": "Product Manager",
+      "location": "Warsaw, Poland",
+      "flag": "🇵🇱",
+      "timezone": "CET (Warsaw)",
+      "avatar_url": "/avatars/petra-pl.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 96,
+      "jobs_completed": 18,
+      "avg_response_time": "3 hours",
+      "total_earned_display": "€45k+"
+    },
+    "bio": {
+      "tagline": "Ex-Spotify PM. I turn vague ideas into executional roadmaps.",
+      "about_text": "Ex-Spotify PM. I turn vague ideas into executional roadmaps. I specialize in user story mapping, backlog prioritization (RICE), and sprint planning to help dev teams ship faster.",
+      "skills": [
+        "Product Mgmt",
+        "Agile/Scrum",
+        "Jira",
+        "User Research",
+        "Roadmapping"
+      ],
+      "languages": [
+        "Polish (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Mobile App Roadmap",
+        "category": "Strategy",
+        "image_url": "/product_management.webp"
+      },
+      {
+        "id": "p02",
+        "title": "User Journey Map",
+        "category": "UX",
+        "image_url": "/product_management.webp"
+      },
+      {
+        "id": "p03",
+        "title": "PRD Document",
+        "category": "Docs",
+        "image_url": "/product_management.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Competitor Analysis",
+        "category": "Research",
+        "image_url": "/product_management.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Sprint Plan",
+        "category": "Agile",
+        "image_url": "/product_management.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Launch Strategy",
+        "category": "GTM",
+        "image_url": "/product_management.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_19",
+        "title": "Product Roadmap & Strategy Sprint",
+        "description": "Stop building features nobody wants. I help you validate your product direction and create a clear execution plan. Accessing my experience from Spotify, I'll organize your backlog, define your MVP scope, and set up your Jira/Notion workflow for maximum velocity.",
+        "features": [
+          "Product Requirement Document (PRD)",
+          "User Story Mapping Workshop",
+          "MVP Scope Definition",
+          "3-Month Roadmap Creation",
+          "Backlog Setup (Jira/Linear)",
+          "Competitor SWOT Analysis"
+        ],
+        "price_tokens": 2200,
+        "delivery_days": 10,
+        "rating": 4.9,
+        "reviews_count": 18,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r19",
+        "author": "Marek Z.",
+        "text": "Petra brought order to our chaos. We finally know what we're building and why.",
+        "rating": 5,
+        "date": "1 month ago"
+      }
+    ]
+  },
+  {
+    "id": "user_20_kasia",
+    "meta": {
+      "name": "Kasia Novak",
+      "role": "Data Visualization",
+      "location": "Krakow, Poland",
+      "flag": "🇵🇱",
+      "timezone": "CET (Warsaw)",
+      "avatar_url": "/avatars/kasia-pl.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 99,
+      "jobs_completed": 33,
+      "avg_response_time": "2 hours",
+      "total_earned_display": "€38k+"
+    },
+    "bio": {
+      "tagline": "Tableau & PowerBI Expert. I make data beautiful and actionable.",
+      "about_text": "Tableau & PowerBI Expert. I make data beautiful and actionable. I build interactive dashboards for sales, marketing, and finance teams that allow you to spot trends in seconds, not hours.",
+      "skills": [
+        "Tableau",
+        "PowerBI",
+        "SQL",
+        "Data Analysis",
+        "Design"
+      ],
+      "languages": [
+        "Polish (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Sales Dashboard",
+        "category": "Sales",
+        "image_url": "/data_vizualization.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Marketing ROI",
+        "category": "Marketing",
+        "image_url": "/data_vizualization.webp"
+      },
+      {
+        "id": "p03",
+        "title": "HR Analytics",
+        "category": "HR",
+        "image_url": "/data_vizualization.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Supply Chain",
+        "category": "Ops",
+        "image_url": "/data_vizualization.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Financial Report",
+        "category": "Finance",
+        "image_url": "/data_vizualization.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Customer Churn",
+        "category": "SaaS",
+        "image_url": "/data_vizualization.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_20",
+        "title": "Interactive BI Dashboard Creation",
+        "description": "Excel spreadsheets are where data goes to die. I build dynamic, interactive dashboards in Tableau or PowerBI that update in real-time. Whether it's tracking Sales KPIs or Marketing ROI, I design visual systems that answer your business questions at a glance.",
+        "features": [
+          "Custom Dashboard Design (Tableau/PowerBI)",
+          "Data Source Connection (SQL, Excel, API)",
+          "Advanced Filtering & Drill-downs",
+          "Mobile-Friendly Layout",
+          "1 Hour Training Session",
+          "Documentation"
+        ],
+        "price_tokens": 1200,
+        "delivery_days": 7,
+        "rating": 5.0,
+        "reviews_count": 33,
+        "popular": false
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r20",
+        "author": "John D.",
+        "text": "The dashboard Kasia built saved us 20 hours of reporting time per month.",
+        "rating": 5,
+        "date": "2 weeks ago"
+      }
+    ]
+  },
+  {
+    "id": "user_21_eleanor",
+    "meta": {
+      "name": "Eleanor Rigby",
+      "role": "UX Writing",
+      "location": "Liverpool, UK",
+      "flag": "🇬🇧",
+      "timezone": "GMT (London)",
+      "avatar_url": "/avatars/eleanor-uk.webp",
+      "is_available": false,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 95,
+      "jobs_completed": 40,
+      "avg_response_time": "5 hours",
+      "total_earned_display": "€32k+"
+    },
+    "bio": {
+      "tagline": "Microcopy that guides, converts, and delights. No robot-speak.",
+      "about_text": "Microcopy that guides, converts, and delights. No robot-speak. I write clear, human-centric interface copy for apps and websites. From error messages to onboarding flows, I ensure your user never wonders 'what do I do now?'.",
+      "skills": [
+        "UX Writing",
+        "Content Design",
+        "Microcopy",
+        "Tone of Voice",
+        "User Testing"
+      ],
+      "languages": [
+        "English (Native)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Onboarding Flow",
+        "category": "App",
+        "image_url": "/ux_writing.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Checkout Copy",
+        "category": "E-com",
+        "image_url": "/ux_writing.webp"
+      },
+      {
+        "id": "p03",
+        "title": "Error Messages",
+        "category": "System",
+        "image_url": "/ux_writing.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Style Guide",
+        "category": "Brand",
+        "image_url": "/ux_writing.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Landing Page",
+        "category": "Web",
+        "image_url": "/ux_writing.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Email Nurture",
+        "category": "CRM",
+        "image_url": "/ux_writing.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_21",
+        "title": "UX Microcopy & Content Design Audit",
+        "description": "Confusing copy causes churn. I audit your user flows and rewrite your interface text to be clear, concise, and human. From buttons to error messages, I ensure your product speaks the user's language and guides them effortlessly to the 'Aha!' moment.",
+        "features": [
+          "Full Product Copy Audit (Screenshots)",
+          "Rewrite of Critical Flows (Onboarding, Checkout)",
+          "Tone of Voice Guidelines",
+          "Error Message Humanization",
+          "A/B Testing Suggestions for CTAs"
+        ],
+        "price_tokens": 900,
+        "delivery_days": 5,
+        "rating": 4.8,
+        "reviews_count": 40,
+        "popular": false
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r21",
+        "author": "Paul M.",
+        "text": "Eleanor turned our complex fintech jargon into something my grandma could understand.",
+        "rating": 5,
+        "date": "1 month ago"
+      }
+    ]
+  },
+  {
+    "id": "user_22_leo",
+    "meta": {
+      "name": "Leo Davies",
+      "role": "Video Editing",
+      "location": "Cardiff, UK",
+      "flag": "🇬🇧",
+      "timezone": "GMT (London)",
+      "avatar_url": "/avatars/leo-uk.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 97,
+      "jobs_completed": 60,
+      "avg_response_time": "1 hour",
+      "total_earned_display": "€45k+"
+    },
+    "bio": {
+      "tagline": "Fast-paced social edits. I turn raw footage into viral content.",
+      "about_text": "Fast-paced social edits. I turn raw footage into viral content. Specializing in TikTok/Reels style editing with dynamic captions, sound design, and pacing that keeps retention high.",
+      "skills": [
+        "Premiere Pro",
+        "After Effects",
+        "TikTok Editing",
+        "Color Grading",
+        "Sound Design"
+      ],
+      "languages": [
+        "English (Native)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Travel Vlogs",
+        "category": "Travel",
+        "image_url": "/video_editing.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Corp Interview",
+        "category": "Business",
+        "image_url": "/video_editing.webp"
+      },
+      {
+        "id": "p03",
+        "title": "TikTok Trend",
+        "category": "Social",
+        "image_url": "/video_editing.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Product Ad",
+        "category": "Ads",
+        "image_url": "/video_editing.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Podcast Clips",
+        "category": "Content",
+        "image_url": "/video_editing.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Event Recap",
+        "category": "Events",
+        "image_url": "/video_editing.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_22",
+        "title": "Viral Social Media Video Editing Pack",
+        "description": "Retention is everything. I edit high-energy, fast-paced videos optimized for TikTok, Reels, and Shorts. I add dynamic captions, b-roll, sound effects, and visual hooks to ensure viewers watch until the end. Send me raw footage; get back a viral masterpiece.",
+        "features": [
+          "5 Short-Form edits (up to 60s each)",
+          "Dynamic Captions & Emojis",
+          "Stock B-Roll & Music Licensing",
+          "Color Correction & Audio Mixing",
+          "Unlimited Revisions",
+          "1 Thumbnail per video"
+        ],
+        "price_tokens": 800,
+        "delivery_days": 5,
+        "rating": 4.9,
+        "reviews_count": 60,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r22",
+        "author": "Sarah J.",
+        "text": "Leo has an incredible sense of pacing. Our watch time went up b 50%.",
+        "rating": 5,
+        "date": "1 week ago"
+      }
+    ]
+  },
+  {
+    "id": "user_23_hans",
+    "meta": {
+      "name": "Hans Zimmer",
+      "role": "Technical Writing",
+      "location": "Berlin, Germany",
+      "flag": "🇩🇪",
+      "timezone": "CET (Berlin)",
+      "avatar_url": "/avatars/hans-de.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 99,
+      "jobs_completed": 28,
+      "avg_response_time": "4 hours",
+      "total_earned_display": "€35k+"
+    },
+    "bio": {
+      "tagline": "I translate code into human. API docs, whitepapers, and manuals.",
+      "about_text": "I translate code into human. API docs, whitepapers, and manuals. I'm a developer-turned-writer who understands your stack and can explain it to other devs or stakeholders without dumbing it down.",
+      "skills": [
+        "Technical Writing",
+        "API Docs",
+        "Markdown",
+        "Developer Exp",
+        "GitBook"
+      ],
+      "languages": [
+        "German (Native)",
+        "English (Fluent)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "API Reference",
+        "category": "Dev",
+        "image_url": "/tech_docs.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Whitepaper",
+        "category": "Crypto",
+        "image_url": "/tech_docs.webp"
+      },
+      {
+        "id": "p03",
+        "title": "User Manual",
+        "category": "SaaS",
+        "image_url": "/tech_docs.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Onboarding Guide",
+        "category": "Internal",
+        "image_url": "/tech_docs.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Case Study",
+        "category": "Marketing",
+        "image_url": "/tech_docs.webp"
+      },
+      {
+        "id": "p06",
+        "title": "SDK Tutorial",
+        "category": "Code",
+        "image_url": "/tech_docs.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_23",
+        "title": "Developer Documentation & API Reference",
+        "description": "Great software with bad docs is useless. I write clear, developer-friendly documentation that reduces support tickets and improves adoption. Whether it's a REST API reference (Swagger/OpenAPI) or a 'Getting Started' guide, I ensure your users succeed.",
+        "features": [
+          "5,000 Words of Technical Content",
+          "API Endpoint Documentation",
+          "Code Examples in 3 Languages",
+          "Diagrams & Architecture/Flowcharts",
+          "GitBook / ReadMe Setup",
+          "Proofreading & Editing"
+        ],
+        "price_tokens": 1600,
+        "delivery_days": 10,
+        "rating": 5.0,
+        "reviews_count": 28,
+        "popular": false
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r23",
+        "author": "TechCorp",
+        "text": "Hans explains complex concepts simply. Our dev portal is finally usable.",
+        "rating": 5,
+        "date": "1 month ago"
+      }
+    ]
+  },
+  {
+    "id": "user_24_sarah",
+    "meta": {
+      "name": "Sarah Jones",
+      "role": "Conversion Copywriting",
+      "location": "London, UK",
+      "flag": "🇬🇧",
+      "timezone": "GMT (London)",
+      "avatar_url": "/avatars/sarah-uk.webp",
+      "is_available": true,
+      "verified": true
+    },
+    "stats": {
+      "job_success_score": 98,
+      "jobs_completed": 82,
+      "avg_response_time": "1 hour",
+      "total_earned_display": "€60k+"
+    },
+    "bio": {
+      "tagline": "Words that sell. Landing pages, emails, and ads that drive action.",
+      "about_text": "Words that sell. Landing pages, emails, and ads that drive action. I don't write fluffy marketing jargon. I write psychological triggers that persuade your visitors to click 'Buy'.",
+      "skills": [
+        "Copywriting",
+        "Sales Funnels",
+        "Email Marketing",
+        "Landing Pages",
+        "Psychology"
+      ],
+      "languages": [
+        "English (Native)"
+      ]
+    },
+    "portfolio": [
+      {
+        "id": "p01",
+        "title": "Landing Page",
+        "category": "SaaS",
+        "image_url": "/copywriting.webp"
+      },
+      {
+        "id": "p02",
+        "title": "Email Sequence",
+        "category": "Sales",
+        "image_url": "/copywriting.webp"
+      },
+      {
+        "id": "p03",
+        "title": "FB Ad Copy",
+        "category": "Ads",
+        "image_url": "/copywriting.webp"
+      },
+      {
+        "id": "p04",
+        "title": "Product Desc",
+        "category": "E-com",
+        "image_url": "/copywriting.webp"
+      },
+      {
+        "id": "p05",
+        "title": "Sales Script",
+        "category": "Video",
+        "image_url": "/copywriting.webp"
+      },
+      {
+        "id": "p06",
+        "title": "Website Rewrite",
+        "category": "Web",
+        "image_url": "/copywriting.webp"
+      }
+    ],
+    "active_services": [
+      {
+        "id": "serv_24",
+        "title": "High-Converting Landing Page Copy",
+        "description": "Your design is pretty, but does it sell? I write landing page copy structured to convert cold traffic into customers. Using the PAS (Problem-Agitation-Solution) framework, I address objections, build trust, and drive the click. Includes wireframe suggestions.",
+        "features": [
+          "Full Long-Form Sales Page Copy",
+          "5 Headline Variations",
+          "Wireframe Layout Suggestions (Loom)",
+          "Competitor Messaging Audit",
+          "email Capture Strategy",
+          "2 Rounds of Revisions"
+        ],
+        "price_tokens": 1000,
+        "delivery_days": 5,
+        "rating": 5.0,
+        "reviews_count": 82,
+        "popular": true
+      }
+    ],
+    "reviews": [
+      {
+        "id": "r24",
+        "author": "Agency X",
+        "text": "Sarah's copy beat our control by 40%. She is a machine.",
+        "rating": 5,
+        "date": "3 weeks ago"
+      }
+    ]
+  }
+]
+
+export const PROFILES: FreelancerProfile[] = [...BATCH_1, ...BATCH_2, ...BATCH_3]
