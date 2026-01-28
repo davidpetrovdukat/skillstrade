@@ -92,13 +92,15 @@ export default function PricingGrid() {
                         ))}
                     </ul>
 
-                    <button className={`w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 ${pkg.badge
-                        ? 'bg-primary hover:bg-white text-black'
-                        : 'bg-white/10 hover:bg-white text-white hover:text-black'
-                        }`}>
+                    <Link
+                        href="/login"
+                        className={`w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 ${pkg.badge
+                            ? 'bg-primary hover:bg-white text-black'
+                            : 'bg-white/10 hover:bg-white text-white hover:text-black'
+                            }`}>
                         <Zap className="w-4 h-4 fill-current" />
                         Buy Now
-                    </button>
+                    </Link>
                 </div>
             ))}
 
@@ -144,8 +146,11 @@ export default function PricingGrid() {
                         </p>
                     </div>
                 </div>
-                <Link href="/login" className="w-full flex items-center justify-center h-12 border border-white hover:bg-primary hover:border-primary hover:text-black text-white font-bold uppercase tracking-wider transition-colors">
-                    BUY NOW
+                <Link
+                    href="/login"
+                    className="w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 bg-white/10 hover:bg-white text-white hover:text-black">
+                    <Zap className="w-4 h-4 fill-current" />
+                    Buy Now
                 </Link>
             </div>
         </section>
