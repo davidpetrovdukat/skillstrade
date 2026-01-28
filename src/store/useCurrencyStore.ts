@@ -32,7 +32,7 @@ export const useCurrencyStore = create<CurrencyState>()(
                 const rate = EXCHANGE_RATES[currency];
                 const symbol = CURRENCY_SYMBOLS[currency];
                 const value = amountInEur * rate;
-                return `${symbol}${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                return `${symbol}${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             },
         }),
         {

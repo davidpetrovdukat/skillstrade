@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Check, Zap } from 'lucide-react';
+import Link from 'next/link';
 import { TOKEN_PACKAGES, TOKENS_PER_EUR } from '@/lib/constants';
 import { useCurrencyStore } from '@/store/useCurrencyStore';
 
