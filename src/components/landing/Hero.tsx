@@ -15,12 +15,12 @@ export function Hero() {
                         Access the top 1% of global creative talent. Secure, verified, and ready to deploy on your schedule.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <Link href="/services" className="bg-primary text-black px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white transition-colors font-heading text-center">
+                        <Link href="/talents" className="bg-primary text-black px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white transition-colors font-heading text-center">
                             Browse Talent
                         </Link>
-                        <button className="bg-transparent border border-white/20 text-white px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors font-heading">
-                            View Plans
-                        </button>
+                        <Link href="/services" className="border border-white/20 text-white px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors font-heading text-center">
+                            VIEW SERVICES
+                        </Link>
                     </div>
                 </div>
             </div>
