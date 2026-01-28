@@ -9,6 +9,11 @@ import { useCurrencyStore } from '@/store/useCurrencyStore';
 export default function PricingGrid() {
     const { convert, currency } = useCurrencyStore();
     const [customAmount, setCustomAmount] = useState<string>("");
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const handleCustomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCustomAmount(e.target.value);
@@ -67,7 +72,7 @@ export default function PricingGrid() {
                         <h3 className="text-xl font-bold uppercase tracking-widest text-white">{pkg.name}</h3>
                         <div className="flex items-center justify-center gap-1">
                             <span className="text-3xl font-bold text-white font-mono">
-                                {convert(pkg.price_eur)}
+                                {mounted ? convert(pkg.price_eur) : `€${pkg.price_eur.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
                             </span>
                         </div>
                     </div>
@@ -120,10 +125,10 @@ export default function PricingGrid() {
                             className="text-xs uppercase font-bold text-gray-500 mb-1 block group-focus-within:text-primary transition-colors"
                             htmlFor="custom-amount"
                         >
-                            Enter Amount ({currency})
+                            Enter Amount ({mounted ? currency : 'EUR'})
                         </label>
                         <div className="flex items-center border-b-2 border-gray-600 focus-within:border-primary transition-colors py-2">
-                            <span className="text-2xl text-gray-400 mr-2">{getSymbol()}</span>
+                            <span className="text-2xl text-gray-400 mr-2">{mounted ? getSymbol() : '€'}</span>
                             <input
                                 id="custom-amount"
                                 type="number"
