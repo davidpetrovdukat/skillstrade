@@ -1,63 +1,4 @@
-export interface Review {
-  id: string
-  author: string
-  text: string
-  rating: number
-  date: string
-  avatar?: string
-  role?: string
-}
-
-export interface ServicePackage {
-  id: string
-  title: string
-  description?: string
-  features?: string[]
-  price_tokens: number
-  delivery_days: number
-  rating: number
-  reviews_count: number
-  popular?: boolean
-}
-
-export interface PortfolioItem {
-  id: string
-  title: string
-  category: string
-  image_url: string
-}
-
-export interface FreelancerProfile {
-  id: string
-  meta: {
-    name: string
-    role: string
-    location: string
-    flag: string
-    timezone: string
-    avatar_url: string
-    hero_url?: string
-    is_available: boolean
-    verified: boolean
-  }
-  stats: {
-    job_success_score: number
-    jobs_completed: number
-    avg_response_time: string
-    total_earned_display: string
-  }
-  bio: {
-    tagline: string
-    about_text: string
-    skills: string[]
-    languages: string[]
-  }
-  portfolio: PortfolioItem[]
-  active_services: ServicePackage[]
-  reviews: Review[]
-}
-
-const BATCH_1: FreelancerProfile[] = [
+[
   {
     "id": "user_01_arthur",
     "meta": {
@@ -143,7 +84,7 @@ const BATCH_1: FreelancerProfile[] = [
         ],
         "price_tokens": 2800,
         "delivery_days": 14,
-        "rating": 5.0,
+        "rating": 5,
         "reviews_count": 42,
         "popular": true
       }
@@ -344,7 +285,7 @@ const BATCH_1: FreelancerProfile[] = [
         ],
         "price_tokens": 1800,
         "delivery_days": 10,
-        "rating": 5.0,
+        "rating": 5,
         "reviews_count": 18,
         "popular": false
       }
@@ -743,7 +684,7 @@ const BATCH_1: FreelancerProfile[] = [
         ],
         "price_tokens": 1600,
         "delivery_days": 7,
-        "rating": 5.0,
+        "rating": 5,
         "reviews_count": 64,
         "popular": true
       }
@@ -859,9 +800,6 @@ const BATCH_1: FreelancerProfile[] = [
       }
     ]
   },
-]
-
-const BATCH_2: FreelancerProfile[] = [
   {
     "id": "user_09_erik",
     "meta": {
@@ -948,7 +886,7 @@ const BATCH_2: FreelancerProfile[] = [
         ],
         "price_tokens": 3000,
         "delivery_days": 14,
-        "rating": 5.0,
+        "rating": 5,
         "reviews_count": 21,
         "popular": true
       }
@@ -1049,7 +987,7 @@ const BATCH_2: FreelancerProfile[] = [
         ],
         "price_tokens": 1900,
         "delivery_days": 10,
-        "rating": 5.0,
+        "rating": 5,
         "reviews_count": 55,
         "popular": true
       }
@@ -1251,7 +1189,7 @@ const BATCH_2: FreelancerProfile[] = [
         ],
         "price_tokens": 4000,
         "delivery_days": 10,
-        "rating": 5.0,
+        "rating": 5,
         "reviews_count": 12,
         "popular": false
       }
@@ -1351,7 +1289,7 @@ const BATCH_2: FreelancerProfile[] = [
         ],
         "price_tokens": 1500,
         "delivery_days": 7,
-        "rating": 5.0,
+        "rating": 5,
         "reviews_count": 45,
         "popular": true
       }
@@ -1667,10 +1605,7 @@ const BATCH_2: FreelancerProfile[] = [
         "date": "1 month ago"
       }
     ]
-  }
-]
-
-const BATCH_3: FreelancerProfile[] = [
+  },
   {
     "id": "user_17_james",
     "meta": {
@@ -1755,7 +1690,7 @@ const BATCH_3: FreelancerProfile[] = [
         ],
         "price_tokens": 3500,
         "delivery_days": 10,
-        "rating": 5.0,
+        "rating": 5,
         "reviews_count": 14,
         "popular": true
       }
@@ -1855,7 +1790,7 @@ const BATCH_3: FreelancerProfile[] = [
         ],
         "price_tokens": 1800,
         "delivery_days": 7,
-        "rating": 5.0,
+        "rating": 5,
         "reviews_count": 25,
         "popular": true
       }
@@ -2057,7 +1992,7 @@ const BATCH_3: FreelancerProfile[] = [
         ],
         "price_tokens": 1200,
         "delivery_days": 7,
-        "rating": 5.0,
+        "rating": 5,
         "reviews_count": 33,
         "popular": false
       }
@@ -2357,7 +2292,7 @@ const BATCH_3: FreelancerProfile[] = [
         ],
         "price_tokens": 1600,
         "delivery_days": 10,
-        "rating": 5.0,
+        "rating": 5,
         "reviews_count": 28,
         "popular": false
       }
@@ -2457,7 +2392,7 @@ const BATCH_3: FreelancerProfile[] = [
         ],
         "price_tokens": 1000,
         "delivery_days": 5,
-        "rating": 5.0,
+        "rating": 5,
         "reviews_count": 82,
         "popular": true
       }
@@ -2473,5 +2408,3 @@ const BATCH_3: FreelancerProfile[] = [
     ]
   }
 ]
-
-export const PROFILES: FreelancerProfile[] = [...BATCH_1, ...BATCH_2, ...BATCH_3]

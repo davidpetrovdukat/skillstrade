@@ -6,7 +6,12 @@ import { ProfileBio } from '@/components/profile/ProfileBio'
 import { PortfolioGrid } from '@/components/profile/PortfolioGrid'
 import { ServicePackages } from '@/components/profile/ServicePackages'
 import { Reviews } from '@/components/profile/Reviews'
-import { PROFILES } from '@/lib/data'
+import { connectMongo } from '@/lib/db'
+import { Freelancer } from '@/models/Freelancer'
+import { Service } from '@/models/Service'
+import mongoose from 'mongoose'
+
+export const dynamic = 'force-dynamic'
 
 interface PageProps {
     params: Promise<{
@@ -14,18 +19,76 @@ interface PageProps {
     }>
 }
 
-// Ensure params are correctly typed for Next.js App Router 
-export async function generateStaticParams() {
-    return PROFILES.map((profile) => ({
-        id: profile.id,
-    }))
+async function getProfile(id: string) {
+    await connectMongo()
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return null
+    }
+
+    const freelancer = await Freelancer.findById(id).lean()
+    if (!freelancer) return null
+
+    // Fetch active services
+    const services = await Service.find({ freelancer: freelancer._id }).lean()
+
+    // Transform to match component expectations
+    const profile = {
+        id: (freelancer as any)._id.toString(),
+        meta: {
+            name: freelancer.name,
+            role: freelancer.role,
+            location: freelancer.location,
+            flag: freelancer.flag,
+            timezone: "GMT (London)", // TODO: Store in DB
+            avatar_url: freelancer.avatarUrl,
+            is_available: freelancer.isAvailable ?? true,
+            verified: freelancer.verified
+        },
+        stats: {
+            job_success_score: 98, // Mock for now
+            jobs_completed: 42,
+            avg_response_time: "2 hours",
+            total_earned_display: "€58k+"
+        },
+        bio: {
+            tagline: freelancer.bio, // Using bio as tagline for now.
+            about_text: freelancer.bio,
+            skills: freelancer.skills || [],
+            languages: ["English (Native)"] // Mock for now
+        },
+        portfolio: freelancer.portfolio?.map((p: any) => ({
+            id: p._id?.toString() || Math.random().toString(),
+            title: p.title,
+            category: p.category,
+            image_url: p.imageUrl
+        })) || [],
+        active_services: services.map(s => ({
+            id: (s as any)._id.toString(),
+            title: s.title,
+            description: s.overview,
+            features: s.deliverables,
+            price_tokens: s.priceTokens,
+            delivery_days: s.deliveryDays,
+            rating: 5.0, // Mock for now
+            reviews_count: s.reviews.length,
+            popular: false
+        })),
+        reviews: services.flatMap(s => s.reviews.map(r => ({
+            id: (r as any)._id?.toString() || Math.random().toString(),
+            author: r.authorName,
+            text: r.text,
+            rating: r.rating,
+            date: r.createdAt ? new Date(r.createdAt).toLocaleDateString() : 'Recently'
+        })))
+    }
+
+    return profile
 }
 
 export default async function ProfilePage(props: PageProps) {
     const params = await props.params;
-    console.log('Requested ID:', params.id);
-    console.log('Available Profiles:', PROFILES.map(p => p.id));
-    const profile = PROFILES.find((p) => p.id === params.id)
+    const profile = await getProfile(params.id)
 
     if (!profile) {
         notFound()

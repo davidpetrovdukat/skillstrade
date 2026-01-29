@@ -95,7 +95,7 @@ export function LoginForm() {
             <div className="text-center pt-4">
                 <p className="text-white/40 text-sm font-mono">
                     Don&apos;t have an account?
-                    <a className="font-bold text-primary hover:text-white hover:underline decoration-1 underline-offset-4 ml-1 transition-colors" href="#">Sign up.</a>
+                    <Link className="font-bold text-primary hover:text-white hover:underline decoration-1 underline-offset-4 ml-1 transition-colors" href="/signup">Sign up.</Link>
                 </p>
             </div>
         </div>

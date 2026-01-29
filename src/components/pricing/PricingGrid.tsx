@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Check, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { TOKEN_PACKAGES, TOKENS_PER_EUR } from '@/lib/constants';

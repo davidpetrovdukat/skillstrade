@@ -50,7 +50,7 @@ export function TalentCarousel() {
                 {featuredTalents.map((talent) => (
                     <div
                         key={talent.id}
-                        className="min-w-[calc(100%-48px)] md:min-w-[calc(50%-12px)] lg:min-w-[calc(25%-18px)] h-[500px] bg-white/5 border border-white/10 backdrop-blur-sm relative group snap-start cursor-pointer hover:border-primary/50 transition-colors"
+                        className="min-w-[calc(100%-48px)] md:min-w-[calc(50%-12px)] lg:min-w-[calc(25%-18px)] h-[500px] bg-white/5 border border-white/10 backdrop-blur-sm relative group snap-start cursor-pointer hover:border-primary/50 transition-colors overflow-hidden"
                     >
                         <Link href={`/talents/${talent.id}`} className="block h-full w-full">
                             <div className="h-[75%] w-full overflow-hidden relative">

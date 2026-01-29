@@ -206,7 +206,7 @@ const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "3D Motion Graphics",
             "location": "Paris, France",
             "flag": "🇫🇷",
-            "avatar_url": "/avatars/julien-fr.webp",
+            "avatar_url": "/avatars/julien-fr.jpg",
             "verified": true
         },
         "service": {
@@ -314,7 +314,7 @@ const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Pitch Deck Design",
             "location": "Manchester, UK",
             "flag": "🇬🇧",
-            "avatar_url": "/avatars/sophie-uk.webp",
+            "avatar_url": "/avatars/sophie-gb.avif",
             "verified": true
         },
         "service": {
@@ -368,7 +368,7 @@ const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Mobile App UI/UX",
             "location": "Milan, Italy",
             "flag": "🇮🇹",
-            "avatar_url": "/avatars/giulia-it.webp",
+            "avatar_url": "/avatars/giulia-it.jpg",
             "verified": true
         },
         "service": {
@@ -476,7 +476,7 @@ const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "React / Next.js Dev",
             "location": "Prague, Czech Republic",
             "flag": "🇨🇿",
-            "avatar_url": "/avatars/stefan-cz.webp",
+            "avatar_url": "/avatars/stefan-cz.avif",
             "verified": true
         },
         "service": {
@@ -692,7 +692,7 @@ const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Cybersecurity Audits",
             "location": "Zurich, Switzerland",
             "flag": "🇨🇭",
-            "avatar_url": "/avatars/andreas-ch.webp",
+            "avatar_url": "/avatars/andreas-ch.jpg",
             "verified": true
         },
         "service": {
@@ -746,7 +746,7 @@ const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Technical SEO Audits",
             "location": "Dublin, Ireland",
             "flag": "🇮🇪",
-            "avatar_url": "/avatars/claire-ie.webp",
+            "avatar_url": "/avatars/claire-ie.jpeg",
             "verified": true
         },
         "service": {
@@ -800,7 +800,7 @@ const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Google Ads (PPC)",
             "location": "Lisbon, Portugal",
             "flag": "🇵🇹",
-            "avatar_url": "/avatars/hugo-pt.webp",
+            "avatar_url": "/avatars/hugo-pt.jpg",
             "verified": true
         },
         "service": {
@@ -1070,7 +1070,7 @@ const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Product Management",
             "location": "Warsaw, Poland",
             "flag": "🇵🇱",
-            "avatar_url": "/avatars/petra-pl.webp",
+            "avatar_url": "/avatars/petra-pl.avif",
             "verified": true
         },
         "service": {
@@ -1124,7 +1124,7 @@ const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Data Visualization",
             "location": "Krakow, Poland",
             "flag": "🇵🇱",
-            "avatar_url": "/avatars/kasia-pl.webp",
+            "avatar_url": "/avatars/kasia-pl.jpg",
             "verified": true
         },
         "service": {
@@ -1178,7 +1178,7 @@ const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "UX Writing",
             "location": "Brighton, UK",
             "flag": "🇬🇧",
-            "avatar_url": "/avatars/eleanor-uk.webp",
+            "avatar_url": "/avatars/eleanor-gb.avif",
             "verified": true
         },
         "service": {
@@ -1232,7 +1232,7 @@ const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Video Editing (Reels)",
             "location": "London, UK",
             "flag": "🇬🇧",
-            "avatar_url": "/avatars/leo-uk.webp",
+            "avatar_url": "/avatars/leo-gb.avif",
             "verified": true
         },
         "service": {
@@ -1340,7 +1340,7 @@ const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Conversion Copywriting",
             "location": "Bristol, UK",
             "flag": "🇬🇧",
-            "avatar_url": "/avatars/sarah-uk.webp",
+            "avatar_url": "/avatars/sarah-gb.jpg",
             "verified": true
         },
         "service": {
