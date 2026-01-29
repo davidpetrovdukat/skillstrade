@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export default function CareersPage() {
     return (
-        <div className="flex min-h-screen w-full flex-col max-w-[1440px] mx-auto bg-background text-white selection:bg-primary selection:text-black">
+        <div className="flex min-h-screen w-full flex-col max-w-[1440px] mx-auto border-x border-white/20 bg-background text-white selection:bg-primary selection:text-black">
             <Header />
 
             <main className="w-full px-6 md:px-12 py-20 flex flex-col gap-24">

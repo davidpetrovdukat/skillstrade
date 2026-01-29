@@ -5,7 +5,7 @@ import { Filter, Eye, Zap, Scale, Globe } from "lucide-react";
 
 export default function AboutPage() {
     return (
-        <div className="flex min-h-screen w-full flex-col bg-background-dark text-white font-display overflow-x-hidden">
+        <div className="flex min-h-screen w-full flex-col bg-background-dark text-white font-display overflow-x-hidden border-x border-white/20 max-w-[1440px] mx-auto">
             <Header />
             <main className="flex flex-col w-full">
                 {/* Hero Section */}

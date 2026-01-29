@@ -26,7 +26,7 @@ export default async function LegalPage(props: LegalPageProps) {
     }
 
     return (
-        <div className="min-h-screen bg-background text-white flex flex-col font-display">
+        <div className="min-h-screen bg-background text-white flex flex-col font-display border-x border-white/20 max-w-[1440px] mx-auto">
             <Header />
 
             <div className="flex flex-1 relative">

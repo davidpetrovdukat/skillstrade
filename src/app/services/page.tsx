@@ -1,4 +1,3 @@
-
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ServiceHero } from '@/components/services/ServiceHero'
@@ -6,7 +5,9 @@ import { ServiceFilters } from '@/components/services/ServiceFilters'
 import { ServiceCard } from '@/components/services/ServiceCard'
 import { CustomBriefCTA } from '@/components/services/CustomBriefCTA'
 import { Verified, Lock, Copyright } from 'lucide-react'
-import { SERVICES_DATA } from '@/lib/services-data'
+import { connectMongo } from '@/lib/db'
+import { Service } from '@/models/Service'
+import { Freelancer } from '@/models/Freelancer'
 
 export const dynamic = 'force-dynamic'; // Force dynamic rendering for searchParams access
 
@@ -16,35 +17,81 @@ interface PageProps {
 
 export default async function ServicesPage(props: PageProps) {
     const searchParams = await props.searchParams;
-    const search = typeof searchParams.search === 'string' ? searchParams.search.toLowerCase() : null
+    const search = typeof searchParams.search === 'string' ? searchParams.search : null
     const category = typeof searchParams.category === 'string' ? searchParams.category : null
     const sort = typeof searchParams.sort === 'string' ? searchParams.sort : null
     const view = typeof searchParams.view === 'string' ? searchParams.view : 'grid'
 
-    let services = [...SERVICES_DATA]
+    await connectMongo()
 
-    // 1. Filter by Search (Title or Tags)
+    // 1. Build Query
+    const query: any = {}
+
     if (search) {
-        services = services.filter(service =>
-            service.title.toLowerCase().includes(search) ||
-            (service.tags && service.tags.some(tag => tag.toLowerCase().includes(search))) ||
-            (service.category && service.category.toLowerCase().includes(search)) // Also match category names in search
-        )
+        const searchRegex = { $regex: search, $options: 'i' }
+        query.$or = [
+            { title: searchRegex },
+            { tags: searchRegex },
+            { category: searchRegex },
+            { overview: searchRegex }
+        ]
     }
 
-    // 2. Filter by Category
-    if (category) {
-        services = services.filter(service => service.category === category)
+    if (category && category !== 'All') {
+        // Case insensitive match for category
+        query.category = { $regex: new RegExp(`^${category}$`, 'i') }
     }
 
-    // 3. Sort
-    if (sort === 'price-asc') {
-        services.sort((a, b) => a.price_tokens - b.price_tokens)
-    } else if (sort === 'price-desc') {
-        services.sort((a, b) => b.price_tokens - a.price_tokens)
-    }
+    // 2. Sort
+    let sortOption: any = { createdAt: -1 } // Default: Newest
+    if (sort === 'price-asc') sortOption = { priceTokens: 1 }
+    if (sort === 'price-desc') sortOption = { priceTokens: -1 }
 
-    // Determine grid columns based on view mode
+    // 3. Fetch & Populate
+    // Check if models are registered to avoid Next.js hot reload issues in dev (optional but safer)
+    // defined in imports
+
+    const servicesDocs = await Service.find(query)
+        .sort(sortOption)
+        .populate({
+            path: 'freelancer',
+            model: Freelancer,
+            select: 'name avatarUrl rating slug verified flag'
+        })
+        .lean()
+
+    // 4. Transform to Component Props
+    const services = servicesDocs.map((doc: any) => {
+        // Calculate average rating from embedded reviews
+        let rating = 0;
+        if (doc.reviews && doc.reviews.length > 0) {
+            const sum = doc.reviews.reduce((acc: number, r: any) => acc + r.rating, 0);
+            rating = sum / doc.reviews.length;
+        } else {
+            // Fallback to freelancer rating or default
+            rating = doc.freelancer?.rating || 5.0;
+        }
+
+        return {
+            id: doc._id.toString(),
+            title: doc.title,
+            imageUrl: doc.imageUrl || '/window.svg',
+            delivery_days: doc.deliveryDays,
+            price_tokens: doc.priceTokens,
+            rating: rating,
+            category: doc.category,
+            tags: doc.tags || [],
+            freelancer: {
+                id: doc.freelancer?._id?.toString(),
+                name: doc.freelancer?.name || "Unknown",
+                avatarUrl: doc.freelancer?.avatarUrl,
+                slug: doc.freelancer?.slug || "#",
+                verified: doc.freelancer?.verified ?? false,
+                rating: doc.freelancer?.rating || 5.0,
+            }
+        }
+    })
+
     const gridClasses = view === 'list'
         ? 'grid grid-cols-1 gap-6 max-w-4xl mx-auto'
         : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
@@ -64,6 +111,7 @@ export default async function ServicesPage(props: PageProps) {
                         </div>
                     ) : (
                         <div className={gridClasses}>
+                            {/* First 3 items */}
                             {services.slice(0, 3).map((service) => (
                                 <ServiceCard
                                     key={service.id}
@@ -73,20 +121,21 @@ export default async function ServicesPage(props: PageProps) {
                                     title={service.title}
                                     price={service.price_tokens}
                                     freelancer={{
-                                        ...service.freelancer,
-                                        rating: service.rating // Use specific service rating
+                                        name: service.freelancer.name,
+                                        slug: service.freelancer.slug,
+                                        avatarUrl: service.freelancer.avatarUrl,
+                                        verified: service.freelancer.verified,
+                                        rating: service.rating
                                     }}
                                 />
                             ))}
 
-                            {/* Only show CTA if in grid mode and not searching, OR just place it intelligently? 
-                                For simplicity, in list mode we might want to move it or hide it, or just let it be a tile.
-                                In list mode, it will just take up full width which is fine.
-                            */}
+                            {/* CTA Banner logic */}
                             <div className={view === 'list' ? 'col-span-1' : 'col-span-1 md:col-span-2 lg:col-span-3'}>
                                 <CustomBriefCTA />
                             </div>
 
+                            {/* Remaining items */}
                             {services.slice(3).map((service) => (
                                 <ServiceCard
                                     key={service.id}
@@ -96,7 +145,10 @@ export default async function ServicesPage(props: PageProps) {
                                     title={service.title}
                                     price={service.price_tokens}
                                     freelancer={{
-                                        ...service.freelancer,
+                                        name: service.freelancer.name,
+                                        slug: service.freelancer.slug,
+                                        avatarUrl: service.freelancer.avatarUrl,
+                                        verified: service.freelancer.verified,
                                         rating: service.rating
                                     }}
                                 />

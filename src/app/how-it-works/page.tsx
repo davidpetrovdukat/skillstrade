@@ -8,7 +8,7 @@ import { MoneyBack } from '@/components/how-it-works/MoneyBack'
 
 export default function HowItWorksPage() {
     return (
-        <div className="min-h-screen bg-background text-white selection:bg-primary selection:text-black">
+        <div className="min-h-screen bg-background text-white selection:bg-primary selection:text-black border-x border-white/20 max-w-[1440px] mx-auto">
             <Header />
             <main>
                 <Hero />

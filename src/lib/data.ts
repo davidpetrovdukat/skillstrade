@@ -2272,11 +2272,11 @@ const BATCH_3: FreelancerProfile[] = [
     ]
   },
   {
-    "id": "user_23_hans",
+    "id": "user_23_christian",
     "meta": {
-      "name": "Hans Zimmer",
+      "name": "Christian Wessner",
       "role": "Technical Writing",
-      "location": "Berlin, Germany",
+      "location": "Munich, Germany",
       "flag": "🇩🇪",
       "timezone": "CET (Berlin)",
       "avatar_url": "/avatars/hans-de.webp",

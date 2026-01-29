@@ -1,5 +1,3 @@
-
-import { SERVICES_DATA } from '@/lib/services-data';
 import { notFound } from 'next/navigation';
 import { ServiceHeader } from '@/components/service-detail/ServiceHeader';
 import { ServiceGallery } from '@/components/service-detail/ServiceGallery';
@@ -11,6 +9,12 @@ import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { connectMongo } from '@/lib/db';
+import { Service } from '@/models/Service';
+import { Freelancer } from '@/models/Freelancer';
+import { User } from '@/models/User';
+
+export const dynamic = 'force-dynamic';
 
 interface PageProps {
     params: Promise<{
@@ -18,22 +22,56 @@ interface PageProps {
     }>;
 }
 
-export function generateStaticParams() {
-    return SERVICES_DATA.map((service) => ({
-        id: service.id,
-    }));
-}
-
 export default async function ServiceDetailPage(props: PageProps) {
     const params = await props.params;
-    const service = SERVICES_DATA.find((s) => s.id === params.id);
 
-    if (!service) {
+    await connectMongo();
+
+    // Check if ID is valid MongoDB ObjectId
+    if (!params.id.match(/^[0-9a-fA-F]{24}$/)) {
+        return notFound();
+    }
+
+    const serviceDoc = await Service.findById(params.id)
+        .populate({
+            path: 'freelancer',
+            model: Freelancer,
+            populate: {
+                path: 'user',
+                model: User,
+                select: 'firstName lastName'
+            }
+        })
+        .lean();
+
+    if (!serviceDoc) {
         notFound();
     }
 
+    // Type coercion for the populated document
+    const service = serviceDoc as any;
+    const freelancer = service.freelancer;
+
+    // Transform Review Data
+    const formattedReviews = (service.reviews || []).map((r: any) => ({
+        id: r._id?.toString() || Math.random().toString(),
+        user: r.authorName, // Fixed: Component expects 'user', not 'author'
+        rating: r.rating,
+        text: r.text,
+        date: new Date(r.createdAt).toLocaleDateString(),
+    }));
+
+    // Transform Addons
+    const formattedAddons = (service.addons || []).map((a: any) => ({
+        id: a._id?.toString() || Math.random().toString(),
+        title: a.title,
+        price_tokens: a.priceTokens,
+        desc: a.description,
+        is_standalone: a.isStandalone
+    }));
+
     return (
-        <div className="flex min-h-screen w-full flex-col bg-background text-white font-display overflow-x-hidden">
+        <div className="flex min-h-screen w-full flex-col bg-background text-white font-display overflow-x-hidden border-x border-white/20 max-w-[1440px] mx-auto">
             <Header />
             <main className="flex-1 w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-40 py-8">
                 {/* Breadcrumbs */}
@@ -57,28 +95,43 @@ export default async function ServiceDetailPage(props: PageProps) {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 relative">
                     {/* LEFT COLUMN (Main Content) */}
                     <div className="lg:col-span-8 flex flex-col gap-10">
-                        <ServiceGallery images={service.gallery || []} title={service.title} />
-
-                        <ServiceHeader title={service.title} freelancer={service.freelancer} />
-
-                        <ServiceTabs
-                            overview={service.overview || "No overview available."}
-                            deliverables={service.deliverables || []}
-                            faq={service.faq || []}
+                        <ServiceGallery
+                            images={service.imageUrl ? [service.imageUrl] : ['/window.svg']}
+                            title={service.title}
                         />
 
-                        <AddonsSection addons={service.addons || []} />
+                        <ServiceHeader
+                            title={service.title}
+                            freelancer={{
+                                name: freelancer.name,
+                                avatarUrl: freelancer.avatarUrl,
+                                role: freelancer.role,
+                                rating: freelancer.rating,
+                                reviews_count: freelancer.reviewsCount,
+                                verified: freelancer.verified,
+                                location: freelancer.location,
+                                flag: freelancer.flag,
+                            }}
+                        />
 
-                        <ServiceReviews reviews={service.reviews || []} />
+                        <ServiceTabs
+                            overview={service.overview}
+                            deliverables={service.deliverables || []}
+                            faq={[]} // FAQ not yet in model
+                        />
+
+                        <AddonsSection addons={formattedAddons} />
+
+                        <ServiceReviews reviews={formattedReviews} />
                     </div>
 
                     {/* RIGHT COLUMN (Sticky Buy Box) */}
                     <div className="lg:col-span-4 relative">
                         <ServicePricingCard
-                            price_tokens={service.price_tokens}
-                            display_price_eur={service.display_price_eur}
-                            delivery_days={service.delivery_days}
-                            revisions={service.revisions || 0}
+                            price_tokens={service.priceTokens}
+                            display_price_eur={service.displayPrice || `€${service.priceTokens / 100}`}
+                            delivery_days={service.deliveryDays}
+                            revisions={2} // Default revisions
                         />
                     </div>
                 </div>

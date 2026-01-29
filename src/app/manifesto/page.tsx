@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export default function ManifestoPage() {
     return (
-        <div className="flex min-h-screen w-full flex-col bg-background text-white selection:bg-primary selection:text-black font-display overflow-x-hidden">
+        <div className="flex min-h-screen w-full flex-col bg-background text-white selection:bg-primary selection:text-black font-display overflow-x-hidden border-x border-white/20 max-w-[1440px] mx-auto">
             <Header />
 
             {/* Progress Indicator (Fixed Right) */}
