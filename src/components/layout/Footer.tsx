@@ -65,13 +65,10 @@ export function Footer() {
                 <div className="flex items-center gap-2">
                     <p className="text-[10px] text-white/30 uppercase tracking-widest font-mono">© 2024 Skill Trade. All Rights Reserved.</p>
                 </div>
-                <div className="flex gap-4 opacity-50 grayscale hover:grayscale-0 transition-all">
-                    <div className="border border-white/30 px-3 py-1 text-xs font-black italic tracking-tighter text-white font-heading">VISA</div>
-                    <div className="border border-white/30 px-3 py-1 text-xs font-black tracking-widest text-white flex items-center gap-1 font-heading">
-                        <div className="size-2 rounded-full bg-white/50" />
-                        <div className="size-2 rounded-full bg-white/80 -ml-1" />
-                        MASTERCARD
-                    </div>
+                <div className="flex gap-4 items-center opacity-50 grayscale hover:grayscale-0 transition-all">
+                    <img src="/pci-dss-logo.svg" alt="PCI DSS" className="h-8 w-auto" />
+                    <img src="/visa-logo.svg" alt="Visa" className="h-6 w-auto" />
+                    <img src="/mastercard-logo.svg" alt="Mastercard" className="h-6 w-auto" />
                 </div>
             </div>
         </footer>

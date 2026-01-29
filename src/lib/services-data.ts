@@ -910,9 +910,9 @@ export const RAW_SERVICES_DATA: ServiceItemRaw[] = [
         }
     },
     {
-        "id": "user_16_oliver",
+        "id": "user_16_nigel",
         "meta": {
-            "name": "Oliver Grant",
+            "name": "Nigel Rivers",
             "role": "Email Marketing & CRM",
             "location": "Bristol, UK",
             "flag": "🇬🇧",
@@ -1288,9 +1288,9 @@ export const RAW_SERVICES_DATA: ServiceItemRaw[] = [
         }
     },
     {
-        "id": "user_23_hans",
+        "id": "user_23_christian",
         "meta": {
-            "name": "Hans Beck",
+            "name": "Christian Wessner",
             "role": "Technical Writing",
             "location": "Munich, Germany",
             "flag": "🇩🇪",
