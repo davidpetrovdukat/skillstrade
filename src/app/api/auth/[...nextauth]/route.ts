@@ -53,6 +53,8 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async signIn({ user, account, profile }) {
             if (account?.provider === "google") {
+                if (!user.email) return false;
+
                 await connectMongo();
 
                 try {
