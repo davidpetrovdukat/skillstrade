@@ -170,7 +170,7 @@ async function seed() {
                 service: service._id,
                 totalTokens: item.service.price_tokens,
                 status: OrderStatus.COMPLETED,
-                brief: "Logo needed",
+                brief: { title: "Logo Design", description: "Logo needed" },
                 attachments: [],
                 createdAt: new Date(Date.now() - 86400000 * 5)
             });
