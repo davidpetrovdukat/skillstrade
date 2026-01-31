@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Check, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { TOKEN_PACKAGES, TOKENS_PER_EUR } from '@/lib/constants';
 import { useCurrencyStore } from '@/store/useCurrencyStore';
 
@@ -25,9 +26,11 @@ export default function PricingGrid({ isDashboard = false }: PricingGridProps) {
     };
 
     const router = useRouter();
+    const { data: session } = useSession();
 
     const handleBuy = (pkgName: string, amountEuro: number, tokens: number) => {
-        if (isDashboard) {
+        if (session) {
+            // User is logged in -> Go to Checkout
             const checkoutData = {
                 planId: pkgName,
                 amount: amountEuro,
@@ -37,6 +40,9 @@ export default function PricingGrid({ isDashboard = false }: PricingGridProps) {
             };
             localStorage.setItem("checkoutData", JSON.stringify(checkoutData));
             router.push('/dashboard/checkout');
+        } else {
+            // User is Guest -> Go to Login
+            router.push('/login');
         }
     };
 
@@ -103,28 +109,16 @@ export default function PricingGrid({ isDashboard = false }: PricingGridProps) {
                         ))}
                     </ul>
 
-                    {isDashboard ? (
-                        <button
-                            onClick={() => handleBuy(pkg.name, pkg.price_eur, pkg.tokens_total)}
-                            className={`w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 ${pkg.badge
-                                ? 'bg-primary hover:bg-white text-black'
-                                : 'bg-white/10 hover:bg-white text-white hover:text-black'
-                                }`}
-                        >
-                            <Zap className="w-4 h-4 fill-current" />
-                            Buy Now
-                        </button>
-                    ) : (
-                        <Link
-                            href="/login"
-                            className={`w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 ${pkg.badge
-                                ? 'bg-primary hover:bg-white text-black'
-                                : 'bg-white/10 hover:bg-white text-white hover:text-black'
-                                }`}>
-                            <Zap className="w-4 h-4 fill-current" />
-                            Buy Now
-                        </Link>
-                    )}
+                    <button
+                        onClick={() => handleBuy(pkg.name, pkg.price_eur, pkg.tokens_total)}
+                        className={`w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 ${pkg.badge
+                            ? 'bg-primary hover:bg-white text-black'
+                            : 'bg-white/10 hover:bg-white text-white hover:text-black'
+                            }`}
+                    >
+                        <Zap className="w-4 h-4 fill-current" />
+                        Buy Now
+                    </button>
                 </div>
             ))}
 
@@ -171,21 +165,12 @@ export default function PricingGrid({ isDashboard = false }: PricingGridProps) {
                     </div>
                 </div>
 
-                {isDashboard ? (
-                    <button
-                        onClick={() => handleBuy(`Custom Amount`, amountInEur, customTokens)}
-                        className="w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 bg-white/10 hover:bg-white text-white hover:text-black">
-                        <Zap className="w-4 h-4 fill-current" />
-                        Buy Now
-                    </button>
-                ) : (
-                    <Link
-                        href="/login"
-                        className="w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 bg-white/10 hover:bg-white text-white hover:text-black">
-                        <Zap className="w-4 h-4 fill-current" />
-                        Buy Now
-                    </Link>
-                )}
+                <button
+                    onClick={() => handleBuy(`Custom Amount`, amountInEur, customTokens)}
+                    className="w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 bg-white/10 hover:bg-white text-white hover:text-black">
+                    <Zap className="w-4 h-4 fill-current" />
+                    Buy Now
+                </button>
             </div>
         </section>
     );
