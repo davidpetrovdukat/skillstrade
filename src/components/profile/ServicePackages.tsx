@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link'
 import { Layers, Check, Grid, Smartphone } from 'lucide-react'
 import type { ServicePackage } from '@/lib/data'
 
@@ -48,9 +49,12 @@ export function ServicePackages({ services }: ServicePackagesProps) {
 
                             <div className="flex items-end justify-between pt-6 border-t border-white/10">
                                 <span className="text-3xl font-bold text-white font-heading">€{service.price_tokens}</span>
-                                <button className={`text-xs font-bold uppercase tracking-widest px-4 py-2 transition-colors font-heading ${service.popular ? 'bg-primary text-black hover:bg-white' : 'bg-white text-black hover:bg-primary'}`}>
+                                <Link
+                                    href={`/order?serviceId=${service.id}&packageIndex=${services.indexOf(service)}`}
+                                    className={`text-xs font-bold uppercase tracking-widest px-4 py-2 transition-colors font-heading inline-block text-center ${service.popular ? 'bg-primary text-black hover:bg-white' : 'bg-white text-black hover:bg-primary'}`}
+                                >
                                     Select
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     ))}

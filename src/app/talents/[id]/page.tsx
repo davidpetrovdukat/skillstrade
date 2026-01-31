@@ -107,7 +107,6 @@ export default async function ProfilePage(props: PageProps) {
             <main className="flex-1">
                 <ProfileHero profile={profile} />
                 <ProfileBio bio={profile.bio} />
-                {profile.portfolio.length > 0 && <PortfolioGrid portfolio={profile.portfolio} />}
                 {profile.active_services.length > 0 && <ServicePackages services={profile.active_services} />}
                 {profile.reviews.length > 0 && <Reviews reviews={profile.reviews} />}
             </main>

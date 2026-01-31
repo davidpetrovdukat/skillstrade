@@ -142,6 +142,16 @@ export function OrderHistoryTable({ orders }: OrderHistoryTableProps) {
                                             <button className="text-xs font-bold uppercase tracking-wider border border-white/20 hover:border-[#D3E97A] hover:text-[#D3E97A] text-white px-3 py-2 transition-all flex items-center gap-2">
                                                 Details <ExternalLink className="w-3 h-3" />
                                             </button>
+                                            {order.status === 'COMPLETED' && order.attachments && order.attachments.length > 0 && (
+                                                <a
+                                                    href={order.attachments[0]}
+                                                    download
+                                                    target="_blank"
+                                                    className="ml-2 text-xs font-bold uppercase tracking-wider bg-[#D3E97A] text-black px-3 py-2 hover:bg-white transition-colors flex items-center gap-2"
+                                                >
+                                                    Download <Box className="w-3 h-3" />
+                                                </a>
+                                            )}
                                         </div>
                                     </td>
                                 </tr>

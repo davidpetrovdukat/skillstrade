@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { ArrowRight, Mail, Verified } from 'lucide-react'
 import type { FreelancerProfile } from '@/lib/data'
 
@@ -68,14 +69,10 @@ export function ProfileHero({ profile }: ProfileHeroProps) {
 
                 {/* Actions */}
                 <div className="flex flex-col sm:flex-row gap-4 mt-12 w-full">
-                    <button className="flex-1 rounded-none bg-primary hover:bg-primary/90 text-black h-14 px-8 text-base font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 group font-heading">
+                    <Link href="/post-brief" className="flex-1 rounded-none bg-primary hover:bg-primary/90 text-black h-14 px-8 text-base font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 group font-heading">
                         Hire Me
                         <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                    </button>
-                    <button className="flex-1 rounded-none border border-white hover:bg-white hover:text-black text-white h-14 px-8 text-base font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 font-heading">
-                        Message
-                        <Mail className="w-5 h-5" />
-                    </button>
+                    </Link>
                 </div>
             </div>
         </section>
