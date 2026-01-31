@@ -15,12 +15,12 @@ export function ProcessSteps() {
                     viewport={{ once: true }}
                     className="flex-1 space-y-6"
                 >
-                    <h3 className="text-primary text-sm font-bold tracking-[0.3em] uppercase font-heading">01. CURATED MATCHING</h3>
+                    <h3 className="text-primary text-sm font-bold tracking-[0.3em] uppercase font-heading">01. CURATED SELECTION</h3>
                     <h2 className="text-3xl md:text-4xl font-bold uppercase leading-tight tracking-tighter font-heading">
-                        ELITE PAIRING DRIVEN BY ALGORITHMIC PRECISION.
+                        Find your perfect match.
                     </h2>
                     <p className="text-white/60 text-lg leading-relaxed font-mono">
-                        Our proprietary matching engine analyzes 50+ data points from portfolio history to communication style, ensuring you only see the 1% that fit your project DNA.
+                        Don't waste time sifting through thousands of profiles. Our roster is capped at the top 1%. Browse verified portfolios, check fixed-price packages, and select the talent that fits your specific tech stack and aesthetic.
                     </p>
                 </motion.div>
 
@@ -60,12 +60,12 @@ export function ProcessSteps() {
                     viewport={{ once: true }}
                     className="flex-1 space-y-6"
                 >
-                    <h3 className="text-primary text-sm font-bold tracking-[0.3em] uppercase font-heading">02. TOKEN ESCROW</h3>
+                    <h3 className="text-primary text-sm font-bold tracking-[0.3em] uppercase font-heading">02. BRIEFING & SMART ESCROW</h3>
                     <h2 className="text-3xl md:text-4xl font-bold uppercase leading-tight tracking-tighter font-heading">
-                        INSTANT, SECURE, AND BORDERLESS VAULT.
+                        Define the scope. Secure the funds.
                     </h2>
                     <p className="text-white/60 text-lg leading-relaxed font-mono">
-                        Funds are locked in a digital vault upon project start. We use stable tokens to ensure zero volatility and instant global settlement when milestones are met.
+                        Clear communication starts with a clear brief. Describe your needs directly to the freelancer. Once agreed, deposit tokens into our smart escrow. Your funds are safe—the freelancer sees the proof of funds, but can't touch them until the job is done.
                     </p>
                 </motion.div>
 
@@ -93,12 +93,12 @@ export function ProcessSteps() {
                     viewport={{ once: true }}
                     className="flex-1 space-y-6"
                 >
-                    <h3 className="text-primary text-sm font-bold tracking-[0.3em] uppercase font-heading">03. DELIVERY & RELEASE</h3>
+                    <h3 className="text-primary text-sm font-bold tracking-[0.3em] uppercase font-heading">03. DELIVERY & OWNERSHIP</h3>
                     <h2 className="text-3xl md:text-4xl font-bold uppercase leading-tight tracking-tighter font-heading">
-                        FRICTIONLESS HANDOVER PROTOCOL.
+                        Approve the work. Own the result.
                     </h2>
                     <p className="text-white/60 text-lg leading-relaxed font-mono">
-                        Review the output via our secure portal. Once satisfied, a single click releases the vault tokens to the freelancer. Simple. Global. Secure.
+                        Receive the deliverables on time. Review the quality and request revisions if necessary. Once you hit 'Approve', the tokens are released to the creator, and full Intellectual Property (IP) rights transfer instantly to you.
                     </p>
                 </motion.div>
 

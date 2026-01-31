@@ -14,7 +14,7 @@ export function HowItWorks() {
                     </div>
                     <h3 className="text-3xl font-bold uppercase mb-4 font-heading">Select</h3>
                     <p className="text-black/60 max-w-xs leading-relaxed font-mono text-sm">
-                        Browse verified portfolios. Filter by rate, timezone, and tech stack. Direct booking available.
+                        Browse curated portfolios. Filter by skill, rate, and niche. Choose the verified expert that matches your vision.
                     </p>
                 </div>
 
@@ -22,9 +22,9 @@ export function HowItWorks() {
                     <div className="md:w-14 md:h-14 w-10 h-10 flex items-center justify-center bg-primary border md:border-black/20 mb-8 z-10">
                         <span className="text-xl font-bold font-heading invisible md:visible text-black">02</span>
                     </div>
-                    <h3 className="text-3xl font-bold uppercase mb-4 font-heading">Tokenize</h3>
+                    <h3 className="text-3xl font-bold uppercase mb-4 font-heading">BRIEF & DEPOSIT</h3>
                     <p className="text-black/60 max-w-xs leading-relaxed font-mono text-sm">
-                        Secure funds in smart escrow via tokens. 100% protection for both sides until milestones are hit.
+                        Describe your project goals. Secure the funds in escrow using tokens. Work begins only when you say go.
                     </p>
                 </div>
 
@@ -34,7 +34,7 @@ export function HowItWorks() {
                     </div>
                     <h3 className="text-3xl font-bold uppercase mb-4 font-heading">Receive</h3>
                     <p className="text-black/60 max-w-xs leading-relaxed font-mono text-sm">
-                        Approve the work. Release payment tokens. Ownership transfers instantly to your wallet.
+                        Review the final output. Request revisions if needed. You own 100% of the IP instantly.
                     </p>
                 </div>
             </div>

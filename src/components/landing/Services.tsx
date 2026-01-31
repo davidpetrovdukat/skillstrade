@@ -2,47 +2,21 @@ import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const services = [
-    {
-        id: "01",
-        title: "Brand\nIdentity",
-        image: "/services/brand_identity.webp",
-        link: "/services/user_01_arthur"
-    },
-    {
-        id: "02",
-        title: "Webflow\nDev",
-        image: "/services/webflow.webp",
-        link: "/services/user_07_marcus"
-    },
-    {
-        id: "03",
-        title: "SEO\nAudit",
-        image: "/services/seo.webp", // Fixed image path
-        link: "/services/user_13_claire"
-    },
-    {
-        id: "04",
-        title: "Motion\nDesign",
-        image: "/services/3d_motion.webp", // Fixed image path
-        link: "/services/user_03_julien"
-    },
-    {
-        id: "05",
-        title: "Copy\nWriting",
-        image: "/services/copywriting.webp",
-        link: "/services/user_16_sarah" // Placeholder, will update if grep finds different
-    }
-]
+interface ServicesProps {
+    services: any[];
+}
 
-export function Services() {
+export function Services({ services }: ServicesProps) {
+    // Fallback if no services provided
+    const displayServices = services || [];
+
     return (
         <section className="border-b border-white/20 bg-background">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                {services.map((service, index) => (
+                {displayServices.map((service, index) => (
                     <Link
-                        href={service.link}
-                        key={index}
+                        href={`/services/${service._id}`}
+                        key={service._id}
                         className={`
               aspect-square border-b border-white/20 relative group cursor-pointer overflow-hidden block
               ${index === 0 || index === 3 ? 'lg:border-b-0' : ''} 
@@ -52,7 +26,7 @@ export function Services() {
                         {/* Background Image with Overlay */}
                         <div className="absolute inset-0 z-0">
                             <Image
-                                src={service.image}
+                                src={service.imageUrl || '/window.svg'}
                                 alt={service.title}
                                 fill
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -65,7 +39,7 @@ export function Services() {
                         <div className="relative z-10 p-8 flex flex-col justify-between h-full">
                             <div className="flex justify-between items-start">
                                 <span className="text-xs font-mono text-white/60 group-hover:text-white transition-colors border border-white/20 px-2 py-1 bg-black/20 backdrop-blur-sm">
-                                    {service.id}
+                                    {(index + 1).toString().padStart(2, '0')}
                                 </span>
                             </div>
                             <h3 className="text-3xl font-bold uppercase group-hover:translate-x-2 transition-transform duration-300 font-heading whitespace-pre-line text-white">

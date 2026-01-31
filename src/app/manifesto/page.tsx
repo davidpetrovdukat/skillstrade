@@ -98,7 +98,7 @@ export default function ManifestoPage() {
                     </div>
 
                     <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
-                        <div className="lg:col-span-4 sticky top-32 self-start">
+                        <div className="lg:col-span-4 lg:sticky lg:top-32 self-start">
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 whileInView={{ opacity: 1 }}
@@ -218,7 +218,7 @@ export default function ManifestoPage() {
                             <div className="flex gap-12">
                                 <div className="flex flex-col gap-2">
                                     {/* Using a handwriting font via className defined in layout/globals or just standard fallback if not loaded perfectly */}
-                                    <span className="text-4xl text-white/90 -rotate-6" style={{ fontFamily: 'var(--font-nothing-you-could-do), cursive' }}>Alex D.</span>
+                                    <span className="text-4xl text-white/90 -rotate-6" style={{ fontFamily: 'var(--font-nothing-you-could-do), cursive' }}>Nikita J.</span>
                                     <span className="text-xs font-mono text-white/40 uppercase tracking-widest border-t border-white/20 pt-2 w-24">Founder</span>
                                 </div>
                                 <div className="flex flex-col gap-2">
@@ -231,8 +231,8 @@ export default function ManifestoPage() {
                             {/* Verified Icon - Lucide doesn't have 'verified' exact like Google Material, but 'BadgeCheck' or 'ShieldCheck' is close */}
                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
                             <div className="flex flex-col items-end">
-                                <p className="text-3xl font-bold tracking-tight text-white font-heading">SKILL—TRADE</p>
-                                <p className="font-mono text-sm text-primary">EST. 2024 &nbsp;//&nbsp; MANIFESTO V1.0</p>
+                                <p className="text-3xl font-bold tracking-tight text-white font-heading">SKILLS-TRADE</p>
+                                <p className="font-mono text-sm text-primary">EST. 2025 &nbsp;//&nbsp; MANIFESTO V1.0</p>
                             </div>
                         </div>
                     </div>

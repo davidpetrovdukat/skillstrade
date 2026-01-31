@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Space_Mono, Nothing_You_Could_Do } from "next/font/google";
 import "./globals.css";
+import { CookieBanner } from "@/components/layout/CookieBanner";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -48,6 +49,7 @@ export default function RootLayout({
         className={`${spaceGrotesk.variable} ${spaceMono.variable} ${nothingYouCouldDo.variable} antialiased font-heading`}
       >
         {children}
+        <CookieBanner />
       </body>
     </html>
   );

@@ -49,7 +49,7 @@ export function Hero() {
                     }}
                 />
 
-                <div className="relative w-full h-full max-h-[70vh] bg-neutral-800 rounded-t-[20rem] overflow-hidden border border-white/10 group mt-10">
+                <div className="relative w-full h-full max-h-[70vh] bg-neutral-800 rounded-t-[5rem] md:rounded-t-[20rem] overflow-hidden border border-white/10 group mt-10">
                     <AnimatePresence mode="popLayout">
                         <motion.div
                             key={currentTalent.id}

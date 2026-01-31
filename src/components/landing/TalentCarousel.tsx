@@ -4,11 +4,14 @@ import { useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
-import { PROFILES } from '@/lib/data'
 
-export function TalentCarousel() {
+interface TalentCarouselProps {
+    talents: any[];
+}
+
+export function TalentCarousel({ talents }: TalentCarouselProps) {
     const scrollRef = useRef<HTMLDivElement>(null)
-    const featuredTalents = PROFILES.slice(0, 8) // Limit to 8 profiles
+    const featuredTalents = talents || [];
 
     const scroll = (direction: 'left' | 'right') => {
         if (scrollRef.current) {
@@ -49,38 +52,32 @@ export function TalentCarousel() {
             >
                 {featuredTalents.map((talent) => (
                     <div
-                        key={talent.id}
+                        key={talent._id}
                         className="min-w-[calc(100%-48px)] md:min-w-[calc(50%-12px)] lg:min-w-[calc(25%-18px)] h-[500px] bg-white/5 border border-white/10 backdrop-blur-sm relative group snap-start cursor-pointer hover:border-primary/50 transition-colors overflow-hidden"
                     >
-                        <Link href={`/talents/${talent.id}`} className="block h-full w-full">
+                        <Link href={`/talents/${talent.slug || talent._id}`} className="block h-full w-full">
                             <div className="h-[75%] w-full overflow-hidden relative">
                                 {/* Use fallback or default avatar logic similar to ProfileHero */}
-                                {talent.meta.hero_url ? (
+                                {talent.avatarUrl ? (
                                     <Image
-                                        src={talent.meta.hero_url}
-                                        alt={talent.meta.name}
+                                        src={talent.avatarUrl}
+                                        alt={talent.name}
                                         fill
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                                         className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                     />
                                 ) : (
-                                    <Image
-                                        src={talent.meta.avatar_url}
-                                        alt={talent.meta.name}
-                                        fill
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                                    />
+                                    <div className="bg-neutral-800 w-full h-full" />
                                 )}
                             </div>
                             <div className="p-6">
                                 <div className="flex justify-between items-start mb-2">
-                                    <h3 className="text-xl font-bold uppercase font-heading">{talent.meta.name}</h3>
-                                    <span className="text-xl">{talent.meta.flag}</span>
+                                    <h3 className="text-xl font-bold uppercase font-heading">{talent.name}</h3>
+                                    <span className="text-xl">{talent.flag}</span>
                                 </div>
-                                <p className="text-white/40 text-sm font-mono mb-4">{talent.meta.role}</p>
+                                <p className="text-white/40 text-sm font-mono mb-4">{talent.role}</p>
                                 <div className="flex gap-2 flex-wrap">
-                                    {talent.bio.skills.slice(0, 3).map(skill => (
+                                    {(talent.skills || []).slice(0, 3).map((skill: string) => (
                                         <span key={skill} className="text-[10px] uppercase border border-white/20 px-2 py-1 text-white/60 font-mono">
                                             {skill}
                                         </span>

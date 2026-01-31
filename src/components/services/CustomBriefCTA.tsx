@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export function CustomBriefCTA() {
     return (
         <div className="md:col-span-2 relative overflow-hidden rounded-none border border-white/10 bg-[#1A1A1A] flex flex-col md:flex-row items-center justify-between p-8 md:px-12 gap-6 group">
@@ -11,9 +13,9 @@ export function CustomBriefCTA() {
                 </p>
             </div>
 
-            <button className="relative z-10 whitespace-nowrap bg-white text-black hover:bg-primary px-8 py-4 text-sm font-black uppercase tracking-widest transition-colors rounded-none shadow-[4px_4px_0px_0px_rgba(212,255,0,0.3)] hover:shadow-[4px_4px_0px_0px_rgba(212,255,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px] font-heading">
+            <Link href="/post-brief" className="relative z-10 whitespace-nowrap bg-white text-black hover:bg-primary px-8 py-4 text-sm font-black uppercase tracking-widest transition-colors rounded-none shadow-[4px_4px_0px_0px_rgba(212,255,0,0.3)] hover:shadow-[4px_4px_0px_0px_rgba(212,255,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px] font-heading">
                 Post Custom Brief
-            </button>
+            </Link>
         </div>
     )
 }

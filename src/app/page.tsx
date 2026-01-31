@@ -8,7 +8,21 @@ import { HowItWorks } from '@/components/landing/HowItWorks'
 import { Pricing } from '@/components/landing/Pricing'
 import { Footer } from '@/components/layout/Footer'
 
-export default function Home() {
+import { connectMongo } from '@/lib/db';
+import { Service } from '@/models/Service';
+import { Freelancer } from '@/models/Freelancer';
+
+export const dynamic = 'force-dynamic';
+
+export default async function Home() {
+  await connectMongo();
+
+  // Fetch Services (Limit 6 for the grid)
+  const topServices = await Service.find({}).limit(6).lean();
+
+  // Fetch Freelancers (Limit 8 for carousel)
+  const featuredTalents = await Freelancer.find({ isAvailable: true }).limit(8).lean();
+
   return (
     <div className="flex min-h-screen w-full flex-col border-x border-white/20 max-w-[1440px] mx-auto">
       <Header />
@@ -16,8 +30,8 @@ export default function Home() {
         <Hero />
         <Marquee />
         <Features />
-        <Services />
-        <TalentCarousel />
+        <Services services={JSON.parse(JSON.stringify(topServices))} />
+        <TalentCarousel talents={JSON.parse(JSON.stringify(featuredTalents))} />
         <HowItWorks />
         <Pricing />
       </main>

@@ -31,6 +31,7 @@ export function Footer() {
                         <li><Link className="text-white/60 hover:text-white uppercase text-sm font-bold tracking-wide font-heading" href="/talents">Talent</Link></li>
                         <li><Link className="text-white/60 hover:text-white uppercase text-sm font-bold tracking-wide font-heading" href="/services">Services</Link></li>
                         <li><Link className="text-white/60 hover:text-white uppercase text-sm font-bold tracking-wide font-heading" href="/join">Join the roster</Link></li>
+                        <li><Link className="text-white/60 hover:text-white uppercase text-sm font-bold tracking-wide font-heading" href="/post-brief">Post a brief</Link></li>
                         <li><Link className="text-white/60 hover:text-white uppercase text-sm font-bold tracking-wide font-heading" href="/how-it-works">How it works</Link></li>
                     </ul>
                 </div>

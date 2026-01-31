@@ -68,6 +68,26 @@ export function Header() {
             <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                 <Menu className="w-6 h-6" />
             </button>
+
+            {/* Mobile Menu Overlay */}
+            {isMenuOpen && (
+                <div className="fixed inset-0 top-[73px] bg-background z-40 flex flex-col p-6 md:hidden animate-in fade-in slide-in-from-top-5">
+                    <nav className="flex flex-col gap-6 text-2xl font-bold uppercase tracking-widest font-heading mb-8">
+                        <Link onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors" href="/talents">Talent</Link>
+                        <Link onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors" href="/services">Services</Link>
+                        <Link onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors" href="/how-it-works">How it Works</Link>
+                        <Link onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors" href="/tokens">Tokens</Link>
+                    </nav>
+                    <div className="flex flex-col gap-4">
+                        <Link onClick={() => setIsMenuOpen(false)} href="/login" className="text-xl font-bold uppercase tracking-widest hover:text-primary transition-colors font-heading text-left">
+                            Log In
+                        </Link>
+                        <Link onClick={() => setIsMenuOpen(false)} href="/signup" className="bg-primary text-black px-6 py-4 text-center text-lg font-bold uppercase hover:bg-white transition-colors border border-transparent font-heading">
+                            Join Now
+                        </Link>
+                    </div>
+                </div>
+            )}
         </header>
     )
 }

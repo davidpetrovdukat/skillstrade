@@ -1432,7 +1432,7 @@ const getFaqsForService = (category: string, title: string) => {
             ];
         default:
             return [
-                { q: "How do we communicate?", a: "We can chat directly through the SkillTrade platform." },
+                { q: "How do we communicate?", a: "We can chat directly through the SKILLS-TRADE platform." },
                 { q: "Is my payment secure?", a: "Yes, funds are held in escrow until you approve the work." },
                 { q: "Can I cancel the order?", a: "You can cancel before work begins for a full refund." }
             ];

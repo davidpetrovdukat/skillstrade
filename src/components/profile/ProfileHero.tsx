@@ -18,7 +18,7 @@ export function ProfileHero({ profile }: ProfileHeroProps) {
                     {/* Using a simple div with background image for the grayscale transition effect as next/image requires more setup for this specific hover effect or using CSS filters */}
                     {profile.meta.hero_url || profile.meta.avatar_url ? (
                         <div
-                            className="absolute inset-0 bg-cover bg-center grayscale contrast-125 transition-transform duration-700 group-hover:scale-105"
+                            className="absolute inset-0 bg-cover bg-top grayscale contrast-125 transition-transform duration-700 group-hover:scale-105"
                             style={{ backgroundImage: `url(${profile.meta.hero_url || profile.meta.avatar_url})` }}
                         />
                     ) : (

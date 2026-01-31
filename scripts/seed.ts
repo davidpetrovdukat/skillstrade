@@ -51,7 +51,7 @@ async function seed() {
     const client = await User.create({
         firstName: 'Alice',
         lastName: 'Client',
-        email: 'client@skillstrade.com',
+        email: 'client@SKILLS-TRADE.com',
         role: UserRole.CLIENT,
         walletBalance: 50000
     });
@@ -75,7 +75,7 @@ async function seed() {
         const fUser = await User.create({
             firstName: firstName,
             lastName: lastName,
-            email: `${slug}@skillstrade.com`,
+            email: `${slug}@SKILLS-TRADE.com`,
             role: UserRole.FREELANCER,
             walletBalance: 0
         });

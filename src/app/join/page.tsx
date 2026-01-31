@@ -2,6 +2,7 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { TrendingUp, Lock, FileText, Quote, ChevronDown } from "lucide-react";
+import { JoinForm } from "@/components/join/JoinForm";
 
 export default function JoinPage() {
     return (
@@ -87,78 +88,7 @@ export default function JoinPage() {
                                     Submit your profile for manual review.
                                 </p>
                             </div>
-                            <form className="flex flex-col gap-8 w-full">
-                                {/* Full Name */}
-                                <label className="flex flex-col w-full gap-2 group">
-                                    <span className="text-xs uppercase tracking-widest text-white/40 font-bold group-focus-within:text-primary transition-colors font-heading">
-                                        Full Name
-                                    </span>
-                                    <input
-                                        className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-lg text-white placeholder-white/20 focus:outline-none focus:ring-0 focus:border-primary transition-colors rounded-none font-display"
-                                        placeholder="e.g. Alex Chen"
-                                        type="text"
-                                    />
-                                </label>
-                                {/* Portfolio URL */}
-                                <label className="flex flex-col w-full gap-2 group">
-                                    <span className="text-xs uppercase tracking-widest text-white/40 font-bold group-focus-within:text-primary transition-colors font-heading">
-                                        Portfolio URL
-                                    </span>
-                                    <input
-                                        className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-lg text-white placeholder-white/20 focus:outline-none focus:ring-0 focus:border-primary transition-colors rounded-none font-display"
-                                        placeholder="https://your-work.com"
-                                        type="url"
-                                    />
-                                </label>
-                                {/* LinkedIn Profile */}
-                                <label className="flex flex-col w-full gap-2 group">
-                                    <span className="text-xs uppercase tracking-widest text-white/40 font-bold group-focus-within:text-primary transition-colors font-heading">
-                                        LinkedIn Profile
-                                    </span>
-                                    <input
-                                        className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-lg text-white placeholder-white/20 focus:outline-none focus:ring-0 focus:border-primary transition-colors rounded-none font-display"
-                                        placeholder="https://linkedin.com/in/..."
-                                        type="url"
-                                    />
-                                </label>
-                                {/* Primary Skill Dropdown */}
-                                <label className="flex flex-col w-full gap-2 group relative">
-                                    <span className="text-xs uppercase tracking-widest text-white/40 font-bold group-focus-within:text-primary transition-colors font-heading">
-                                        Primary Skill
-                                    </span>
-                                    <select className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-lg text-white focus:outline-none focus:ring-0 focus:border-primary transition-colors rounded-none appearance-none cursor-pointer font-display [&>option]:bg-black">
-                                        <option disabled defaultValue="" value="">
-                                            Select your craft
-                                        </option>
-                                        <option value="ui">UI/UX Design</option>
-                                        <option value="dev">Full-Stack Development</option>
-                                        <option value="branding">Brand Strategy</option>
-                                        <option value="motion">Motion Graphics</option>
-                                    </select>
-                                    {/* Custom arrow icon */}
-                                    <div className="absolute right-0 bottom-4 pointer-events-none text-white/40">
-                                        <ChevronDown className="w-5 h-5" />
-                                    </div>
-                                </label>
-                                {/* Why You Textarea */}
-                                <label className="flex flex-col w-full gap-2 group">
-                                    <span className="text-xs uppercase tracking-widest text-white/40 font-bold group-focus-within:text-primary transition-colors font-heading">
-                                        Why You?
-                                    </span>
-                                    <textarea
-                                        className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-lg text-white placeholder-white/20 focus:outline-none focus:ring-0 focus:border-primary transition-colors resize-none rounded-none font-display"
-                                        placeholder="Tell us about your most complex project..."
-                                        rows={4}
-                                    ></textarea>
-                                </label>
-                                {/* Submit Button */}
-                                <button
-                                    className="mt-8 w-full bg-primary hover:bg-white text-black font-bold text-lg py-5 px-8 rounded-none uppercase tracking-widest transition-colors duration-200 font-heading"
-                                    type="button"
-                                >
-                                    Apply for Review
-                                </button>
-                            </form>
+                            <JoinForm />
                         </div>
                     </section>
 
