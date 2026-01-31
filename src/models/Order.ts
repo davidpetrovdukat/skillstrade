@@ -15,7 +15,10 @@ export interface IOrder extends Document {
     service: mongoose.Types.ObjectId;
     totalTokens: number;
     status: OrderStatus;
-    brief?: string;
+    brief?: {
+        title: string;
+        description: string;
+    };
     attachments: string[];
     deliveryDate?: Date;
     createdAt: Date;
@@ -28,7 +31,10 @@ const OrderSchema: Schema = new Schema({
     service: { type: Schema.Types.ObjectId, ref: 'Service', required: true },
     totalTokens: { type: Number, required: true },
     status: { type: String, enum: Object.values(OrderStatus), default: OrderStatus.PENDING },
-    brief: { type: String },
+    brief: {
+        title: { type: String },
+        description: { type: String }
+    },
     attachments: [{ type: String }],
     deliveryDate: { type: Date },
 }, {
