@@ -10,8 +10,7 @@ import { User } from '@/models/User';
 import { Order, OrderStatus } from '@/models/Order';
 import { Freelancer } from '@/models/Freelancer';
 import { Service } from '@/models/Service';
-import { Freelancer } from '@/models/Freelancer';
-import { Service } from '@/models/Service';
+
 
 // Force dynamic rendering since we fetch user-specific data
 export const dynamic = 'force-dynamic';
