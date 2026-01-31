@@ -29,39 +29,12 @@ export function Sidebar() {
                         <Wallet className="w-5 h-5 group-hover:text-white transition-colors" />
                         <p className="text-sm font-medium tracking-wide uppercase">Wallet</p>
                     </Link>
-                    <Link href="/dashboard/settings" className="flex items-center gap-4 px-4 py-3 text-gray-400 hover:bg-white/5 hover:text-white transition-colors group border-l-2 border-transparent hover:border-white/20">
-                        <Settings className="w-5 h-5 group-hover:text-white transition-colors" />
-                        <p className="text-sm font-medium tracking-wide uppercase">Settings</p>
-                    </Link>
-                    <Link href="/dashboard/support" className="flex items-center gap-4 px-4 py-3 text-gray-400 hover:bg-white/5 hover:text-white transition-colors group border-l-2 border-transparent hover:border-white/20">
-                        <HelpCircle className="w-5 h-5 group-hover:text-white transition-colors" />
-                        <p className="text-sm font-medium tracking-wide uppercase">Support</p>
-                    </Link>
                 </nav>
             </div>
 
-            {/* Bottom Section */}
-            <div className="p-6 border-t border-white/10 bg-[#0f0f0f]">
-                <div className="flex items-center gap-4 mb-4">
-                    <div className="size-10 bg-gray-700 rounded-none overflow-hidden grayscale border border-white/20 relative">
-                        {/* Using a placeholder avatar since the URL in HTML might strictly be an external one. Using local default if available would be better. */}
-                        <Image
-                            src="/avatars/default.jpg"
-                            alt="User Profile"
-                            fill
-                            className="object-cover opacity-80"
-                            sizes="40px"
-                        />
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="text-sm font-bold text-white leading-none">Alex M.</span>
-                        <span className="text-xs text-gray-500 mt-1 font-mono">CLIENT</span>
-                    </div>
-                </div>
-                <button className="flex items-center gap-2 text-gray-400 hover:text-primary transition-colors text-xs font-bold uppercase tracking-wider w-full">
-                    <LogOut className="w-4 h-4" />
-                    Log Out
-                </button>
+            {/* Bottom Section - Empty or Reserved for future use */}
+            <div className="p-4 border-t border-white/10 bg-[#0f0f0f] hidden">
+                {/* Removed as requested */}
             </div>
         </aside>
     );

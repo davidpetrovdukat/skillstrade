@@ -3,10 +3,15 @@
 import { useState, useEffect } from "react";
 import { Check, Zap } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { TOKEN_PACKAGES, TOKENS_PER_EUR } from '@/lib/constants';
 import { useCurrencyStore } from '@/store/useCurrencyStore';
 
-export default function PricingGrid() {
+interface PricingGridProps {
+    isDashboard?: boolean;
+}
+
+export default function PricingGrid({ isDashboard = false }: PricingGridProps) {
     const { convert, currency } = useCurrencyStore();
     const [customAmount, setCustomAmount] = useState<string>("");
     const [mounted, setMounted] = useState(false);
@@ -19,41 +24,42 @@ export default function PricingGrid() {
         setCustomAmount(e.target.value);
     };
 
-    // Calculate tokens based on selected currency
-    // TOKENS_PER_EUR = 100.
-    // If currency is USD, user pays 1.09 USD for 100 tokens.
-    // So if user enters 1.09 USD, we divide by rate (1.09) to get 1 EUR, then multiply by 100.
+    const router = useRouter();
+
+    const handleBuy = (pkgName: string, amountEuro: number, tokens: number) => {
+        if (isDashboard) {
+            const checkoutData = {
+                planId: pkgName,
+                amount: amountEuro,
+                currency: currency,
+                tokens: tokens,
+                description: `Purchase of ${tokens.toLocaleString()} Tokens (${pkgName})`
+            };
+            localStorage.setItem("checkoutData", JSON.stringify(checkoutData));
+            router.push('/dashboard/checkout');
+        }
+    };
+
     const getExchangeRate = () => {
-        // We'd ideally import these from constants or store if exposed, 
-        // but for now we can infer or use a helper. 
-        // Given store only exposes 'convert', let's import the rates map directly 
-        // or just hardcode/copy logic if imports are tricky.
-        // Actually, let's just import the symbols/rates if possible.
-        // Waiting for import fix... checking usage. 
-        // Since I can't easily change imports in this block safely without seeing top, 
-        // I will assume standard rates used in store or fetch them.
-        // Let's use a safe fallback map here or rely on the assumption that
-        // convert(1) gives us the rate effectively? No, convert returns string.
-        // I will hardcode the rates map here to match store for safety or 
-        // better yet, import EXCHANGE_RATES from store file if exported?
-        // It WAS exported in the previous view_file.
-        const rates = { EUR: 1.00, USD: 1.09, GBP: 0.86 };
-        return rates[currency] || 1;
+        const rates: Record<string, number> = { EUR: 1.00, USD: 1.09, GBP: 0.86 };
+        // Validating currency is strictly one of the keys or fallback
+        const safeCurrency = (currency in rates) ? currency : 'EUR';
+        return rates[safeCurrency] || 1;
     };
 
     const getSymbol = () => {
-        const symbols = { EUR: '€', USD: '$', GBP: '£' };
-        return symbols[currency] || '€';
-    }
+        const symbols: Record<string, string> = { EUR: '€', USD: '$', GBP: '£' };
+        const safeCurrency = (currency in symbols) ? currency : 'EUR';
+        return symbols[safeCurrency] || '€';
+    };
 
     const customAmountNum = parseFloat(customAmount) || 0;
     const rate = getExchangeRate();
-    // Convert input amount back to base EUR then to tokens
     const amountInEur = customAmountNum / rate;
     const customTokens = Math.floor(amountInEur * TOKENS_PER_EUR);
 
     return (
-        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 w-full">
+        <section className={`grid grid-cols-1 md:grid-cols-2 ${isDashboard ? '2xl:grid-cols-4' : 'xl:grid-cols-4'} gap-6 w-full`}>
             {TOKEN_PACKAGES.map((pkg) => (
                 <div
                     key={pkg.id}
@@ -97,15 +103,28 @@ export default function PricingGrid() {
                         ))}
                     </ul>
 
-                    <Link
-                        href="/login"
-                        className={`w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 ${pkg.badge
-                            ? 'bg-primary hover:bg-white text-black'
-                            : 'bg-white/10 hover:bg-white text-white hover:text-black'
-                            }`}>
-                        <Zap className="w-4 h-4 fill-current" />
-                        Buy Now
-                    </Link>
+                    {isDashboard ? (
+                        <button
+                            onClick={() => handleBuy(pkg.name, pkg.price_eur, pkg.tokens_total)}
+                            className={`w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 ${pkg.badge
+                                ? 'bg-primary hover:bg-white text-black'
+                                : 'bg-white/10 hover:bg-white text-white hover:text-black'
+                                }`}
+                        >
+                            <Zap className="w-4 h-4 fill-current" />
+                            Buy Now
+                        </button>
+                    ) : (
+                        <Link
+                            href="/login"
+                            className={`w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 ${pkg.badge
+                                ? 'bg-primary hover:bg-white text-black'
+                                : 'bg-white/10 hover:bg-white text-white hover:text-black'
+                                }`}>
+                            <Zap className="w-4 h-4 fill-current" />
+                            Buy Now
+                        </Link>
+                    )}
                 </div>
             ))}
 
@@ -151,12 +170,22 @@ export default function PricingGrid() {
                         </p>
                     </div>
                 </div>
-                <Link
-                    href="/login"
-                    className="w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 bg-white/10 hover:bg-white text-white hover:text-black">
-                    <Zap className="w-4 h-4 fill-current" />
-                    Buy Now
-                </Link>
+
+                {isDashboard ? (
+                    <button
+                        onClick={() => handleBuy(`Custom Amount`, amountInEur, customTokens)}
+                        className="w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 bg-white/10 hover:bg-white text-white hover:text-black">
+                        <Zap className="w-4 h-4 fill-current" />
+                        Buy Now
+                    </button>
+                ) : (
+                    <Link
+                        href="/login"
+                        className="w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 bg-white/10 hover:bg-white text-white hover:text-black">
+                        <Zap className="w-4 h-4 fill-current" />
+                        Buy Now
+                    </Link>
+                )}
             </div>
         </section>
     );

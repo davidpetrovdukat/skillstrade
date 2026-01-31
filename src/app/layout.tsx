@@ -38,6 +38,8 @@ export const metadata: Metadata = {
   }
 };
 
+import { Providers } from "@/components/providers/Providers";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -48,7 +50,9 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${spaceMono.variable} ${nothingYouCouldDo.variable} antialiased font-heading`}
       >
-        {children}
+        <Providers>
+          {children}
+        </Providers>
         <CookieBanner />
       </body>
     </html>
