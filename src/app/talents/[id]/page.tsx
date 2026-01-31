@@ -22,11 +22,18 @@ interface PageProps {
 async function getProfile(id: string) {
     await connectMongo()
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return null
+    let freelancer;
+
+    // Check if it's a valid ObjectId, if so try to find by ID
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        freelancer = await Freelancer.findById(id).lean()
     }
 
-    const freelancer = await Freelancer.findById(id).lean()
+    // If not found by ID (or if id wasn't a valid ObjectId), try to find by slug
+    if (!freelancer) {
+        freelancer = await Freelancer.findOne({ slug: id }).lean()
+    }
+
     if (!freelancer) return null
 
     // Fetch active services
