@@ -1,33 +1,75 @@
+'use client';
+
 import Link from 'next/link';
-import { Hexagon, LayoutDashboard, List, Wallet, Settings, HelpCircle, LogOut } from 'lucide-react';
-import Image from 'next/image';
+import { LayoutDashboard, List, Wallet } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 export function Sidebar() {
+    const pathname = usePathname();
+
+    const isActive = (path: string) => pathname === path;
+
     return (
         <aside className="w-64 bg-[#121212] border-r border-white/10 flex flex-col justify-between shrink-0 min-h-[calc(100vh-140px)] rounded-none z-20">
             {/* Top Section */}
             <div className="flex flex-col">
-                {/* Logo Area - Optional if we strictly follow the HTML, but since we have a global header, duplicating the logo might look weird. 
-                    However, the user asked to keep the left sidebar.
-                    Let's keep the internal navigation links but maybe remove the 'Skill-Trade' header inside the sidebar if it duplicates the main header too much?
-                    Actually, let's follow the HTML structure but maybe simplify the top part since the Global Header exists.
-                    Wait, if we have a Global Header, usually the Sidebar sits BELOW it.
-                    Let's assume the Sidebar renders inside the page content area.
-                */}
-
-                {/* Dashboard Menu */}
                 <nav className="flex flex-col gap-1 p-4">
-                    <Link href="/dashboard" className="flex items-center gap-4 px-4 py-3 bg-[#1e1e1e] border-l-2 border-primary group transition-colors">
-                        <LayoutDashboard className="text-primary w-5 h-5 group-hover:text-primary transition-colors" />
-                        <p className="text-primary text-sm font-medium tracking-wide uppercase">Overview</p>
+                    <Link
+                        href="/dashboard"
+                        className={cn(
+                            "flex items-center gap-4 px-4 py-3 border-l-2 transition-colors group",
+                            isActive('/dashboard')
+                                ? "bg-[#1e1e1e] border-primary"
+                                : "border-transparent hover:bg-white/5 hover:border-white/20"
+                        )}
+                    >
+                        <LayoutDashboard className={cn(
+                            "w-5 h-5 transition-colors",
+                            isActive('/dashboard') ? "text-primary" : "text-gray-400 group-hover:text-white"
+                        )} />
+                        <p className={cn(
+                            "text-sm font-medium tracking-wide uppercase",
+                            isActive('/dashboard') ? "text-primary" : "text-gray-400 group-hover:text-white"
+                        )}>Overview</p>
                     </Link>
-                    <Link href="/dashboard/orders" className="flex items-center gap-4 px-4 py-3 text-gray-400 hover:bg-white/5 hover:text-white transition-colors group border-l-2 border-transparent hover:border-white/20">
-                        <List className="w-5 h-5 group-hover:text-white transition-colors" />
-                        <p className="text-sm font-medium tracking-wide uppercase">My Orders</p>
+
+                    <Link
+                        href="/dashboard/orders"
+                        className={cn(
+                            "flex items-center gap-4 px-4 py-3 border-l-2 transition-colors group",
+                            isActive('/dashboard/orders')
+                                ? "bg-[#1e1e1e] border-primary"
+                                : "border-transparent hover:bg-white/5 hover:border-white/20"
+                        )}
+                    >
+                        <List className={cn(
+                            "w-5 h-5 transition-colors",
+                            isActive('/dashboard/orders') ? "text-primary" : "text-gray-400 group-hover:text-white"
+                        )} />
+                        <p className={cn(
+                            "text-sm font-medium tracking-wide uppercase",
+                            isActive('/dashboard/orders') ? "text-primary" : "text-gray-400 group-hover:text-white"
+                        )}>My Orders</p>
                     </Link>
-                    <Link href="/dashboard/wallet" className="flex items-center gap-4 px-4 py-3 text-gray-400 hover:bg-white/5 hover:text-white transition-colors group border-l-2 border-transparent hover:border-white/20">
-                        <Wallet className="w-5 h-5 group-hover:text-white transition-colors" />
-                        <p className="text-sm font-medium tracking-wide uppercase">Wallet</p>
+
+                    <Link
+                        href="/dashboard/wallet"
+                        className={cn(
+                            "flex items-center gap-4 px-4 py-3 border-l-2 transition-colors group",
+                            isActive('/dashboard/wallet')
+                                ? "bg-[#1e1e1e] border-primary"
+                                : "border-transparent hover:bg-white/5 hover:border-white/20"
+                        )}
+                    >
+                        <Wallet className={cn(
+                            "w-5 h-5 transition-colors",
+                            isActive('/dashboard/wallet') ? "text-primary" : "text-gray-400 group-hover:text-white"
+                        )} />
+                        <p className={cn(
+                            "text-sm font-medium tracking-wide uppercase",
+                            isActive('/dashboard/wallet') ? "text-primary" : "text-gray-400 group-hover:text-white"
+                        )}>Wallet</p>
                     </Link>
                 </nav>
             </div>

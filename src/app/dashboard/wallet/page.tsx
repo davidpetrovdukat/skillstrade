@@ -9,6 +9,7 @@ import { connectMongo } from '@/lib/db';
 import { User } from '@/models/User';
 import { Transaction } from '@/models/Transaction';
 import { ArrowDownLeft, ArrowUpRight, History } from 'lucide-react';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,13 +56,9 @@ export default async function WalletPage() {
                             </div>
 
                             <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-                                <button className="bg-[#D3E97A] text-black px-8 py-3 font-bold uppercase tracking-wider hover:bg-white transition-colors">
+                                <Link href="/tokens" className="bg-[#D3E97A] text-black px-8 py-3 font-bold uppercase tracking-wider hover:bg-white transition-colors text-center">
                                     Top Up
-                                </button>
-                                <button className="border border-white/20 text-white px-8 py-3 font-bold uppercase tracking-wider hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2">
-                                    <History className="w-4 h-4" />
-                                    History
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </section>

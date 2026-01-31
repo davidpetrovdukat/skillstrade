@@ -16,11 +16,15 @@ interface CheckoutData {
     description: string;
 }
 
+import { topUpWallet } from "@/actions/wallet";
+
 export default function CheckoutPage() {
     const router = useRouter();
     const [checkout, setCheckout] = useState<CheckoutData | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
     const [formData, setFormData] = useState({
         cardNumber: '',
         expiry: '',
@@ -62,21 +66,35 @@ export default function CheckoutPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!checkout) return;
+
         setIsSubmitting(true);
+        setError(null);
 
-        // Mock delay
-        setTimeout(() => {
+        try {
+            // Simulate Payment Gateway delay
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Call Server Action to update DB
+            const result = await topUpWallet(checkout.tokens, checkout.description, checkout.amount);
+
+            if (result.success) {
+                setSuccess(true);
+                localStorage.removeItem("checkoutData");
+
+                // Redirect after success animation
+                setTimeout(() => {
+                    router.push("/dashboard/wallet?payment_success=true");
+                }, 3000);
+            } else {
+                setError(result.error || "Transaction failed");
+            }
+        } catch (err) {
+            console.error(err);
+            setError("Something went wrong");
+        } finally {
             setIsSubmitting(false);
-            setSuccess(true);
-
-            // Clear checkout data
-            localStorage.removeItem("checkoutData");
-
-            // Redirect after 3 seconds
-            setTimeout(() => {
-                router.push("/dashboard/wallet?payment_success=true");
-            }, 3000);
-        }, 2000);
+        }
     };
 
     if (!checkout) return null;
@@ -237,6 +255,12 @@ export default function CheckoutPage() {
                                             <MapPin className="absolute left-3 top-3.5 w-4 h-4 text-gray-500" />
                                         </div>
                                     </div>
+
+                                    {error && (
+                                        <div className="bg-red-900/20 border border-red-500/50 text-red-500 p-3 text-sm font-bold text-center">
+                                            {error}
+                                        </div>
+                                    )}
 
                                     <button
                                         type="submit"
