@@ -28,6 +28,7 @@ export async function createOrder(formData: FormData) {
         const requirements = formData.get('requirements') as string;
         const totalTokens = parseInt(formData.get('totalTokens') as string);
         const file = formData.get('file') as File | null;
+        const addonIds = formData.getAll('addons') as string[];
 
         if (!serviceId || isNaN(totalTokens)) {
             return { success: false, error: 'Invalid order data' };
@@ -36,12 +37,28 @@ export async function createOrder(formData: FormData) {
         const user = await User.findOne({ email: session.user.email });
         if (!user) return { success: false, error: 'User not found' };
 
+        const service = await Service.findById(serviceId);
+        if (!service) return { success: false, error: 'Service not found' };
+
+        // Validate Price (Service + Addons)
+        let calculatedPrice = service.priceTokens;
+        let selectedAddons: any[] = [];
+
+        if (addonIds.length > 0 && service.addons) {
+            selectedAddons = service.addons.filter((a: any) => addonIds.includes(a._id.toString()));
+            const addonsPrice = selectedAddons.reduce((sum: number, a: any) => sum + a.priceTokens, 0);
+            calculatedPrice += addonsPrice;
+        }
+
+        if (totalTokens !== calculatedPrice) {
+            console.error(`Price Mismatch: Expected ${calculatedPrice}, Got ${totalTokens}`);
+            // We can optionally block here or just warn. For now, strict check is better for security.
+            return { success: false, error: 'Price mismatch. Please try again.' };
+        }
+
         if ((user.walletBalance || 0) < totalTokens) {
             return { success: false, error: 'Insufficient balance' };
         }
-
-        const service = await Service.findById(serviceId);
-        if (!service) return { success: false, error: 'Service not found' };
 
         // Handle File Upload (MVP: Save to public/uploads)
         const attachments: string[] = [];
@@ -66,10 +83,17 @@ export async function createOrder(formData: FormData) {
         await Transaction.create({
             user: user._id,
             amount: totalTokens,
-            type: 'PAYMENT', // or 'PURCHASE'
+            type: 'SPEND', // Matches TxType.SPEND
             description: `Order: ${service.title}`,
             referenceId: `ORD-${Date.now()}`
         });
+
+        // Construct enriched brief with addons info
+        let enrichedBriefDescription = requirements;
+        if (selectedAddons.length > 0) {
+            const addonsList = selectedAddons.map((a: any) => `${a.title} (${a.priceTokens} T)`).join(', ');
+            enrichedBriefDescription += `\n\n--- Selected Upgrades ---\n${addonsList}`;
+        }
 
         // 3. Create Order
         const order = await Order.create({
@@ -80,7 +104,7 @@ export async function createOrder(formData: FormData) {
             status: OrderStatus.PENDING,
             brief: {
                 title: service.title,
-                description: requirements
+                description: enrichedBriefDescription
             },
             attachments: attachments,
             updatedAt: new Date(),
@@ -99,6 +123,7 @@ export async function createOrder(formData: FormData) {
                     <p><strong>Service:</strong> ${service.title}</p>
                     <p><strong>Tokens:</strong> ${totalTokens}</p>
                     <p><strong>Requirements:</strong> ${requirements}</p>
+                    ${selectedAddons.length > 0 ? `<p><strong>Add-ons:</strong> ${selectedAddons.map((a: any) => a.title).join(', ')}</p>` : ''}
                     <p><strong>Order ID:</strong> ${order._id}</p>
                 `
             });

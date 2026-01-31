@@ -1,10 +1,5 @@
 import { notFound } from 'next/navigation';
-import { ServiceHeader } from '@/components/service-detail/ServiceHeader';
-import { ServiceGallery } from '@/components/service-detail/ServiceGallery';
-import { ServiceTabs } from '@/components/service-detail/ServiceTabs';
-import { ServicePricingCard } from '@/components/service-detail/ServicePricingCard';
-import { ServiceReviews } from '@/components/service-detail/ServiceReviews';
-import { AddonsSection } from '@/components/service-detail/AddonsSection';
+import { ServiceDetailClient } from '@/components/service-detail/ServiceDetailClient';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from '@/components/layout/Header';
@@ -92,49 +87,12 @@ export default async function ServiceDetailPage(props: PageProps) {
                 </div>
 
                 {/* Main Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 relative">
-                    {/* LEFT COLUMN (Main Content) */}
-                    <div className="lg:col-span-8 flex flex-col gap-10">
-                        <ServiceGallery
-                            images={service.imageUrl ? [service.imageUrl] : ['/window.svg']}
-                            title={service.title}
-                        />
-
-                        <ServiceHeader
-                            title={service.title}
-                            freelancer={{
-                                name: freelancer.name,
-                                avatarUrl: freelancer.avatarUrl,
-                                role: freelancer.role,
-                                rating: freelancer.rating,
-                                reviews_count: freelancer.reviewsCount,
-                                verified: freelancer.verified,
-                                location: freelancer.location,
-                                flag: freelancer.flag,
-                            }}
-                        />
-
-                        <ServiceTabs
-                            overview={service.overview}
-                            deliverables={service.deliverables || []}
-                            faq={[]} // FAQ not yet in model
-                        />
-
-                        <AddonsSection addons={formattedAddons} />
-
-                        <ServiceReviews reviews={formattedReviews} />
-                    </div>
-
-                    {/* RIGHT COLUMN (Sticky Buy Box) */}
-                    <div className="lg:col-span-4 relative">
-                        <ServicePricingCard
-                            price_tokens={service.priceTokens}
-                            display_price_eur={service.displayPrice || `€${service.priceTokens / 100}`}
-                            delivery_days={service.deliveryDays}
-                            revisions={2} // Default revisions
-                        />
-                    </div>
-                </div>
+                <ServiceDetailClient
+                    service={JSON.parse(JSON.stringify(service))}
+                    freelancer={JSON.parse(JSON.stringify(freelancer))}
+                    formattedReviews={JSON.parse(JSON.stringify(formattedReviews))}
+                    formattedAddons={JSON.parse(JSON.stringify(formattedAddons))}
+                />
             </main>
             <Footer />
         </div>

@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react';
 import { CloudUpload, Edit3, Lock, ArrowRight, ShieldCheck, Check } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { createOrder } from '@/actions/order';
 
 interface OrderFormProps {
@@ -14,12 +14,32 @@ interface OrderFormProps {
 
 export function OrderForm({ service, user, freelancer }: OrderFormProps) {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
     const [requirements, setRequirements] = useState("");
     const [file, setFile] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const totalTokens = service.priceTokens; // Add add-on logic later if needed
+    // Initial addons from URL
+    const initialAddons = (searchParams.get('addons')?.split(',') || []).filter(Boolean);
+    const [selectedAddonIds, setSelectedAddonIds] = useState<Set<string>>(new Set(initialAddons));
+
+    const toggleAddon = (addonId: string) => {
+        const newSet = new Set(selectedAddonIds);
+        if (newSet.has(addonId)) {
+            newSet.delete(addonId);
+        } else {
+            newSet.add(addonId);
+        }
+        setSelectedAddonIds(newSet);
+    };
+
+    // Calculate totals
+    const addonsTotal = (service.addons || [])
+        .filter((addon: any) => selectedAddonIds.has(addon._id.toString()))
+        .reduce((sum: number, addon: any) => sum + addon.priceTokens, 0);
+
+    const totalTokens = service.priceTokens + addonsTotal;
 
     const handleSubmit = () => {
         if (!requirements) {
@@ -31,6 +51,12 @@ export function OrderForm({ service, user, freelancer }: OrderFormProps) {
         formData.append('serviceId', service._id);
         formData.append('requirements', requirements);
         formData.append('totalTokens', totalTokens.toString());
+
+        // Append selected addons
+        Array.from(selectedAddonIds).forEach(id => {
+            formData.append('addons', id);
+        });
+
         if (file) {
             formData.append('file', file);
         }
@@ -84,10 +110,42 @@ export function OrderForm({ service, user, freelancer }: OrderFormProps) {
                     </div>
                 </div>
 
+                {/* Section: Add-ons */}
+                {service.addons && service.addons.length > 0 && (
+                    <div>
+                        <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-2">
+                            <h2 className="text-xl font-bold uppercase tracking-tight text-white font-heading">02 / Upgrades</h2>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            {service.addons.map((addon: any) => {
+                                const isSelected = selectedAddonIds.has(addon._id.toString());
+                                return (
+                                    <div
+                                        key={addon._id}
+                                        onClick={() => toggleAddon(addon._id.toString())}
+                                        className={`border border-white/10 p-4 flex items-center justify-between cursor-pointer transition-all ${isSelected ? 'bg-primary/10 border-primary' : 'bg-white/5 hover:bg-white/10'}`}
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className={`w-5 h-5 border flex items-center justify-center transition-colors ${isSelected ? 'bg-primary border-primary text-black' : 'border-white/30 bg-transparent'}`}>
+                                                {isSelected && <Check className="w-3.5 h-3.5" />}
+                                            </div>
+                                            <div>
+                                                <h4 className="font-bold text-white text-sm">{addon.title}</h4>
+                                                <p className="text-white/50 text-xs">{addon.description}</p>
+                                            </div>
+                                        </div>
+                                        <span className="font-mono text-primary font-medium">{addon.priceTokens} T</span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+
                 {/* Section: Project Brief */}
                 <div>
                     <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-2">
-                        <h2 className="text-xl font-bold uppercase tracking-tight text-white font-heading">02 / Project Brief</h2>
+                        <h2 className="text-xl font-bold uppercase tracking-tight text-white font-heading">03 / Project Brief</h2>
                     </div>
                     <div className="relative group">
                         <textarea
@@ -105,7 +163,10 @@ export function OrderForm({ service, user, freelancer }: OrderFormProps) {
                 {/* Section: Attachments */}
                 <div>
                     <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-2">
-                        <h2 className="text-xl font-bold uppercase tracking-tight text-white font-heading">03 / Attachments</h2>
+                        <div className="flex items-baseline gap-2">
+                            <h2 className="text-xl font-bold uppercase tracking-tight text-white font-heading">04 / Attachments</h2>
+                            <span className="text-white/40 text-sm font-mono lowercase">(optional)</span>
+                        </div>
                     </div>
                     <div className="border-2 border-dashed border-white/10 hover:border-primary hover:bg-white/5 transition-all duration-300 p-12 flex flex-col items-center justify-center gap-4 group cursor-pointer rounded-none relative">
                         <input
@@ -149,6 +210,12 @@ export function OrderForm({ service, user, freelancer }: OrderFormProps) {
                                 <span>Service Subtotal</span>
                                 <span>{service.priceTokens.toLocaleString()} Tokens</span>
                             </div>
+                            {addonsTotal > 0 && (
+                                <div className="flex justify-between items-center text-white/60">
+                                    <span>Add-ons</span>
+                                    <span>+{addonsTotal.toLocaleString()} Tokens</span>
+                                </div>
+                            )}
                             <div className="flex justify-between items-center text-white/60">
                                 <span>Service Fee (0%)</span>
                                 <span>0 Tokens</span>

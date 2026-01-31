@@ -7,15 +7,22 @@ import { useCurrencyStore } from '@/store/useCurrencyStore';
 import { TOKEN_EXCHANGE_RATE } from '@/lib/constants';
 
 interface ServicePricingCardProps {
+    serviceId: string;
     price_tokens: number;
-    description?: string; // Adding optional description prop if needed later, but keeping interface clean
-    // display_price_eur removed as we calculate dynamically
+    description?: string;
     delivery_days: number;
     revisions: number;
-    display_price_eur?: string; // Keeping for interface compat but ignoring in logical render
+    display_price_eur?: string;
+    selectedAddonIds?: Set<string>;
 }
 
-export function ServicePricingCard({ price_tokens, delivery_days, revisions }: ServicePricingCardProps) {
+export function ServicePricingCard({
+    serviceId,
+    price_tokens,
+    delivery_days,
+    revisions,
+    selectedAddonIds
+}: ServicePricingCardProps) {
     const { convert } = useCurrencyStore();
 
     // Calculate EUR value based on fixed rate 0.01
@@ -24,6 +31,13 @@ export function ServicePricingCard({ price_tokens, delivery_days, revisions }: S
 
     // Format tokens with commas
     const formattedTokens = price_tokens.toLocaleString();
+
+    // Construct Order URL
+    const addonsParam = selectedAddonIds && selectedAddonIds.size > 0
+        ? `&addons=${Array.from(selectedAddonIds).join(',')}`
+        : '';
+
+    const orderUrl = `/order?serviceId=${serviceId}${addonsParam}`;
 
     return (
         <div className="sticky top-28 w-full">
@@ -59,7 +73,7 @@ export function ServicePricingCard({ price_tokens, delivery_days, revisions }: S
 
                 <div className="flex flex-col gap-3">
                     <Link
-                        href="/order"
+                        href={orderUrl}
                         className="w-full h-14 bg-primary hover:bg-white text-black font-bold text-lg uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer"
                     >
                         Order Now ({formattedTokens} T)
