@@ -95,7 +95,7 @@ export async function createOrder(formData: FormData) {
                 subject: `New Order: ${service.title} (${totalTokens} T)`,
                 html: `
                     <h1>New Order Received</h1>
-                    <p><strong>Client:</strong> ${user.name} (${user.email})</p>
+                    <p><strong>Client:</strong> ${user.firstName} ${user.lastName} (${user.email})</p>
                     <p><strong>Service:</strong> ${service.title}</p>
                     <p><strong>Tokens:</strong> ${totalTokens}</p>
                     <p><strong>Requirements:</strong> ${requirements}</p>
