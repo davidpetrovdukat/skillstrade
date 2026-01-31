@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { registerUser } from '@/actions/auth';
 
-import { ArrowRight, Lock, Verified, Phone, CalendarDays, ChevronDown } from 'lucide-react';
+import { ArrowRight, Lock, Verified, Phone, CalendarDays, ChevronDown, Loader2, AlertCircle } from 'lucide-react';
 // import { cn } from '@/lib/utils'; // Not used yet
 
 const RESTRICTED_COUNTRIES = [
@@ -60,6 +62,9 @@ export function SignUpForm() {
     });
 
     const [isFormValid, setIsFormValid] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState('');
+    const router = useRouter();
 
     useEffect(() => {
         const { email, password, confirmPassword, firstName, lastName, phone, dob, street, country, city, postcode, terms } = formData;
@@ -90,11 +95,32 @@ export function SignUpForm() {
         setFormData(prev => ({ ...prev, terms: e.target.checked }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (isFormValid) {
-            console.log('Form submitted:', formData);
-            // TODO: Implement actual registration logic
+        if (!isFormValid) return;
+
+        setIsSubmitting(true);
+        setError('');
+
+        try {
+            const formDataToSend = new FormData();
+            Object.entries(formData).forEach(([key, value]) => {
+                formDataToSend.append(key, value.toString());
+            });
+
+            // Call server action directly
+            const result = await registerUser({}, formDataToSend);
+
+            if (result.success) {
+                router.push('/login?registered=true');
+            } else {
+                setError(result.error || 'Registration failed. Please try again.');
+                setIsSubmitting(false);
+            }
+        } catch (err) {
+            console.error(err);
+            setError('An unexpected error occurred.');
+            setIsSubmitting(false);
         }
     };
 
@@ -123,6 +149,15 @@ export function SignUpForm() {
                     <span className="bg-[#121212] px-4 text-white/40 font-medium tracking-widest font-mono">Or register with email</span>
                 </div>
             </div>
+
+            {
+                error && (
+                    <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-4 rounded-none flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
+                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                        <p className="text-sm font-bold font-mono">{error}</p>
+                    </div>
+                )
+            }
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-8 w-full">
                 {/* Row 0: Email & Password */}
@@ -369,8 +404,17 @@ export function SignUpForm() {
                     `}
                         type="submit">
                         <span className="relative z-10 flex items-center gap-2">
-                            Complete Registration
-                            <ArrowRight className={`w-5 h-5 transition-transform ${isFormValid ? 'group-hover:translate-x-1' : ''}`} />
+                            {isSubmitting ? (
+                                <>
+                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                    Creating Account...
+                                </>
+                            ) : (
+                                <>
+                                    Complete Registration
+                                    <ArrowRight className={`w-5 h-5 transition-transform ${isFormValid ? 'group-hover:translate-x-1' : ''}`} />
+                                </>
+                            )}
                         </span>
                     </button>
                     <div className="text-center">
@@ -382,6 +426,6 @@ export function SignUpForm() {
                     </div>
                 </div>
             </form>
-        </div>
+        </div >
     );
 }

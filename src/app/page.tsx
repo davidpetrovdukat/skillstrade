@@ -15,13 +15,19 @@ import { Freelancer } from '@/models/Freelancer';
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  await connectMongo();
+  let topServices: any[] = [];
+  let featuredTalents: any[] = [];
 
-  // Fetch Services (Limit 6 for the grid)
-  const topServices = await Service.find({}).limit(6).lean();
-
-  // Fetch Freelancers (Limit 8 for carousel)
-  const featuredTalents = await Freelancer.find({ isAvailable: true }).limit(8).lean();
+  try {
+    await connectMongo();
+    // Fetch Services (Limit 6 for the grid)
+    topServices = await Service.find({}).limit(6).lean();
+    // Fetch Freelancers (Limit 8 for carousel)
+    featuredTalents = await Freelancer.find({ isAvailable: true }).limit(8).lean();
+  } catch (error) {
+    console.error("Home Page DB Error:", error);
+    // Silent fail: empty arrays are already set
+  }
 
   return (
     <div className="flex min-h-screen w-full flex-col border-x border-white/20 max-w-[1440px] mx-auto">
