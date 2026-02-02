@@ -84,10 +84,16 @@ export async function fixDashboardData() {
                 service: serviceCopy._id,
                 totalTokens: 8500,
                 status: 'COMPLETED',
-                requirements: 'Need copy for landing page.',
+                brief: {
+                    title: 'Conversion Copywriting',
+                    description: 'Need copy for landing page.'
+                },
                 attachments: ['/files/homepage_copy_test.pdf'], // Using the file we added
                 createdAt: new Date('2026-02-01'),
-            });
+            }) as any; // Cast as any to resolve "never" inference issue if strictly typed variables act up in this context, or let it infer if updated correctly.
+            // Actually, explicitly typing the variable or just letting it be is fine if property matches.
+            // The lint error "_id does not exist on type 'never'" suggests TS thinks create() returns never or void due to mismatch.
+            // Fixing the props should resolve the return type.
 
             await Transaction.create({
                 user: user._id,
@@ -106,10 +112,14 @@ export async function fixDashboardData() {
             freelancer: sarah?._id,
             service: serviceCopy?._id,
             totalTokens: 5000,
+            totalTokens: 5000,
             status: 'CANCELLED',
-            requirements: 'Blog post (Cancelled)',
+            brief: {
+                title: 'Blog Post',
+                description: 'Blog post (Cancelled)'
+            },
             createdAt: new Date('2026-02-02'),
-        });
+        }) as any;
 
         await Transaction.create({
             user: user._id,
