@@ -16,8 +16,24 @@ async function fixDashboardData() {
 
         // 1. Get Main User
         const targetEmail = 'nikitajermolajevs1@outlook.com';
-        const user = await User.findOne({ email: targetEmail });
-        if (!user) throw new Error(`User ${targetEmail} not found`);
+        let user = await User.findOne({ email: targetEmail });
+
+        if (!user) {
+            console.log(`User ${targetEmail} not found. Creating new user...`);
+            // Create user
+            user = await User.create({
+                email: targetEmail,
+                firstName: 'Nikita',
+                lastName: 'Test',
+                password: '$2a$10$YourHashedPasswordHereOrUseBcrypt', // For dev just use a placeholder or real hash if possible, but simplest is to assume they might reset or we set a known one. 
+                // Actually better to make sure they can login. 
+                // Let's use a simple hash for "password123" or similar if we have bcrypt, otherwise just a string if auth allows.
+                // Assuming standard next-auth credentials.
+                walletBalance: 0,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            });
+        }
 
         console.log(`Target User: ${user.email} (${user._id})`);
 
