@@ -39,7 +39,7 @@ export function LoginForm() {
             {/* Branding */}
             <div className="flex flex-col items-center gap-2 mb-4">
                 <span className="text-white/60 text-xs tracking-[0.2em] font-medium uppercase border border-white/20 px-2 py-1 font-mono">
-                    Skill-Trade
+                    Skills-Trade
                 </span>
             </div>
 

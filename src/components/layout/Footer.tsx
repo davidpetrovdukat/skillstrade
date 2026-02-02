@@ -8,7 +8,7 @@ export function Footer() {
                 <div className="lg:col-span-1">
                     <div className="flex items-center gap-2 mb-6">
                         <Zap className="text-primary w-8 h-8 fill-current" />
-                        <span className="text-2xl font-bold tracking-tighter uppercase font-heading">SKILL-TRADE</span>
+                        <span className="text-2xl font-bold tracking-tighter uppercase font-heading">Skills-Trade</span>
                     </div>
                     <p className="text-white/40 text-xs font-mono leading-relaxed max-w-[200px] mb-6">
                         The premier decentralized platform for top-tier creative talent.

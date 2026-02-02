@@ -38,7 +38,7 @@ export function LegalSidebar() {
             <div className="flex flex-col gap-2 opacity-50">
                 <div className="h-px w-12 bg-white/30"></div>
                 <div className="text-[10px] text-gray-400 font-mono uppercase tracking-widest">
-                    © 2026 Skill-Trade
+                    © 2026 Skills-Trade
                 </div>
             </div>
         </aside>

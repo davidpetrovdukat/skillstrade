@@ -97,7 +97,7 @@ export default function JoinPage() {
                         <div className="max-w-[900px] mx-auto text-center flex flex-col gap-6 items-center">
                             <Quote className="text-primary w-12 h-12 opacity-50 fill-current" />
                             <blockquote className="text-3xl md:text-5xl font-light italic leading-tight text-white/90 font-display">
-                                "Skill-Trade doubled my income in 3 months. The quality of
+                                "Skills-Trade doubled my income in 3 months. The quality of
                                 briefs here is unlike anything on other platforms."
                             </blockquote>
                             <div className="flex items-center justify-center gap-3 mt-4">

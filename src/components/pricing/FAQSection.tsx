@@ -18,7 +18,7 @@ const FAQS: FAQItem[] = [
     {
         question: "Token Expiry Dates",
         answer:
-            "Tokens purchased on Skill-Trade do not expire as long as your account remains active. If an account is dormant for more than 12 months, we will notify you before any administrative fees are applied to the balance.",
+            "Tokens purchased on Skills-Trade do not expire as long as your account remains active. If an account is dormant for more than 12 months, we will notify you before any administrative fees are applied to the balance.",
     },
     {
         question: "Escrow Security Measures",

@@ -63,6 +63,8 @@ export function Hero() {
                                 alt={currentTalent.meta.name}
                                 src={currentTalent.meta.avatar_url}
                                 fill
+                                priority
+                                sizes="(max-width: 768px) 100vw, 50vw"
                                 className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                             />
                         </motion.div>

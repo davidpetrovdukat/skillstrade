@@ -162,7 +162,7 @@ export default async function ServicesPage(props: PageProps) {
                                 <Verified className="text-primary w-10 h-10 mb-2" />
                                 <h4 className="text-xl font-bold uppercase text-white font-heading">Vetted Scope</h4>
                                 <p className="text-white/40 text-sm leading-relaxed font-mono">
-                                    Every service package is pre-vetted by Skill-Trade moderators to ensure deliverable clarity and fair pricing before it goes live.
+                                    Every service package is pre-vetted by Skills-Trade moderators to ensure deliverable clarity and fair pricing before it goes live.
                                 </p>
                             </div>
                             <div className="md:px-8 md:border-r border-white/10 flex flex-col gap-3">

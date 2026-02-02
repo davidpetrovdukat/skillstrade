@@ -11,7 +11,7 @@ export function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-white tracking-tighter text-5xl md:text-7xl lg:text-8xl font-bold leading-none mb-6 uppercase font-heading"
             >
-                The Skill-Trade <span className="text-primary italic">Standard.</span>
+                The Skills-Trade <span className="text-primary italic">Standard.</span>
             </motion.h1>
 
             <motion.p

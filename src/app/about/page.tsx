@@ -32,7 +32,7 @@ export default function AboutPage() {
                             </span>
                         </h1>
                         <p className="mt-8 max-w-2xl text-lg md:text-xl text-white/60 font-normal leading-relaxed font-mono">
-                            Agencies are slow. Marketplaces are chaotic. Skill-Trade is the new
+                            Agencies are slow. Marketplaces are chaotic. Skills-Trade is the new
                             standard of collaboration defined by speed, skill, and zero
                             friction.
                         </p>
@@ -102,7 +102,7 @@ export default function AboutPage() {
                                         </th>
                                         <th className="py-6 px-4 text-xl font-bold text-white bg-[#1f230f] border-t-4 border-primary w-1/4 relative font-heading">
                                             <div className="absolute -top-[2px] left-0 w-full h-[2px] bg-primary shadow-[0_0_20px_rgba(208,249,6,0.6)]"></div>
-                                            Skill-Trade
+                                            Skills-Trade
                                         </th>
                                     </tr>
                                 </thead>

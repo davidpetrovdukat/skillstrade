@@ -22,7 +22,7 @@ export function MoneyBack() {
                     </Link>
                 </div>
                 <p className="text-white/30 text-[10px] uppercase tracking-widest font-mono">
-                    Subject to Skill-Trade Terms of Service | v4.2.0 Protocol
+                    Subject to Skills-Trade Terms of Service | v4.2.0 Protocol
                 </p>
             </div>
         </section>

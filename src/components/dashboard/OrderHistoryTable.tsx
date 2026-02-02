@@ -139,18 +139,22 @@ export function OrderHistoryTable({ orders }: OrderHistoryTableProps) {
                                     </td>
                                     <td className="p-4 align-top text-right">
                                         <div className="flex justify-end">
-                                            <button className="text-xs font-bold uppercase tracking-wider border border-white/20 hover:border-[#D3E97A] hover:text-[#D3E97A] text-white px-3 py-2 transition-all flex items-center gap-2">
-                                                Details <ExternalLink className="w-3 h-3" />
-                                            </button>
-                                            {order.status === 'COMPLETED' && order.attachments && order.attachments.length > 0 && (
+                                            {order.status === 'COMPLETED' ? (
                                                 <a
-                                                    href={order.attachments[0]}
+                                                    href={order.attachments?.[0] || '#'}
                                                     download
                                                     target="_blank"
-                                                    className="ml-2 text-xs font-bold uppercase tracking-wider bg-[#D3E97A] text-black px-3 py-2 hover:bg-white transition-colors flex items-center gap-2"
+                                                    className="text-xs font-bold uppercase tracking-wider bg-[#D3E97A] text-black px-4 py-2 hover:bg-white transition-colors flex items-center gap-2"
                                                 >
                                                     Download <Box className="w-3 h-3" />
                                                 </a>
+                                            ) : (
+                                                <button
+                                                    disabled
+                                                    className="text-xs font-bold uppercase tracking-wider border border-white/10 text-white/20 px-4 py-2 flex items-center gap-2 cursor-not-allowed"
+                                                >
+                                                    Download <Box className="w-3 h-3" />
+                                                </button>
                                             )}
                                         </div>
                                     </td>

@@ -23,7 +23,7 @@ export function Header() {
         <header className="sticky top-0 z-50 flex items-center justify-between border-b border-white/20 bg-background/95 backdrop-blur-sm px-6 py-4">
             <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                 {/* <Zap className="text-primary w-6 h-6 fill-current" /> */}
-                {/* <span className="text-xl font-bold tracking-tighter uppercase font-heading">SKILL-TRADE</span> */}
+                {/* <span className="text-xl font-bold tracking-tighter uppercase font-heading">Skills-Trade</span> */}
                 <img src="/logo.png" alt="Skill Trade Logo" className="h-8 w-auto object-contain" />
             </Link>
 
