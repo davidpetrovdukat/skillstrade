@@ -112,7 +112,6 @@ export async function fixDashboardData() {
             freelancer: sarah?._id,
             service: serviceCopy?._id,
             totalTokens: 5000,
-            totalTokens: 5000,
             status: 'CANCELLED',
             brief: {
                 title: 'Blog Post',
