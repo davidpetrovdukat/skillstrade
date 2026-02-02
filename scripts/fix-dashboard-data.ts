@@ -15,8 +15,9 @@ async function fixDashboardData() {
         console.log('--- DATA FIX START ---');
 
         // 1. Get Main User
-        const user = await User.findOne({ email: 'client@SKILLS-TRADE.com' }); // Adjust if different
-        if (!user) throw new Error('User client@SKILLS-TRADE.com not found');
+        const targetEmail = 'nikitajermolajevs1@outlook.com';
+        const user = await User.findOne({ email: targetEmail });
+        if (!user) throw new Error(`User ${targetEmail} not found`);
 
         console.log(`Target User: ${user.email} (${user._id})`);
 
