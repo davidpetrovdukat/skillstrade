@@ -44,12 +44,25 @@ export async function fixDashboardData() {
             createdAt: new Date('2026-01-15'),
         });
 
-        // B. Spend 13,000
+        // B. Spend 13,000 - Create Order first
+        const progressOrder = await Order.create({
+            client: user._id,
+            freelancer: sarah?._id || user._id, // Fallback
+            service: serviceCopy?._id || user._id, // Fallback
+            totalTokens: 13000,
+            status: 'IN_PROGRESS',
+            brief: {
+                title: 'Web Development Project',
+                description: 'Initial phase payment.'
+            },
+            createdAt: new Date('2026-01-20'),
+        }) as any;
+
         await Transaction.create({
             user: user._id,
             amount: 13000,
             type: 'SPEND',
-            description: 'Service Payment',
+            description: `Order #${progressOrder._id.toString().slice(-6)}`,
             createdAt: new Date('2026-01-20'),
         });
 
