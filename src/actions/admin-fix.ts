@@ -40,8 +40,7 @@ export async function fixDashboardData() {
             user: user._id,
             amount: 105000,
             type: 'DEPOSIT',
-            description: 'Top-up (PayPal)',
-            status: 'COMPLETED',
+            description: 'Top-up',
             createdAt: new Date('2026-01-15'),
         });
 
@@ -51,7 +50,6 @@ export async function fixDashboardData() {
             amount: 13000,
             type: 'SPEND',
             description: 'Service Payment',
-            status: 'COMPLETED',
             createdAt: new Date('2026-01-20'),
         });
 
@@ -96,7 +94,6 @@ export async function fixDashboardData() {
                 amount: 8500,
                 type: 'SPEND',
                 description: `Order #${completedOrder._id.toString().slice(-6)}`,
-                status: 'COMPLETED',
                 createdAt: new Date('2026-02-01'),
             });
         }
@@ -119,7 +116,6 @@ export async function fixDashboardData() {
             amount: 5000,
             type: 'SPEND',
             description: `Order #${cancelledOrder._id.toString().slice(-6)}`,
-            status: 'COMPLETED', // The spend happened
             createdAt: new Date('2026-02-02T10:00:00'),
         });
 
@@ -128,7 +124,6 @@ export async function fixDashboardData() {
             amount: 5000,
             type: 'DEPOSIT', // Refund
             description: `Refund: Order #${cancelledOrder._id.toString().slice(-6)}`,
-            status: 'COMPLETED',
             createdAt: new Date('2026-02-02T10:05:00'),
         });
 
