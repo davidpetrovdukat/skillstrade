@@ -59,10 +59,14 @@ async function fixDashboardData() {
             serviceCopy = await Service.create({
                 freelancer: sarah._id,
                 title: 'Conversion Copywriting',
-                description: 'High converting copy for your landing page.',
+                overview: 'High converting copy for your landing page.',
                 category: 'Writing',
                 priceTokens: 8500,
                 deliveryDays: 3,
+                tags: ['copywriting', 'conversion', 'landing page'],
+                deliverables: ['Home page copy', 'Headline options'],
+                addons: [],
+                reviews: []
 
             });
             console.log('Created missing service: Conversion Copywriting');
