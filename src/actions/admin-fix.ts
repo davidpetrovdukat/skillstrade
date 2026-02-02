@@ -31,8 +31,32 @@ export async function fixDashboardData() {
         }
 
         // 2. Clear existing data to avoid duplicates (Fresh Start Logic)
+        // 2. Clear existing data
         await Transaction.deleteMany({ user: user._id });
         await Order.deleteMany({ client: user._id });
+
+        // -- PREPARE ENTITIES (Sarah & Service) --
+        let sarah = await Freelancer.findOne({ 'name.last': 'Jenkins' });
+        if (!sarah) {
+            sarah = await Freelancer.findOne({});
+        }
+
+        let serviceCopy = await Service.findOne({ title: 'Conversion Copywriting' });
+        if (!serviceCopy && sarah) {
+            serviceCopy = await Service.create({
+                freelancer: sarah._id,
+                title: 'Conversion Copywriting',
+                overview: 'High converting copy',
+                category: 'Writing',
+                priceTokens: 8500,
+                deliveryDays: 3,
+                tags: ['copywriting'],
+                deliverables: ['Copy'],
+                addons: [],
+                reviews: []
+            });
+        }
+        // ----------------------------------------
 
         // 3. Re-create History
         // A. Deposit 105,000
@@ -47,8 +71,8 @@ export async function fixDashboardData() {
         // B. Spend 13,000 - Create Order first
         const progressOrder = await Order.create({
             client: user._id,
-            freelancer: sarah?._id || user._id, // Fallback
-            service: serviceCopy?._id || user._id, // Fallback
+            freelancer: sarah?._id || user._id, // Safer fallback
+            service: serviceCopy?._id || user._id,
             totalTokens: 13000,
             status: 'IN_PROGRESS',
             brief: {
@@ -67,30 +91,9 @@ export async function fixDashboardData() {
         });
 
         // 4. Create "Completed" Order (Sarah Jenkins)
-        let sarah = await Freelancer.findOne({ 'name.last': 'Jenkins' });
-        if (!sarah) {
-            // Fallback if Sarah not found (should exist, but safety first)
-            sarah = await Freelancer.findOne({});
-        }
-
-        // Ensure Service Exists
-        let serviceCopy = await Service.findOne({ title: 'Conversion Copywriting' });
-        if (!serviceCopy && sarah) {
-            serviceCopy = await Service.create({
-                freelancer: sarah._id,
-                title: 'Conversion Copywriting',
-                overview: 'High converting copy',
-                category: 'Writing',
-                priceTokens: 8500,
-                deliveryDays: 3,
-                tags: ['copywriting'],
-                deliverables: ['Copy'],
-                addons: [],
-                reviews: []
-            });
-        }
-
         if (sarah && serviceCopy) {
+            // ... Logic continues below ...
+
             const completedOrder = await Order.create({
                 client: user._id,
                 freelancer: sarah._id,
