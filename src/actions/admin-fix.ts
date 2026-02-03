@@ -6,6 +6,7 @@ import { Transaction } from '@/models/Transaction';
 import { Order } from '@/models/Order';
 import { Service } from '@/models/Service';
 import { Freelancer } from '@/models/Freelancer';
+import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 export async function fixDashboardData() {
@@ -43,7 +44,7 @@ export async function fixDashboardData() {
         if (!arthur) console.log('Warning: Arthur Sterling not found');
 
         // -- CLEAR OLD REVIEWS (Prevent Repetition) --
-        const freelancerIds = [sarah?._id, nigel?._id, arthur?._id].filter(Boolean);
+        const freelancerIds = [sarah?._id, nigel?._id, arthur?._id].filter(Boolean) as mongoose.Types.ObjectId[];
         if (freelancerIds.length > 0) {
             await Service.updateMany(
                 { freelancer: { $in: freelancerIds } },
