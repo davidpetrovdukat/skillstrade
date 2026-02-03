@@ -30,25 +30,20 @@ export async function fixDashboardData() {
             });
         }
 
-        // 2. Clear existing data to avoid duplicates (Fresh Start Logic)
         // 2. Clear existing data
         await Transaction.deleteMany({ user: user._id });
         await Order.deleteMany({ client: user._id });
 
-        // -- PREPARE ENTITIES --
-        // 1. Sarah Jenkins (Copywriting)
-        let sarah = await Freelancer.findOne({ 'name.last': 'Jenkins' });
-        if (!sarah) sarah = await Freelancer.findOne({});
+        // -- FIND FREELANCERS (Simple Lookup) --
+        const sarah = await Freelancer.findOne({ name: 'Sarah Jenkins' });
+        const nigel = await Freelancer.findOne({ name: 'Nigel Rivers' });
+        const arthur = await Freelancer.findOne({ name: 'Arthur Sterling' });
 
-        // 2. Nigel Rivers (Marketing)
-        let nigel = await Freelancer.findOne({ 'name.last': 'Rivers' });
-        if (!nigel) nigel = await Freelancer.findOne({}); // Fallback
+        if (!sarah) console.log('Warning: Sarah Jenkins not found');
+        if (!nigel) console.log('Warning: Nigel Rivers not found');
+        if (!arthur) console.log('Warning: Arthur Sterling not found');
 
-        // 3. Arthur Sterling (Brand)
-        let arthur = await Freelancer.findOne({ 'name.last': 'Sterling' });
-        if (!arthur) arthur = await Freelancer.findOne({}); // Fallback
-
-        // Services
+        // -- SERVICES --
         // A. Conversion Copywriting (Sarah)
         let serviceCopy = await Service.findOne({ title: 'Conversion Copywriting' });
         if (!serviceCopy && sarah) {
@@ -66,7 +61,7 @@ export async function fixDashboardData() {
             });
         }
 
-        // B. Strategic Brand Identity (Arthur) -> For "Web Development Project" update
+        // B. Strategic Brand Identity (Arthur)
         let serviceBrand = await Service.findOne({ title: 'Strategic Brand Identity' });
         if (!serviceBrand && arthur) {
             serviceBrand = await Service.create({
@@ -82,7 +77,7 @@ export async function fixDashboardData() {
             });
         }
 
-        // C. Email Marketing & CRM (Nigel) -> For "Blog Post" update
+        // C. Email Marketing & CRM (Nigel)
         let serviceEmail = await Service.findOne({ title: 'Email Marketing & CRM' });
         if (!serviceEmail && nigel) {
             serviceEmail = await Service.create({
@@ -97,7 +92,6 @@ export async function fixDashboardData() {
                 reviews: []
             });
         }
-        // ----------------------------------------
 
         // 3. Re-create History
         // A. Deposit 105,000
@@ -110,11 +104,13 @@ export async function fixDashboardData() {
         });
 
         // B. Spend 13,000 - "Strategic Brand Identity" (In Progress)
-        // Formerly "Web Development Project"
+        // Freelancer: Arthur Sterling
+        // Use user._id as fallback ONLY if freelancer is absolutely missing to prevent crash, 
+        // but assuming they exist as per user.
         const progressOrder = await Order.create({
             client: user._id,
-            freelancer: sarah?._id || user._id,
-            service: serviceBrand?._id || user._id,
+            freelancer: arthur ? arthur._id : user._id,
+            service: serviceBrand ? serviceBrand._id : user._id,
             totalTokens: 13000,
             status: 'IN_PROGRESS',
             brief: {
@@ -158,11 +154,10 @@ export async function fixDashboardData() {
         }
 
         // 5. Create "Cancelled" Order - "Email Marketing & CRM" (Nigel Rivers)
-        // Formerly "Blog Post"
         const cancelledOrder = await Order.create({
             client: user._id,
-            freelancer: nigel?._id || user._id,
-            service: serviceEmail?._id || user._id,
+            freelancer: nigel ? nigel._id : user._id,
+            service: serviceEmail ? serviceEmail._id : user._id,
             totalTokens: 5000,
             status: 'CANCELLED',
             brief: {
@@ -187,7 +182,6 @@ export async function fixDashboardData() {
             description: `Refund: Order #${cancelledOrder._id.toString().slice(-6)}`,
             createdAt: new Date('2026-02-02T10:05:00'),
         });
-
 
         // 6. Update Final Balance
         // 105000 - 13000 - 8500 - 5000 + 5000 = 83500
