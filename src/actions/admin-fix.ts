@@ -35,12 +35,21 @@ export async function fixDashboardData() {
         await Transaction.deleteMany({ user: user._id });
         await Order.deleteMany({ client: user._id });
 
-        // -- PREPARE ENTITIES (Sarah & Service) --
+        // -- PREPARE ENTITIES --
+        // 1. Sarah Jenkins (Copywriting)
         let sarah = await Freelancer.findOne({ 'name.last': 'Jenkins' });
-        if (!sarah) {
-            sarah = await Freelancer.findOne({});
-        }
+        if (!sarah) sarah = await Freelancer.findOne({});
 
+        // 2. Nigel Rivers (Marketing)
+        let nigel = await Freelancer.findOne({ 'name.last': 'Rivers' });
+        if (!nigel) nigel = await Freelancer.findOne({}); // Fallback
+
+        // 3. Arthur Sterling (Brand)
+        let arthur = await Freelancer.findOne({ 'name.last': 'Sterling' });
+        if (!arthur) arthur = await Freelancer.findOne({}); // Fallback
+
+        // Services
+        // A. Conversion Copywriting (Sarah)
         let serviceCopy = await Service.findOne({ title: 'Conversion Copywriting' });
         if (!serviceCopy && sarah) {
             serviceCopy = await Service.create({
@@ -56,6 +65,38 @@ export async function fixDashboardData() {
                 reviews: []
             });
         }
+
+        // B. Strategic Brand Identity (Arthur) -> For "Web Development Project" update
+        let serviceBrand = await Service.findOne({ title: 'Strategic Brand Identity' });
+        if (!serviceBrand && arthur) {
+            serviceBrand = await Service.create({
+                freelancer: arthur._id,
+                title: 'Strategic Brand Identity',
+                overview: 'Complete brand overhaul.',
+                category: 'Design',
+                priceTokens: 13000,
+                deliveryDays: 14,
+                tags: ['branding'],
+                deliverables: ['Brand Guidelines'],
+                reviews: []
+            });
+        }
+
+        // C. Email Marketing & CRM (Nigel) -> For "Blog Post" update
+        let serviceEmail = await Service.findOne({ title: 'Email Marketing & CRM' });
+        if (!serviceEmail && nigel) {
+            serviceEmail = await Service.create({
+                freelancer: nigel._id,
+                title: 'Email Marketing & CRM',
+                overview: 'Automated email flows.',
+                category: 'Marketing',
+                priceTokens: 5000,
+                deliveryDays: 5,
+                tags: ['email', 'crm'],
+                deliverables: ['3 Email Flows'],
+                reviews: []
+            });
+        }
         // ----------------------------------------
 
         // 3. Re-create History
@@ -68,15 +109,16 @@ export async function fixDashboardData() {
             createdAt: new Date('2026-01-15'),
         });
 
-        // B. Spend 13,000 - Create Order first
+        // B. Spend 13,000 - "Strategic Brand Identity" (In Progress)
+        // Formerly "Web Development Project"
         const progressOrder = await Order.create({
             client: user._id,
-            freelancer: sarah?._id || user._id, // Safer fallback
-            service: serviceCopy?._id || user._id,
+            freelancer: sarah?._id || user._id,
+            service: serviceBrand?._id || user._id,
             totalTokens: 13000,
             status: 'IN_PROGRESS',
             brief: {
-                title: 'Web Development Project',
+                title: 'Strategic Brand Identity',
                 description: 'Initial phase payment.'
             },
             createdAt: new Date('2026-01-20'),
@@ -90,10 +132,8 @@ export async function fixDashboardData() {
             createdAt: new Date('2026-01-20'),
         });
 
-        // 4. Create "Completed" Order (Sarah Jenkins)
+        // 4. Create "Completed" Order (Sarah Jenkins - Conversion Copywriting)
         if (sarah && serviceCopy) {
-            // ... Logic continues below ...
-
             const completedOrder = await Order.create({
                 client: user._id,
                 freelancer: sarah._id,
@@ -104,12 +144,9 @@ export async function fixDashboardData() {
                     title: 'Conversion Copywriting',
                     description: 'Need copy for landing page.'
                 },
-                attachments: ['/files/homepage_copy_test.pdf'], // Using the file we added
+                attachments: ['/files/homepage_copy_test.pdf'],
                 createdAt: new Date('2026-02-01'),
-            }) as any; // Cast as any to resolve "never" inference issue if strictly typed variables act up in this context, or let it infer if updated correctly.
-            // Actually, explicitly typing the variable or just letting it be is fine if property matches.
-            // The lint error "_id does not exist on type 'never'" suggests TS thinks create() returns never or void due to mismatch.
-            // Fixing the props should resolve the return type.
+            }) as any;
 
             await Transaction.create({
                 user: user._id,
@@ -120,18 +157,17 @@ export async function fixDashboardData() {
             });
         }
 
-        // 5. Create "Cancelled" Order
-        // Just dummy data for the cancelled one
+        // 5. Create "Cancelled" Order - "Email Marketing & CRM" (Nigel Rivers)
+        // Formerly "Blog Post"
         const cancelledOrder = await Order.create({
             client: user._id,
-            // Reuse sarah/service or whatever, doesn't matter much for cancelled
-            freelancer: sarah?._id,
-            service: serviceCopy?._id,
+            freelancer: nigel?._id || user._id,
+            service: serviceEmail?._id || user._id,
             totalTokens: 5000,
             status: 'CANCELLED',
             brief: {
-                title: 'Blog Post',
-                description: 'Blog post (Cancelled)'
+                title: 'Email Marketing & CRM',
+                description: 'Order cancelled by client.'
             },
             createdAt: new Date('2026-02-02'),
         }) as any;
