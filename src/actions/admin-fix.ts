@@ -17,7 +17,6 @@ export async function fixDashboardData() {
 
         let user = await User.findOne({ email: targetEmail });
 
-        // 1. Create User if missing
         if (!user) {
             console.log('User not found. Creating...');
             const hashedPassword = await bcrypt.hash('password123', 10);
@@ -34,7 +33,7 @@ export async function fixDashboardData() {
         await Transaction.deleteMany({ user: user._id });
         await Order.deleteMany({ client: user._id });
 
-        // -- FIND FREELANCERS (Simple Lookup) --
+        // -- FIND FREELANCERS --
         const sarah = await Freelancer.findOne({ name: 'Sarah Jenkins' });
         const nigel = await Freelancer.findOne({ name: 'Nigel Rivers' });
         const arthur = await Freelancer.findOne({ name: 'Arthur Sterling' });
@@ -43,55 +42,71 @@ export async function fixDashboardData() {
         if (!nigel) console.log('Warning: Nigel Rivers not found');
         if (!arthur) console.log('Warning: Arthur Sterling not found');
 
-        // -- SERVICES --
+        // -- REPAIR/CREATE SERVICES --
         // A. Conversion Copywriting (Sarah)
-        let serviceCopy = await Service.findOne({ title: 'Conversion Copywriting' });
-        if (!serviceCopy && sarah) {
-            serviceCopy = await Service.create({
-                freelancer: sarah._id,
-                title: 'Conversion Copywriting',
-                overview: 'High converting copy',
-                category: 'Writing',
-                priceTokens: 8500,
-                deliveryDays: 3,
-                tags: ['copywriting'],
-                deliverables: ['Copy'],
-                addons: [],
-                reviews: []
-            });
+        let serviceCopy = null;
+        if (sarah) {
+            serviceCopy = await Service.findOneAndUpdate(
+                { title: 'Conversion Copywriting' },
+                {
+                    freelancer: sarah._id,
+                    title: 'Conversion Copywriting',
+                    imageUrl: '/copywriting.webp',
+                    overview: 'High converting copy for your landing page and emails.',
+                    category: 'Writing',
+                    priceTokens: 8500,
+                    deliveryDays: 3,
+                    tags: ['copywriting', 'sales'],
+                    deliverables: ['Landing Page Copy', 'Email Sequence'],
+                    addons: [],
+                    reviews: []
+                },
+                { upsert: true, new: true }
+            );
         }
 
         // B. Strategic Brand Identity (Arthur)
-        let serviceBrand = await Service.findOne({ title: 'Strategic Brand Identity' });
-        if (!serviceBrand && arthur) {
-            serviceBrand = await Service.create({
-                freelancer: arthur._id,
-                title: 'Strategic Brand Identity',
-                overview: 'Complete brand overhaul.',
-                category: 'Design',
-                priceTokens: 13000,
-                deliveryDays: 14,
-                tags: ['branding'],
-                deliverables: ['Brand Guidelines'],
-                reviews: []
-            });
+        let serviceBrand = null;
+        if (arthur) {
+            serviceBrand = await Service.findOneAndUpdate(
+                { title: 'Strategic Brand Identity' },
+                {
+                    freelancer: arthur._id,
+                    title: 'Strategic Brand Identity',
+                    imageUrl: '/brand_identity.webp',
+                    overview: 'Complete brand overhaul including logo, typography, and guidelines.',
+                    category: 'Design',
+                    priceTokens: 13000,
+                    deliveryDays: 14,
+                    tags: ['branding', 'design'],
+                    deliverables: ['Logo', 'Brand Guidelines', 'Social Assets'],
+                    reviews: []
+                },
+                { upsert: true, new: true }
+            );
         }
 
         // C. Email Marketing & CRM (Nigel)
-        let serviceEmail = await Service.findOne({ title: 'Email Marketing & CRM' });
-        if (!serviceEmail && nigel) {
-            serviceEmail = await Service.create({
-                freelancer: nigel._id,
-                title: 'Email Marketing & CRM',
-                overview: 'Automated email flows.',
-                category: 'Marketing',
-                priceTokens: 5000,
-                deliveryDays: 5,
-                tags: ['email', 'crm'],
-                deliverables: ['3 Email Flows'],
-                reviews: []
-            });
+        let serviceEmail = null;
+        if (nigel) {
+            serviceEmail = await Service.findOneAndUpdate(
+                { title: 'Email Marketing & CRM' },
+                {
+                    freelancer: nigel._id,
+                    title: 'Email Marketing & CRM',
+                    imageUrl: '/email_crm.webp',
+                    overview: 'Automated email flows and CRM setup to boost retention.',
+                    category: 'Marketing',
+                    priceTokens: 5000,
+                    deliveryDays: 5,
+                    tags: ['email', 'crm', 'automation'],
+                    deliverables: ['3 Email Flows', 'CRM Setup'],
+                    reviews: []
+                },
+                { upsert: true, new: true }
+            );
         }
+
 
         // 3. Re-create History
         // A. Deposit 105,000
@@ -105,28 +120,28 @@ export async function fixDashboardData() {
 
         // B. Spend 13,000 - "Strategic Brand Identity" (In Progress)
         // Freelancer: Arthur Sterling
-        // Use user._id as fallback ONLY if freelancer is absolutely missing to prevent crash, 
-        // but assuming they exist as per user.
-        const progressOrder = await Order.create({
-            client: user._id,
-            freelancer: arthur ? arthur._id : user._id,
-            service: serviceBrand ? serviceBrand._id : user._id,
-            totalTokens: 13000,
-            status: 'IN_PROGRESS',
-            brief: {
-                title: 'Strategic Brand Identity',
-                description: 'Initial phase payment.'
-            },
-            createdAt: new Date('2026-01-20'),
-        }) as any;
+        if (arthur && serviceBrand) {
+            const progressOrder = await Order.create({
+                client: user._id,
+                freelancer: arthur._id,
+                service: serviceBrand._id,
+                totalTokens: 13000,
+                status: 'IN_PROGRESS',
+                brief: {
+                    title: 'Strategic Brand Identity',
+                    description: 'Initial phase payment.'
+                },
+                createdAt: new Date('2026-01-20'),
+            }) as any;
 
-        await Transaction.create({
-            user: user._id,
-            amount: 13000,
-            type: 'SPEND',
-            description: `Order #${progressOrder._id.toString().slice(-6)}`,
-            createdAt: new Date('2026-01-20'),
-        });
+            await Transaction.create({
+                user: user._id,
+                amount: 13000,
+                type: 'SPEND',
+                description: `Order #${progressOrder._id.toString().slice(-6)}`,
+                createdAt: new Date('2026-01-20'),
+            });
+        }
 
         // 4. Create "Completed" Order (Sarah Jenkins - Conversion Copywriting)
         if (sarah && serviceCopy) {
@@ -154,41 +169,43 @@ export async function fixDashboardData() {
         }
 
         // 5. Create "Cancelled" Order - "Email Marketing & CRM" (Nigel Rivers)
-        const cancelledOrder = await Order.create({
-            client: user._id,
-            freelancer: nigel ? nigel._id : user._id,
-            service: serviceEmail ? serviceEmail._id : user._id,
-            totalTokens: 5000,
-            status: 'CANCELLED',
-            brief: {
-                title: 'Email Marketing & CRM',
-                description: 'Order cancelled by client.'
-            },
-            createdAt: new Date('2026-02-02'),
-        }) as any;
+        if (nigel && serviceEmail) {
+            const cancelledOrder = await Order.create({
+                client: user._id,
+                freelancer: nigel._id,
+                service: serviceEmail._id,
+                totalTokens: 5000,
+                status: 'CANCELLED',
+                brief: {
+                    title: 'Email Marketing & CRM',
+                    description: 'Order cancelled by client.'
+                },
+                createdAt: new Date('2026-02-02'),
+            }) as any;
 
-        await Transaction.create({
-            user: user._id,
-            amount: 5000,
-            type: 'SPEND',
-            description: `Order #${cancelledOrder._id.toString().slice(-6)}`,
-            createdAt: new Date('2026-02-02T10:00:00'),
-        });
+            await Transaction.create({
+                user: user._id,
+                amount: 5000,
+                type: 'SPEND',
+                description: `Order #${cancelledOrder._id.toString().slice(-6)}`,
+                createdAt: new Date('2026-02-02T10:00:00'),
+            });
 
-        await Transaction.create({
-            user: user._id,
-            amount: 5000,
-            type: 'DEPOSIT', // Refund
-            description: `Refund: Order #${cancelledOrder._id.toString().slice(-6)}`,
-            createdAt: new Date('2026-02-02T10:05:00'),
-        });
+            await Transaction.create({
+                user: user._id,
+                amount: 5000,
+                type: 'DEPOSIT', // Refund
+                description: `Refund: Order #${cancelledOrder._id.toString().slice(-6)}`,
+                createdAt: new Date('2026-02-02T10:05:00'),
+            });
+        }
 
         // 6. Update Final Balance
         // 105000 - 13000 - 8500 - 5000 + 5000 = 83500
         user.walletBalance = 83500;
         await user.save();
 
-        return { success: true, message: `Data fixed for ${targetEmail}. Balance: 83,500 T.` };
+        return { success: true, message: `Data fixed for ${targetEmail}. Services repaired.` };
 
     } catch (error: any) {
         console.error('Fix Data Error:', error);
