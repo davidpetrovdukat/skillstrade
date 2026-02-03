@@ -1,12 +1,23 @@
+'use client';
+
 import { Plus, Clock, CreditCard } from 'lucide-react';
 import Link from 'next/link';
+import { useCurrencyStore } from '@/store/useCurrencyStore';
+import { TOKEN_EXCHANGE_RATE } from '@/lib/constants';
 
 interface StatsCardsProps {
     tokenBalance: number;
     activeOrdersCount: number;
+    totalSpentTokens: number;
 }
 
-export function StatsCards({ tokenBalance, activeOrdersCount }: StatsCardsProps) {
+export function StatsCards({ tokenBalance, activeOrdersCount, totalSpentTokens }: StatsCardsProps) {
+    const { convert } = useCurrencyStore();
+
+    // Calculate Fiat value based on conversion rate
+    const spentInEur = totalSpentTokens * TOKEN_EXCHANGE_RATE;
+    const formattedFiat = convert(spentInEur);
+
     return (
         <section>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -33,20 +44,25 @@ export function StatsCards({ tokenBalance, activeOrdersCount }: StatsCardsProps)
                     </div>
                     <div className="mt-4">
                         <p className="text-3xl font-bold text-white tracking-tighter">{activeOrdersCount}</p>
+                        <p className="text-xs text-white/40 mt-1 font-mono uppercase">In Progress</p>
                     </div>
                 </div>
 
-                {/* Card 3: Total Spent - Placeholder for now as we don't track spending history in MVP yet */}
-                <div className="group bg-[#121212] border border-white/10 p-6 flex flex-col justify-between min-h-[140px] hover:border-white/30 transition-colors opacity-50 cursor-not-allowed">
+                {/* Card 3: Total Spent */}
+                <div className="group bg-[#121212] border border-white/10 p-6 flex flex-col justify-between min-h-[140px] hover:border-white/30 transition-colors">
                     <div className="flex justify-between items-start">
                         <p className="text-gray-400 text-sm font-bold uppercase tracking-wider">Total Spent</p>
                         <CreditCard className="text-gray-600 w-6 h-6 group-hover:text-primary transition-colors" />
                     </div>
                     <div className="mt-4">
-                        <p className="text-3xl font-bold text-white tracking-tighter">€0</p>
+                        <p className="text-3xl font-bold text-white tracking-tighter">
+                            {totalSpentTokens.toLocaleString()} T
+                        </p>
+                        <p className="text-xs text-white/40 mt-1 font-mono uppercase">≈ {formattedFiat}</p>
                     </div>
                 </div>
             </div>
         </section>
     );
 }
+
