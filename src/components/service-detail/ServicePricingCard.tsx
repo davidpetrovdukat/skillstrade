@@ -79,10 +79,7 @@ export function ServicePricingCard({
                         Order Now ({formattedTokens} T)
                         <ArrowRight className="w-5 h-5" />
                     </Link>
-                    <button className="w-full h-12 bg-transparent border border-white/30 hover:border-primary hover:text-primary text-white font-bold text-sm uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer">
-                        <MessageSquare className="w-5 h-5" />
-                        Chat with Freelancer
-                    </button>
+
                 </div>
 
                 <div className="flex items-start gap-3 bg-white/5 p-3 mt-2 border border-white/10">
