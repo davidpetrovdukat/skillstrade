@@ -42,6 +42,16 @@ export async function fixDashboardData() {
         if (!nigel) console.log('Warning: Nigel Rivers not found');
         if (!arthur) console.log('Warning: Arthur Sterling not found');
 
+        // -- CLEAR OLD REVIEWS (Prevent Repetition) --
+        const freelancerIds = [sarah?._id, nigel?._id, arthur?._id].filter(Boolean);
+        if (freelancerIds.length > 0) {
+            await Service.updateMany(
+                { freelancer: { $in: freelancerIds } },
+                { $set: { reviews: [] } }
+            );
+            console.log('Cleared old reviews for target freelancers.');
+        }
+
         // -- REPAIR/CREATE SERVICES --
         // A. Conversion Copywriting (Sarah)
         let serviceCopy = null;
@@ -59,7 +69,20 @@ export async function fixDashboardData() {
                     tags: ['copywriting', 'sales'],
                     deliverables: ['Landing Page Copy', 'Email Sequence'],
                     addons: [],
-                    reviews: []
+                    reviews: [
+                        {
+                            authorName: "John Doe",
+                            text: "Sarah delivered exactly what I needed. The copy is punchy and converts well.",
+                            rating: 5,
+                            createdAt: new Date('2026-01-10')
+                        },
+                        {
+                            authorName: "Alice M.",
+                            text: "Great experience working with Sarah. Professional and fast.",
+                            rating: 5,
+                            createdAt: new Date('2026-01-15')
+                        }
+                    ]
                 },
                 { upsert: true, new: true }
             );
@@ -80,7 +103,20 @@ export async function fixDashboardData() {
                     deliveryDays: 14,
                     tags: ['branding', 'design'],
                     deliverables: ['Logo', 'Brand Guidelines', 'Social Assets'],
-                    reviews: []
+                    reviews: [
+                        {
+                            authorName: "Michael Scott",
+                            text: "Arthur captured our vision perfectly. The new brand identity is stunning.",
+                            rating: 5,
+                            createdAt: new Date('2026-01-20')
+                        },
+                        {
+                            authorName: "Pam B.",
+                            text: "Highly recommended for any serious business looking to rebrand.",
+                            rating: 5,
+                            createdAt: new Date('2026-01-22')
+                        }
+                    ]
                 },
                 { upsert: true, new: true }
             );
@@ -101,7 +137,20 @@ export async function fixDashboardData() {
                     deliveryDays: 5,
                     tags: ['email', 'crm', 'automation'],
                     deliverables: ['3 Email Flows', 'CRM Setup'],
-                    reviews: []
+                    reviews: [
+                        {
+                            authorName: "David Wallace",
+                            text: "Nigel's email flows increased our retention by 20%. Amazing work.",
+                            rating: 5,
+                            createdAt: new Date('2026-01-25')
+                        },
+                        {
+                            authorName: "Jan L.",
+                            text: "Very knowledgeable about CRM systems. Smooth setup.",
+                            rating: 4,
+                            createdAt: new Date('2026-01-28')
+                        }
+                    ]
                 },
                 { upsert: true, new: true }
             );
@@ -205,7 +254,7 @@ export async function fixDashboardData() {
         user.walletBalance = 83500;
         await user.save();
 
-        return { success: true, message: `Data fixed for ${targetEmail}. Services repaired.` };
+        return { success: true, message: `Data fixed for ${targetEmail}. Services repaired with reviews.` };
 
     } catch (error: any) {
         console.error('Fix Data Error:', error);
