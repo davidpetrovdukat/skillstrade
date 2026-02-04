@@ -21,7 +21,7 @@ export function Footer() {
                         <p>VAT no. LT100017846812</p>
                         <p>Šiauliai, Vytauto g. 147-18, LT-76341</p>
                         <a href="mailto:info@skills-trade.com" className="hover:text-primary transition-colors block mt-2">info@skills-trade.com</a>
-                        <a href="tel:+370000000" className="hover:text-primary transition-colors block">+370 000000</a>
+                        <a href="tel:+370000000" className="hover:text-primary transition-colors block">+370 80000487</a>
                     </div>
                 </div>
 
