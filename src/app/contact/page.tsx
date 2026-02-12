@@ -3,6 +3,59 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Mail, MapPin, Building2, Smartphone, Send, ArrowRight } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
+
+function ContactForm() {
+    const searchParams = useSearchParams();
+    const [subject, setSubject] = useState('General Support');
+
+    useEffect(() => {
+        const subjectParam = searchParams.get('subject');
+        if (subjectParam?.toLowerCase() === 'career') {
+            setSubject('Career');
+        }
+    }, [searchParams]);
+
+    return (
+        <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex flex-col gap-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-white/60">Name</label>
+                    <input type="text" className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors placeholder:text-white/20" placeholder="John Doe" />
+                </div>
+                <div className="flex flex-col gap-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-white/60">Email</label>
+                    <input type="email" className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors placeholder:text-white/20" placeholder="john@example.com" />
+                </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+                <label className="text-xs font-bold uppercase tracking-widest text-white/60">Subject</label>
+                <select
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors text-white [&>option]:bg-black"
+                >
+                    <option>General Support</option>
+                    <option>Career</option>
+                    <option>Billing Inquiry</option>
+                    <option>Partnership</option>
+                    <option>Legal</option>
+                </select>
+            </div>
+
+            <div className="flex flex-col gap-2">
+                <label className="text-xs font-bold uppercase tracking-widest text-white/60">Message</label>
+                <textarea rows={4} className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors resize-none placeholder:text-white/20" placeholder="How can we help you?"></textarea>
+            </div>
+
+            <button className="mt-4 bg-primary text-black font-bold uppercase tracking-widest py-4 px-8 hover:bg-white transition-colors flex items-center justify-center gap-2">
+                Send Message <Send className="w-4 h-4" />
+            </button>
+        </form>
+    );
+}
 
 export default function ContactPage() {
     return (
@@ -74,14 +127,21 @@ export default function ContactPage() {
                                 </a>
                             </div>
 
-                            {/* Mock Phone - Keeping as placeholder per instructions */}
+                            {/* Live Phone Number */}
                             <div>
                                 <h3 className="text-sm font-bold uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
                                     <Smartphone className="w-4 h-4" /> Phone
                                 </h3>
-                                <div className="p-4 border border-white/10 bg-white/5 opacity-50 cursor-not-allowed">
-                                    <p className="font-mono text-white/40">+370 (6XX) XXXXX <span className="text-xs ml-2 border border-white/20 px-1">COMING SOON</span></p>
-                                </div>
+                                <a href="tel:+37080000487" className="group flex items-center gap-4 p-6 border border-white/10 bg-white/5 hover:bg-primary hover:border-primary transition-all duration-300">
+                                    <div className="size-10 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-black/10 transition-colors">
+                                        <Smartphone className="w-5 h-5 group-hover:text-black" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-xs uppercase text-white/40 group-hover:text-black/60 font-bold">Call Us</span>
+                                        <span className="text-xl font-bold group-hover:text-black">+370 80000487</span>
+                                    </div>
+                                    <ArrowRight className="ml-auto w-5 h-5 group-hover:text-black transform group-hover:translate-x-1 transition-transform" />
+                                </a>
                             </div>
                         </div>
 
@@ -107,37 +167,9 @@ export default function ContactPage() {
                         <div className="p-6 md:p-12 flex-1 flex flex-col justify-center bg-surface">
                             <h3 className="text-2xl font-bold uppercase tracking-tight mb-8">Send a Message</h3>
 
-                            <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="flex flex-col gap-2">
-                                        <label className="text-xs font-bold uppercase tracking-widest text-white/60">Name</label>
-                                        <input type="text" className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors placeholder:text-white/20" placeholder="John Doe" />
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        <label className="text-xs font-bold uppercase tracking-widest text-white/60">Email</label>
-                                        <input type="email" className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors placeholder:text-white/20" placeholder="john@example.com" />
-                                    </div>
-                                </div>
-
-                                <div className="flex flex-col gap-2">
-                                    <label className="text-xs font-bold uppercase tracking-widest text-white/60">Subject</label>
-                                    <select className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors text-white [&>option]:bg-black">
-                                        <option>General Support</option>
-                                        <option>Billing Inquiry</option>
-                                        <option>Partnership</option>
-                                        <option>Legal</option>
-                                    </select>
-                                </div>
-
-                                <div className="flex flex-col gap-2">
-                                    <label className="text-xs font-bold uppercase tracking-widest text-white/60">Message</label>
-                                    <textarea rows={4} className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors resize-none placeholder:text-white/20" placeholder="How can we help you?"></textarea>
-                                </div>
-
-                                <button className="mt-4 bg-primary text-black font-bold uppercase tracking-widest py-4 px-8 hover:bg-white transition-colors flex items-center justify-center gap-2">
-                                    Send Message <Send className="w-4 h-4" />
-                                </button>
-                            </form>
+                            <Suspense fallback={<div className="text-white/40 font-mono animate-pulse uppercase tracking-widest text-xs">Loading form...</div>}>
+                                <ContactForm />
+                            </Suspense>
                         </div>
                     </div>
                 </div>

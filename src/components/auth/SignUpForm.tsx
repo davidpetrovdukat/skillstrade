@@ -388,7 +388,7 @@ export function SignUpForm() {
                     </div>
 
                     <label className="text-sm text-zinc-400 cursor-pointer select-none leading-relaxed" htmlFor="terms">
-                        I agree to the <Link className="text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary transition-colors" href="/legal/terms">Terms of Service</Link> and <Link className="text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary transition-colors" href="/legal/privacy">Privacy Policy</Link>. I understand that my application is subject to review.
+                        I agree to the <Link className="text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary transition-colors" href="/legal/terms">Terms of Conditions</Link> and <Link className="text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary transition-colors" href="/legal/privacy">Privacy Policy</Link>. I understand that my application is subject to review.
                     </label>
                 </div>
 

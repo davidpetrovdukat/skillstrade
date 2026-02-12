@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 
 
 const NAV_ITEMS = [
-    { label: 'Terms of Service', href: '/legal/terms' },
+    { label: 'Terms of Conditions', href: '/legal/terms' },
     { label: 'Privacy Policy', href: '/legal/privacy' },
     { label: 'Cookie Policy', href: '/legal/cookies' },
     { label: 'Refund Policy', href: '/legal/refund' },

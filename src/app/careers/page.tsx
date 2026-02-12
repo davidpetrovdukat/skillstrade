@@ -73,10 +73,10 @@ export default function CareersPage() {
                                 <Wallet className="w-6 h-6" />
                             </div>
                             <h3 className="text-xl font-bold uppercase tracking-tight group-hover:text-primary transition-colors font-heading">
-                                Crypto or Fiat
+                                Secure Payments
                             </h3>
                             <p className="text-white/60 text-sm leading-relaxed font-mono">
-                                Instant payouts in your preferred currency. USDC, ETH, or traditional fiat wires.
+                                Instant and secure payouts in your preferred currency.
                             </p>
                         </div>
                         {/* Card 3 */}
@@ -102,7 +102,7 @@ export default function CareersPage() {
                     </div>
                     <div className="flex flex-col border-t border-white/20">
                         {/* Position 1 */}
-                        <a href="#" className="group flex flex-col md:flex-row items-start md:items-center justify-between border-b border-white/20 p-6 md:px-6 md:py-8 hover:bg-primary transition-all duration-0 cursor-pointer">
+                        <Link href="/contact?subject=career" className="group flex flex-col md:flex-row items-start md:items-center justify-between border-b border-white/20 p-6 md:px-6 md:py-8 hover:bg-primary transition-all duration-0 cursor-pointer">
                             <div className="flex flex-col gap-1">
                                 <h3 className="text-xl md:text-2xl font-bold group-hover:text-black transition-colors font-heading">
                                     Senior Next.js Engineer
@@ -114,10 +114,10 @@ export default function CareersPage() {
                             <div className="mt-4 md:mt-0 flex items-center gap-2 text-primary group-hover:text-black font-medium text-lg uppercase underline decoration-2 underline-offset-4 font-heading">
                                 Apply <ArrowRight className="w-5 h-5" />
                             </div>
-                        </a>
+                        </Link>
 
                         {/* Position 2 */}
-                        <a href="#" className="group flex flex-col md:flex-row items-start md:items-center justify-between border-b border-white/20 p-6 md:px-6 md:py-8 hover:bg-primary transition-all duration-0 cursor-pointer">
+                        <Link href="/contact?subject=career" className="group flex flex-col md:flex-row items-start md:items-center justify-between border-b border-white/20 p-6 md:px-6 md:py-8 hover:bg-primary transition-all duration-0 cursor-pointer">
                             <div className="flex flex-col gap-1">
                                 <h3 className="text-xl md:text-2xl font-bold group-hover:text-black transition-colors font-heading">
                                     Head of Growth
@@ -129,10 +129,10 @@ export default function CareersPage() {
                             <div className="mt-4 md:mt-0 flex items-center gap-2 text-primary group-hover:text-black font-medium text-lg uppercase underline decoration-2 underline-offset-4 font-heading">
                                 Apply <ArrowRight className="w-5 h-5" />
                             </div>
-                        </a>
+                        </Link>
 
                         {/* Position 3 */}
-                        <a href="#" className="group flex flex-col md:flex-row items-start md:items-center justify-between border-b border-white/20 p-6 md:px-6 md:py-8 hover:bg-primary transition-all duration-0 cursor-pointer">
+                        <Link href="/contact?subject=career" className="group flex flex-col md:flex-row items-start md:items-center justify-between border-b border-white/20 p-6 md:px-6 md:py-8 hover:bg-primary transition-all duration-0 cursor-pointer">
                             <div className="flex flex-col gap-1">
                                 <h3 className="text-xl md:text-2xl font-bold group-hover:text-black transition-colors font-heading">
                                     Customer Success Lead
@@ -144,16 +144,16 @@ export default function CareersPage() {
                             <div className="mt-4 md:mt-0 flex items-center gap-2 text-primary group-hover:text-black font-medium text-lg uppercase underline decoration-2 underline-offset-4 font-heading">
                                 Apply <ArrowRight className="w-5 h-5" />
                             </div>
-                        </a>
+                        </Link>
                     </div>
                 </section>
 
                 {/* Bottom CTA */}
                 <section className="py-10 flex flex-col items-center gap-2">
                     <p className="text-white text-lg font-light font-sans">Don't see a role?</p>
-                    <a href="#" className="text-2xl md:text-3xl font-bold text-primary hover:text-white transition-colors flex items-center gap-2 underline decoration-2 underline-offset-8 font-heading">
+                    <Link href="/contact?subject=career" className="text-2xl md:text-3xl font-bold text-primary hover:text-white transition-colors flex items-center gap-2 underline decoration-2 underline-offset-8 font-heading">
                         Pitch us your role <ArrowUpRight className="w-8 h-8" />
-                    </a>
+                    </Link>
                 </section>
             </main>
 

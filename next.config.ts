@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    // localPatterns removed to allow all local images
     remotePatterns: [
       {
         protocol: 'https',

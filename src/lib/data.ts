@@ -1790,7 +1790,7 @@ const BATCH_3: FreelancerProfile[] = [
     },
     "bio": {
       "tagline": "IP & Data Privacy Lawyer for Tech. GDPR checks and SaaS agreements.",
-      "about_text": "IP & Data Privacy Lawyer for Tech. I specialize in GDPR compliance, SaaS terms of service, and IP protection for European startups. I write contracts that protect you without scaring off your customers.",
+      "about_text": "IP & Data Privacy Lawyer for Tech. I specialize in GDPR compliance, SaaS Terms of Conditions, and IP protection for European startups. I write contracts that protect you without scaring off your customers.",
       "skills": [
         "GDPR",
         "Contract Law",
@@ -1845,9 +1845,9 @@ const BATCH_3: FreelancerProfile[] = [
       {
         "id": "serv_18",
         "title": "SaaS Legal Pack (GDPR + Terms)",
-        "description": "Copy-pasting legal templates is a liability. I draft custom Terms of Service, Privacy Policies, and Data Processing Agreements (DPA) tailored to your specific SaaS business logic and jurisdiction (EU/UK/US compliant). Protect your IP and limit your liability.",
+        "description": "Copy-pasting legal templates is a liability. I draft custom Terms of Conditions, Privacy Policies, and Data Processing Agreements (DPA) tailored to your specific SaaS business logic and jurisdiction (EU/UK/US compliant). Protect your IP and limit your liability.",
         "features": [
-          "Custom Terms of Service",
+          "Custom Terms of Conditions",
           "Privacy Policy (GDPR/CCPA compliant)",
           "Cookie Policy",
           "Data Processing Agreement (DPA)",
