@@ -8,6 +8,7 @@ import { Verified, Lock, Copyright } from 'lucide-react'
 import { connectMongo } from '@/lib/db'
 import { Service } from '@/models/Service'
 import { Freelancer } from '@/models/Freelancer'
+import { RAW_SERVICES_DATA } from '@/lib/services-data'
 
 export const dynamic = 'force-dynamic'; // Force dynamic rendering for searchParams access
 
@@ -21,6 +22,9 @@ export default async function ServicesPage(props: PageProps) {
     const category = typeof searchParams.category === 'string' ? searchParams.category : null
     const sort = typeof searchParams.sort === 'string' ? searchParams.sort : null
     const view = typeof searchParams.view === 'string' ? searchParams.view : 'grid'
+    const canonicalAvatarByName = new Map(
+        RAW_SERVICES_DATA.map((item) => [item.meta.name, item.meta.avatar_url])
+    )
 
     await connectMongo()
 
@@ -84,7 +88,7 @@ export default async function ServicesPage(props: PageProps) {
             freelancer: {
                 id: doc.freelancer?._id?.toString(),
                 name: doc.freelancer?.name || "Unknown",
-                avatarUrl: doc.freelancer?.avatarUrl,
+                avatarUrl: canonicalAvatarByName.get(doc.freelancer?.name) || doc.freelancer?.avatarUrl || '/avatars/default.jpg',
                 slug: doc.freelancer?.slug || "#",
                 verified: doc.freelancer?.verified ?? false,
                 rating: doc.freelancer?.rating || 5.0,
