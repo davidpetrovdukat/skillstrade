@@ -66,7 +66,7 @@ const BATCH_1: FreelancerProfile[] = [
       "location": "London, UK",
       "flag": "🇬🇧",
       "timezone": "GMT (London)",
-      "avatar_url": "/avatars/arthur-uk.webp",
+      "avatar_url": "/avatars/arthur-uk.jpg",
       "is_available": true,
       "verified": true
     },
@@ -166,7 +166,7 @@ const BATCH_1: FreelancerProfile[] = [
       "location": "Berlin, Germany",
       "flag": "🇩🇪",
       "timezone": "CET (Berlin)",
-      "avatar_url": "/avatars/elena-de.webp",
+      "avatar_url": "/avatars/elena-de.jpg",
       "is_available": true,
       "verified": true
     },
@@ -367,7 +367,7 @@ const BATCH_1: FreelancerProfile[] = [
       "location": "Copenhagen, Denmark",
       "flag": "🇩🇰",
       "timezone": "CET (Copenhagen)",
-      "avatar_url": "/avatars/lars-dk.webp",
+      "avatar_url": "/avatars/lars-dk.jpg",
       "is_available": true,
       "verified": true
     },
@@ -666,7 +666,7 @@ const BATCH_1: FreelancerProfile[] = [
       "location": "London, UK",
       "flag": "🇬🇧",
       "timezone": "GMT (London)",
-      "avatar_url": "/avatars/marcus-uk.webp",
+      "avatar_url": "/avatars/marcus-uk.jpg",
       "is_available": true,
       "verified": true
     },
@@ -971,7 +971,7 @@ const BATCH_2: FreelancerProfile[] = [
       "location": "Amsterdam, Netherlands",
       "flag": "🇳🇱",
       "timezone": "CET (Amsterdam)",
-      "avatar_url": "/avatars/bram-nl.webp",
+      "avatar_url": "/avatars/bram-nl.jpg",
       "is_available": true,
       "verified": true
     },
@@ -1072,7 +1072,7 @@ const BATCH_2: FreelancerProfile[] = [
       "location": "Vienna, Austria",
       "flag": "🇦🇹",
       "timezone": "CET (Vienna)",
-      "avatar_url": "/avatars/thomas-at.webp",
+      "avatar_url": "/avatars/thomas-at.jpg",
       "is_available": false,
       "verified": true
     },
@@ -1576,7 +1576,7 @@ const BATCH_2: FreelancerProfile[] = [
       "location": "London, UK",
       "flag": "🇬🇧",
       "timezone": "GMT (London)",
-      "avatar_url": "/avatars/oliver-uk.webp",
+      "avatar_url": "/avatars/oliver-uk.jpg",
       "is_available": true,
       "verified": true
     },
@@ -1679,7 +1679,7 @@ const BATCH_3: FreelancerProfile[] = [
       "location": "London, UK",
       "flag": "🇬🇧",
       "timezone": "GMT (London)",
-      "avatar_url": "/avatars/james-uk.webp",
+      "avatar_url": "/avatars/james-uk.jpg",
       "is_available": true,
       "verified": true
     },
@@ -1778,7 +1778,7 @@ const BATCH_3: FreelancerProfile[] = [
       "location": "Paris, France",
       "flag": "🇫🇷",
       "timezone": "CET (Paris)",
-      "avatar_url": "/avatars/antoine-fr.webp",
+      "avatar_url": "/avatars/antoine-fr.jpg",
       "is_available": true,
       "verified": true
     },

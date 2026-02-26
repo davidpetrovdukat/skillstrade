@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "update-avatars": "ts-node -P tsconfig.scripts.json -r tsconfig-paths/register scripts/update-freelancer-avatars.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

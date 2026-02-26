@@ -195,7 +195,7 @@ export const LEGAL_DOCS: Record<string, LegalDocument> = {
                 content: [
                     "To provide our services, we may share your data with trusted third parties. We require all third parties to respect the security of your personal data and to treat it in accordance with the law.",
                     "1. Counterparties: Freelancers see the Client's username and project brief. Clients see the Freelancer's full professional profile and portfolio.",
-                    "2. Payment Processors: We use secure third-party gateways (e.g., Stripe, PayPal, or similar) to process Fiat transactions. They process your financial data independently.",
+                    "2. Payment Processors: We use secure third-party gateways to process Fiat transactions. They process your financial data independently.",
                     "3. Identity Verification Providers: Third-party services used to validate ID documents for Freelancer vetting.",
                     "4. Service Providers: Cloud hosting services (to store uploaded files), email delivery services, and IT support teams.",
                     "5. Legal & Tax Authorities: State Tax Inspectorate (VMI) of Lithuania or other regulators if required by law.",

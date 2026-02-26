@@ -99,7 +99,7 @@ export const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Strategic Brand Identity",
             "location": "London, UK",
             "flag": "🇬🇧",
-            "avatar_url": "/avatars/arthur-uk.webp",
+            "avatar_url": "/avatars/arthur-uk.jpg",
             "verified": true
         },
         "service": {
@@ -160,7 +160,7 @@ export const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "SaaS UI/UX Design",
             "location": "Berlin, Germany",
             "flag": "🇩🇪",
-            "avatar_url": "/avatars/elena-de.webp",
+            "avatar_url": "/avatars/elena-de.jpg",
             "verified": true
         },
         "service": {
@@ -268,7 +268,7 @@ export const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Industrial Design Renders",
             "location": "Copenhagen, Denmark",
             "flag": "🇩🇰",
-            "avatar_url": "/avatars/lars-dk.webp",
+            "avatar_url": "/avatars/lars-dk.jpg",
             "verified": true
         },
         "service": {
@@ -430,7 +430,7 @@ export const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Webflow Development",
             "location": "London, UK",
             "flag": "🇬🇧",
-            "avatar_url": "/avatars/marcus-uk.webp",
+            "avatar_url": "/avatars/marcus-uk.jpg",
             "verified": true
         },
         "service": {
@@ -592,7 +592,7 @@ export const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Shopify Expert",
             "location": "Amsterdam, Netherlands",
             "flag": "🇳🇱",
-            "avatar_url": "/avatars/bram-nl.webp",
+            "avatar_url": "/avatars/bram-nl.jpg",
             "verified": true
         },
         "service": {
@@ -646,7 +646,7 @@ export const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Python Automation",
             "location": "Vienna, Austria",
             "flag": "🇦🇹",
-            "avatar_url": "/avatars/thomas-at.webp",
+            "avatar_url": "/avatars/thomas-at.jpg",
             "verified": true
         },
         "service": {
@@ -916,7 +916,7 @@ export const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Email Marketing & CRM",
             "location": "Bristol, UK",
             "flag": "🇬🇧",
-            "avatar_url": "/avatars/oliver-uk.webp",
+            "avatar_url": "/avatars/oliver-uk.jpg",
             "verified": true
         },
         "service": {
@@ -970,7 +970,7 @@ export const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Fractional CFO / Finance",
             "location": "London, UK",
             "flag": "🇬🇧",
-            "avatar_url": "/avatars/james-uk.webp",
+            "avatar_url": "/avatars/james-uk.jpg",
             "verified": true
         },
         "service": {
@@ -1024,7 +1024,7 @@ export const RAW_SERVICES_DATA: ServiceItemRaw[] = [
             "role": "Tech Legal & IP",
             "location": "Lyon, France",
             "flag": "🇫🇷",
-            "avatar_url": "/avatars/antoine-fr.webp",
+            "avatar_url": "/avatars/antoine-fr.jpg",
             "verified": true
         },
         "service": {

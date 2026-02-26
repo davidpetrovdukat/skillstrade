@@ -20,7 +20,7 @@ export function Header() {
     }
 
     return (
-        <header className="sticky top-0 z-50 flex items-center justify-between border-b border-white/20 bg-background/95 backdrop-blur-sm px-6 py-4">
+        <header className="sticky top-0 z-50 relative flex items-center justify-between border-b border-white/20 bg-background/95 backdrop-blur-sm px-6 py-4">
             <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                 {/* <Zap className="text-primary w-6 h-6 fill-current" /> */}
                 {/* <span className="text-xl font-bold tracking-tighter uppercase font-heading">Skills-Trade</span> */}
@@ -111,13 +111,28 @@ export function Header() {
 
             {/* Mobile Menu Overlay */}
             {isMenuOpen && (
-                <div className="fixed inset-0 top-[73px] bg-background z-40 flex flex-col p-6 md:hidden animate-in fade-in slide-in-from-top-5">
-                    <nav className="flex flex-col gap-6 text-2xl font-bold uppercase tracking-widest font-heading mb-8">
+                <div className="mobile-menu-panel absolute top-full left-0 right-0 z-[60] min-h-[calc(100vh-73px)] flex flex-col p-6 md:hidden">
+                    <nav className="flex flex-col gap-6 text-2xl font-bold uppercase tracking-widest font-heading mb-6">
                         <Link onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors" href="/talents">Talent</Link>
                         <Link onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors" href="/services">Services</Link>
                         <Link onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors" href="/how-it-works">How it Works</Link>
                         <Link onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors" href="/tokens">Tokens</Link>
                     </nav>
+                    {/* Currency selector - mobile */}
+                    <div className="mb-8">
+                        <p className="text-xs font-bold uppercase tracking-widest text-white/60 mb-3 font-heading">Currency</p>
+                        <div className="flex gap-2">
+                            {currencies.map((c) => (
+                                <button
+                                    key={c}
+                                    onClick={() => handleCurrencySelect(c)}
+                                    className={`px-4 py-2 text-sm font-mono border transition-colors ${currency === c ? 'bg-primary text-black border-primary' : 'border-white/20 text-white hover:bg-white/10'}`}
+                                >
+                                    {c}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                     <div className="flex flex-col gap-4">
                         {session?.user ? (
                             <>

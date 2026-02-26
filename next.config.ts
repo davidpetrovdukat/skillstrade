@@ -2,7 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // localPatterns removed to allow all local images
+    localPatterns: [
+      { pathname: '/avatars/**' },
+      { pathname: '/**' },
+    ],
     remotePatterns: [
       {
         protocol: 'https',

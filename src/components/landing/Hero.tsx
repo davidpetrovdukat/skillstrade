@@ -40,7 +40,7 @@ export function Hero() {
                 </div>
             </div>
 
-            <div className="relative flex items-end justify-center bg-[#111] p-8 overflow-hidden">
+            <div className="hidden lg:flex relative items-end justify-center bg-[#111] p-8 overflow-hidden">
                 <div
                     className="absolute inset-0 opacity-20"
                     style={{

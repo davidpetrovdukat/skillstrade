@@ -30,16 +30,20 @@ export function TalentCarousel({ talents }: TalentCarouselProps) {
                 <h2 className="text-4xl md:text-5xl font-bold uppercase leading-none font-heading">
                     Meet The <br /><span className="text-primary">Collective</span>
                 </h2>
-                <div className="hidden md:flex gap-2">
+                <div className="flex gap-2">
                     <button
+                        type="button"
                         onClick={() => scroll('left')}
-                        className="size-12 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors"
+                        aria-label="Previous"
+                        className="size-10 md:size-12 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors"
                     >
                         <ArrowLeft className="w-5 h-5" />
                     </button>
                     <button
+                        type="button"
                         onClick={() => scroll('right')}
-                        className="size-12 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors"
+                        aria-label="Next"
+                        className="size-10 md:size-12 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors"
                     >
                         <ArrowRight className="w-5 h-5" />
                     </button>

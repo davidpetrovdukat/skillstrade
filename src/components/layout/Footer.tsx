@@ -73,10 +73,11 @@ export function Footer() {
                 <div className="flex items-center gap-2">
                     <p className="text-[10px] text-white/30 uppercase tracking-widest font-mono">© 2026 RENATASTRADAS MB | Skills-Trade. All Rights Reserved.</p>
                 </div>
-                <div className="flex gap-4 items-center opacity-50 grayscale hover:grayscale-0 transition-all">
+                <div className="flex gap-4 items-center">
                     <img src="/pci-dss-logo.svg" alt="PCI DSS" className="h-8 w-auto" />
                     <img src="/visa-logo.svg" alt="Visa" className="h-6 w-auto" />
                     <img src="/mastercard-logo.svg" alt="Mastercard" className="h-6 w-auto" />
+                    <img src="/3ds.png" alt="3D Secure" className="h-8 w-auto" />
                 </div>
             </div>
         </footer>

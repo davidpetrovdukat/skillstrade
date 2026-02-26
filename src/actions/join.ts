@@ -4,6 +4,11 @@ import { Resend } from 'resend';
 
 // Initialize Resend with API Key from environment variables
 const resend = new Resend(process.env.RESEND_API_KEY);
+const RESEND_FROM =
+    process.env.RESEND_FROM_EMAIL ||
+    process.env.RESEND_FROM ||
+    'Skill Trade <info@skills-trade.com>';
+const JOIN_APPLICATION_TO = process.env.JOIN_APPLICATION_TO || 'info@skills-trade.com';
 
 export async function sendJoinApplication(formData: any) {
     if (!process.env.RESEND_API_KEY) {
@@ -33,8 +38,8 @@ export async function sendJoinApplication(formData: any) {
         `;
 
         const { data, error } = await resend.emails.send({
-            from: 'Skill Trade <onboarding@resend.dev>', // Use resend.dev for testing if domain not verified, or verified domain
-            to: ['info@skills-trade.com'],
+            from: RESEND_FROM,
+            to: [JOIN_APPLICATION_TO],
             subject: `New Application: ${fullName} - ${primarySkill === 'Other' ? otherSkill : primarySkill}`,
             html: htmlBody,
             replyTo: email

@@ -5,10 +5,13 @@ import { Footer } from '@/components/layout/Footer';
 import { Mail, MapPin, Building2, Smartphone, Send, ArrowRight } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
+import { sendContactMessage } from '@/actions/contact';
 
 function ContactForm() {
     const searchParams = useSearchParams();
     const [subject, setSubject] = useState('General Support');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
     useEffect(() => {
         const subjectParam = searchParams.get('subject');
@@ -17,41 +20,73 @@ function ContactForm() {
         }
     }, [searchParams]);
 
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        setFeedback(null);
+        setIsSubmitting(true);
+        const form = e.currentTarget;
+        const formData = new FormData(form);
+        formData.set('subject', subject);
+
+        const result = await sendContactMessage(formData);
+        setIsSubmitting(false);
+
+        if (result.success) {
+            setFeedback({ type: 'success', message: 'Message sent. We\'ll get back to you soon.' });
+            form.reset();
+            setSubject('General Support');
+        } else {
+            setFeedback({ type: 'error', message: result.error || 'Something went wrong. Please try again.' });
+        }
+    }
+
     return (
-        <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
+        <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-white/60">Name</label>
-                    <input type="text" className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors placeholder:text-white/20" placeholder="John Doe" />
+                    <label htmlFor="contact-name" className="text-xs font-bold uppercase tracking-widest text-white/60">Name</label>
+                    <input id="contact-name" name="name" type="text" required className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors placeholder:text-white/20" placeholder="John Doe" />
                 </div>
                 <div className="flex flex-col gap-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-white/60">Email</label>
-                    <input type="email" className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors placeholder:text-white/20" placeholder="john@example.com" />
+                    <label htmlFor="contact-email" className="text-xs font-bold uppercase tracking-widest text-white/60">Email</label>
+                    <input id="contact-email" name="email" type="email" required className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors placeholder:text-white/20" placeholder="john@example.com" />
                 </div>
             </div>
 
             <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-white/60">Subject</label>
+                <label htmlFor="contact-subject" className="text-xs font-bold uppercase tracking-widest text-white/60">Subject</label>
                 <select
+                    id="contact-subject"
+                    name="subject"
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
                     className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors text-white [&>option]:bg-black"
                 >
-                    <option>General Support</option>
-                    <option>Career</option>
-                    <option>Billing Inquiry</option>
-                    <option>Partnership</option>
-                    <option>Legal</option>
+                    <option value="General Support">General Support</option>
+                    <option value="Career">Career</option>
+                    <option value="Billing Inquiry">Billing Inquiry</option>
+                    <option value="Partnership">Partnership</option>
+                    <option value="Legal">Legal</option>
                 </select>
             </div>
 
             <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-white/60">Message</label>
-                <textarea rows={4} className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors resize-none placeholder:text-white/20" placeholder="How can we help you?"></textarea>
+                <label htmlFor="contact-message" className="text-xs font-bold uppercase tracking-widest text-white/60">Message</label>
+                <textarea id="contact-message" name="message" rows={4} required className="bg-transparent border-b border-white/20 py-3 text-lg focus:outline-none focus:border-primary transition-colors resize-none placeholder:text-white/20" placeholder="How can we help you?" />
             </div>
 
-            <button className="mt-4 bg-primary text-black font-bold uppercase tracking-widest py-4 px-8 hover:bg-white transition-colors flex items-center justify-center gap-2">
-                Send Message <Send className="w-4 h-4" />
+            {feedback && (
+                <p className={`text-sm font-mono ${feedback.type === 'success' ? 'text-primary' : 'text-red-400'}`}>
+                    {feedback.message}
+                </p>
+            )}
+
+            <button
+                type="submit"
+                disabled={isSubmitting}
+                className="mt-4 bg-primary text-black font-bold uppercase tracking-widest py-4 px-8 hover:bg-white transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+                {isSubmitting ? 'Sending…' : 'Send Message'} <Send className="w-4 h-4" />
             </button>
         </form>
     );

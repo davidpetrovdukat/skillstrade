@@ -164,7 +164,7 @@ export default function CheckoutPage() {
 
                                 <div className="flex items-center gap-2 text-xs text-gray-500 bg-white/5 p-4 rounded border border-white/5">
                                     <Lock className="w-4 h-4" />
-                                    <span>Payments are processed securely via Stripe. We do not store your card details.</span>
+                                    <span>We do not store your card details.</span>
                                 </div>
                             </div>
 
