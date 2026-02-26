@@ -10,6 +10,7 @@ import { connectMongo } from '@/lib/db'
 import { Freelancer } from '@/models/Freelancer'
 import { Service } from '@/models/Service'
 import mongoose from 'mongoose'
+import { RAW_SERVICES_DATA } from '@/lib/services-data'
 
 export const dynamic = 'force-dynamic'
 
@@ -21,6 +22,9 @@ interface PageProps {
 
 async function getProfile(id: string) {
     await connectMongo()
+    const canonicalAvatarByName = new Map(
+        RAW_SERVICES_DATA.map((item) => [item.meta.name, item.meta.avatar_url])
+    )
 
     let freelancer;
 
@@ -48,7 +52,7 @@ async function getProfile(id: string) {
             location: freelancer.location,
             flag: freelancer.flag,
             timezone: "GMT (London)", // TODO: Store in DB
-            avatar_url: freelancer.avatarUrl,
+            avatar_url: canonicalAvatarByName.get(freelancer.name) || freelancer.avatarUrl,
             is_available: freelancer.isAvailable ?? true,
             verified: freelancer.verified
         },

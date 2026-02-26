@@ -8,6 +8,7 @@ import { connectMongo } from '@/lib/db';
 import { Service } from '@/models/Service';
 import { Freelancer } from '@/models/Freelancer';
 import { User } from '@/models/User';
+import { RAW_SERVICES_DATA } from '@/lib/services-data';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,6 +20,9 @@ interface PageProps {
 
 export default async function ServiceDetailPage(props: PageProps) {
     const params = await props.params;
+    const canonicalAvatarByName = new Map(
+        RAW_SERVICES_DATA.map((item) => [item.meta.name, item.meta.avatar_url])
+    );
 
     await connectMongo();
 
@@ -45,7 +49,10 @@ export default async function ServiceDetailPage(props: PageProps) {
 
     // Type coercion for the populated document
     const service = serviceDoc as any;
-    const freelancer = service.freelancer;
+    const freelancer = {
+        ...service.freelancer,
+        avatarUrl: canonicalAvatarByName.get(service.freelancer?.name) || service.freelancer?.avatarUrl,
+    };
 
     // Transform Review Data
     const formattedReviews = (service.reviews || []).map((r: any) => ({

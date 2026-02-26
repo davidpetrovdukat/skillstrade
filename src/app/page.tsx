@@ -11,12 +11,16 @@ import { Footer } from '@/components/layout/Footer'
 import { connectMongo } from '@/lib/db';
 import { Service } from '@/models/Service';
 import { Freelancer } from '@/models/Freelancer';
+import { RAW_SERVICES_DATA } from '@/lib/services-data';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   let topServices: any[] = [];
   let featuredTalents: any[] = [];
+  const canonicalAvatarByName = new Map(
+    RAW_SERVICES_DATA.map((item) => [item.meta.name, item.meta.avatar_url])
+  );
 
   try {
     await connectMongo();
@@ -24,6 +28,10 @@ export default async function Home() {
     topServices = await Service.find({}).limit(6).lean();
     // Fetch Freelancers (Limit 8 for carousel)
     featuredTalents = await Freelancer.find({ isAvailable: true }).limit(8).lean();
+    featuredTalents = featuredTalents.map((talent: any) => ({
+      ...talent,
+      avatarUrl: canonicalAvatarByName.get(talent.name) || talent.avatarUrl,
+    }));
   } catch (error) {
     console.error("Home Page DB Error:", error);
     // Silent fail: empty arrays are already set

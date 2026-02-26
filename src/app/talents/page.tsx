@@ -5,16 +5,20 @@ import { TalentCard } from '@/components/talents/TalentCard'
 import { JoinRosterCTA } from '@/components/talents/JoinRosterCTA'
 import { connectMongo } from '@/lib/db'
 import { Freelancer } from '@/models/Freelancer'
+import { RAW_SERVICES_DATA } from '@/lib/services-data'
 
 export const dynamic = 'force-dynamic'
 
 async function getFreelancers() {
     await connectMongo()
     const freelancers = await Freelancer.find({}).sort({ rating: -1 }).lean()
+    const canonicalAvatarByName = new Map(
+        RAW_SERVICES_DATA.map((item) => [item.meta.name, item.meta.avatar_url])
+    )
 
     return freelancers.map(f => ({
         id: (f as any)._id.toString(),
-        image: f.avatarUrl,
+        image: canonicalAvatarByName.get(f.name) || f.avatarUrl,
         name: f.name,
         flag: f.flag,
         role: f.role,

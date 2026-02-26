@@ -6,17 +6,22 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { RAW_SERVICES_DATA } from '@/lib/services-data'
 
+// Stable list for hero slideshow (excluded from carousel) – avoids useEffect dependency size changing between renders
+const HERO_SLIDESHOW_DATA = RAW_SERVICES_DATA.filter((item) => item.meta.name !== 'Arthur Sterling');
+const HERO_SLIDESHOW_LENGTH = HERO_SLIDESHOW_DATA.length;
+
 export function Hero() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
+        if (HERO_SLIDESHOW_LENGTH === 0) return;
         const timer = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % RAW_SERVICES_DATA.length);
+            setCurrentIndex((prev) => (prev + 1) % HERO_SLIDESHOW_LENGTH);
         }, 4000);
         return () => clearInterval(timer);
     }, []);
 
-    const currentTalent = RAW_SERVICES_DATA[currentIndex];
+    const currentTalent = HERO_SLIDESHOW_LENGTH > 0 ? HERO_SLIDESHOW_DATA[currentIndex % HERO_SLIDESHOW_LENGTH] : null;
 
     return (
         <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[85vh] border-b border-white/20 relative">
@@ -50,47 +55,51 @@ export function Hero() {
                 />
 
                 <div className="relative w-full h-full max-h-[70vh] bg-neutral-800 rounded-t-[5rem] md:rounded-t-[20rem] overflow-hidden border border-white/10 group mt-10">
-                    <AnimatePresence mode="popLayout">
-                        <motion.div
-                            key={currentTalent.id}
-                            initial={{ opacity: 0.5, scale: 1.05 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.8, ease: "easeInOut" }}
-                            className="absolute inset-0 w-full h-full"
-                        >
-                            <Image
-                                alt={currentTalent.meta.name}
-                                src={currentTalent.meta.avatar_url}
-                                fill
-                                priority
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
-                            />
-                        </motion.div>
-                    </AnimatePresence>
-
-                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] bg-black/80 backdrop-blur-md border border-white/20 p-4 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <div className="size-2 bg-primary animate-pulse rounded-full" />
-                            <AnimatePresence mode="wait">
+                    {currentTalent && (
+                        <>
+                            <AnimatePresence mode="popLayout">
                                 <motion.div
                                     key={currentTalent.id}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
-                                    transition={{ duration: 0.3 }}
+                                    initial={{ opacity: 0.5, scale: 1.05 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                                    className="absolute inset-0 w-full h-full"
                                 >
-                                    <p className="text-white font-bold text-lg uppercase leading-none font-heading">
-                                        {currentTalent.meta.name}
-                                    </p>
-                                    <p className="text-white/40 text-xs font-mono uppercase mt-1">
-                                        {currentTalent.meta.role}
-                                    </p>
+                                    <Image
+                                        alt={currentTalent.meta.name}
+                                        src={currentTalent.meta.avatar_url}
+                                        fill
+                                        priority
+                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                                    />
                                 </motion.div>
                             </AnimatePresence>
-                        </div>
-                    </div>
+
+                            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] bg-black/80 backdrop-blur-md border border-white/20 p-4 flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="size-2 bg-primary animate-pulse rounded-full" />
+                                    <AnimatePresence mode="wait">
+                                        <motion.div
+                                            key={currentTalent.id}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -10 }}
+                                            transition={{ duration: 0.3 }}
+                                        >
+                                            <p className="text-white font-bold text-lg uppercase leading-none font-heading">
+                                                {currentTalent.meta.name}
+                                            </p>
+                                            <p className="text-white/40 text-xs font-mono uppercase mt-1">
+                                                {currentTalent.meta.role}
+                                            </p>
+                                        </motion.div>
+                                    </AnimatePresence>
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
         </section>

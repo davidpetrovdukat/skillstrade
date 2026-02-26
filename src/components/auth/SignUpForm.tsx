@@ -63,6 +63,7 @@ export function SignUpForm() {
 
     const [isFormValid, setIsFormValid] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
     const [error, setError] = useState('');
     const router = useRouter();
 
@@ -112,7 +113,11 @@ export function SignUpForm() {
             const result = await registerUser({}, formDataToSend);
 
             if (result.success) {
-                router.push('/login?registered=true');
+                setIsSuccess(true);
+                setIsSubmitting(false);
+                setTimeout(() => {
+                    router.push('/login?registered=true');
+                }, 1800);
             } else {
                 setError(result.error || 'Registration failed. Please try again.');
                 setIsSubmitting(false);
@@ -123,6 +128,22 @@ export function SignUpForm() {
             setIsSubmitting(false);
         }
     };
+
+    if (isSuccess) {
+        return (
+            <div className="w-full max-w-[600px] border border-primary/20 bg-primary/5 p-10 text-center animate-in fade-in duration-500">
+                <h3 className="text-3xl font-bold uppercase tracking-tight font-heading text-primary mb-4">
+                    Account Created
+                </h3>
+                <p className="text-white/70 font-mono text-base leading-relaxed mb-6">
+                    Your account has been created successfully.
+                </p>
+                <p className="text-white/50 font-mono text-sm uppercase tracking-widest">
+                    You will be redirected to the Log In page...
+                </p>
+            </div>
+        );
+    }
 
     return (
         <div className="w-full flex flex-col gap-8">
