@@ -2,16 +2,33 @@ import { NextResponse } from 'next/server';
 import { connectMongo } from '@/lib/db';
 import { Transaction, TxStatus, TxType } from '@/models/Transaction';
 import { User } from '@/models/User';
-import * as fs from 'fs';
-import * as path from 'path';
+import crypto from 'crypto';
 
 export async function POST(req: Request) {
     try {
-        const body = await req.json();
+        const rawBody = await req.text();
+        const payloadHash = req.headers.get('payload-hash');
+        const secretKey = process.env.PAYDECA_SECRET_KEY || '14162043-09b6-49df-8c40-3d4360be9069';
 
-        const rawStatus = body.status || body.Status;
-        const statusStr = typeof rawStatus === 'string' ? rawStatus.toUpperCase() : '';
-        const referenceNo = body.referenceNo || body.ReferenceNo;
+        let body: any;
+        try {
+            body = JSON.parse(rawBody);
+        } catch (e) {
+            return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+        }
+
+        const stringifiedBody = JSON.stringify(body);
+        const calculatedHash = crypto.createHash('sha256').update(`${stringifiedBody}${secretKey}`).digest('hex');
+
+        const isHashValid = payloadHash === calculatedHash;
+
+        if (!isHashValid && payloadHash) {
+            console.warn("Invalid Hash Detected.");
+        }
+
+        const messagetype = body.messagetype;
+        const messagePayload = body.message || {};
+        const referenceNo = messagePayload.referenceNo || body.referenceNo;
 
         if (!referenceNo) {
             return NextResponse.json({ error: "Missing referenceNo" }, { status: 400 });
@@ -19,8 +36,12 @@ export async function POST(req: Request) {
 
         await connectMongo();
 
-        // Find transaction
-        const tx = await Transaction.findOne({ paydecaRef: referenceNo });
+        const tx = await Transaction.findOne({
+            $or: [
+                { paydecaRef: referenceNo },
+                { referenceId: referenceNo }
+            ]
+        });
 
         if (!tx) {
             return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
@@ -30,25 +51,27 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: "Already processed" });
         }
 
-        const isSuccess = statusStr === 'SUCCESS' || statusStr === 'SUCCEEDED' || statusStr === 'APPROVED';
-        const isFailed = statusStr === 'ERROR' || statusStr === 'FAILED' || statusStr === 'EXPIRED' || statusStr === 'DECLINED';
+        if (messagetype === 'acquirerRes') {
+            const actionStatus = messagePayload.status;
 
-        if (isSuccess) {
-            tx.status = TxStatus.COMPLETED;
-            await tx.save();
+            if (actionStatus === 'succeeded') {
+                tx.status = TxStatus.COMPLETED;
+                await tx.save();
 
-            const user = await User.findById(tx.user);
-            if (user && tx.type === TxType.DEPOSIT) {
-                user.walletBalance = (user.walletBalance || 0) + tx.amount;
-                await user.save();
+                const user = await User.findById(tx.user);
+                if (user && tx.type === TxType.DEPOSIT) {
+                    user.walletBalance = (user.walletBalance || 0) + tx.amount;
+                    await user.save();
+                }
+
+                return NextResponse.json({ success: true, message: "Payment accepted" });
             }
 
-            return NextResponse.json({ success: true, message: "Payment accepted" });
-
-        } else if (isFailed) {
-            tx.status = TxStatus.FAILED;
-            await tx.save();
-            return NextResponse.json({ success: true, message: "Payment failed marked" });
+            if (actionStatus === 'failed') {
+                tx.status = TxStatus.FAILED;
+                await tx.save();
+                return NextResponse.json({ success: true, message: "Payment failed marked" });
+            }
         }
 
         return NextResponse.json({ message: "Status ignored / unknown" });
