@@ -1,8 +1,8 @@
 /**
  * Maps legacy full names to usernames so the frontend always shows usernames.
- * Used for display only; avatars and lookups are unchanged.
+ * Exported so avatar utilities can build reverse lookups.
  */
-const FULL_NAME_TO_USERNAME: Record<string, string> = {
+export const FULL_NAME_TO_USERNAME: Record<string, string> = {
     'Arthur Sterling': 'arthur.brand',
     'Elena Richter': 'elena.saasux',
     'Julien Dubois': 'julien.motion',

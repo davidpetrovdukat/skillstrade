@@ -11,17 +11,15 @@ import { Footer } from '@/components/layout/Footer'
 import { connectMongo } from '@/lib/db';
 import { Service } from '@/models/Service';
 import { Freelancer } from '@/models/Freelancer';
-import { RAW_SERVICES_DATA } from '@/lib/services-data';
 import { getDisplayUsername } from '@/lib/freelancer-usernames';
+import { buildCanonicalAvatarMap } from '@/lib/avatar-utils';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   let topServices: any[] = [];
   let featuredTalents: any[] = [];
-  const canonicalAvatarByName = new Map(
-    RAW_SERVICES_DATA.map((item) => [item.meta.name, item.meta.avatar_url])
-  );
+  const canonicalAvatarByName = buildCanonicalAvatarMap();
 
   try {
     await connectMongo();

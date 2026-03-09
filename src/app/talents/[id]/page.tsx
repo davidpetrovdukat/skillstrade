@@ -10,8 +10,8 @@ import { connectMongo } from '@/lib/db'
 import { Freelancer } from '@/models/Freelancer'
 import { Service } from '@/models/Service'
 import mongoose from 'mongoose'
-import { RAW_SERVICES_DATA } from '@/lib/services-data'
 import { getDisplayUsername } from '@/lib/freelancer-usernames'
+import { buildCanonicalAvatarMap } from '@/lib/avatar-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,9 +23,7 @@ interface PageProps {
 
 async function getProfile(id: string) {
     await connectMongo()
-    const canonicalAvatarByName = new Map(
-        RAW_SERVICES_DATA.map((item) => [item.meta.name, item.meta.avatar_url])
-    )
+    const canonicalAvatarByName = buildCanonicalAvatarMap()
 
     let freelancer;
 

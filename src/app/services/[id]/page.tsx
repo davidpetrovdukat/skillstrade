@@ -8,7 +8,7 @@ import { connectMongo } from '@/lib/db';
 import { Service } from '@/models/Service';
 import { Freelancer } from '@/models/Freelancer';
 import { User } from '@/models/User';
-import { RAW_SERVICES_DATA } from '@/lib/services-data';
+import { buildCanonicalAvatarMap } from '@/lib/avatar-utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,9 +20,7 @@ interface PageProps {
 
 export default async function ServiceDetailPage(props: PageProps) {
     const params = await props.params;
-    const canonicalAvatarByName = new Map(
-        RAW_SERVICES_DATA.map((item) => [item.meta.name, item.meta.avatar_url])
-    );
+    const canonicalAvatarByName = buildCanonicalAvatarMap();
 
     await connectMongo();
 
