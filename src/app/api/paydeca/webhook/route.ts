@@ -9,17 +9,6 @@ export async function POST(req: Request) {
     try {
         const body = await req.json();
 
-        const logFilePath = path.join(process.cwd(), 'paydeca_webhook.log');
-        const logEntry = `\n[${new Date().toISOString()}] WEBHOOK RECEIVED:\n${JSON.stringify(body, null, 2)}\n`;
-
-        try {
-            fs.appendFileSync(logFilePath, logEntry);
-        } catch (fsError) {
-            console.error("Failed to write to webhook log file", fsError);
-        }
-
-        console.log("Paydeca Webhook Received and logged.");
-
         const rawStatus = body.status || body.Status;
         const statusStr = typeof rawStatus === 'string' ? rawStatus.toUpperCase() : '';
         const referenceNo = body.referenceNo || body.ReferenceNo;
@@ -52,7 +41,6 @@ export async function POST(req: Request) {
             if (user && tx.type === TxType.DEPOSIT) {
                 user.walletBalance = (user.walletBalance || 0) + tx.amount;
                 await user.save();
-                fs.appendFileSync(logFilePath, `[${new Date().toISOString()}] Tokens added: ${tx.amount} to user ${user.email} (New Balance: ${user.walletBalance})\n`);
             }
 
             return NextResponse.json({ success: true, message: "Payment accepted" });
