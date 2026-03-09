@@ -35,7 +35,7 @@ export function ProcessSteps() {
                         <div className="relative z-10 w-64 p-6 bg-white/5 backdrop-blur-md border border-white/10 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                             <div className="flex items-center gap-4 mb-4">
                                 <div className="size-12 bg-white/10 overflow-hidden relative">
-                                    <Image src="/avatars/arthur-uk.jpg" alt="Profile" fill className="object-cover" />
+                                    <Image src="/avatars/arthur-uk.jpg" alt="Profile" fill className="object-cover" unoptimized />
                                 </div>
                                 <div className="space-y-1">
                                     <div className="w-24 h-2 bg-primary"></div>

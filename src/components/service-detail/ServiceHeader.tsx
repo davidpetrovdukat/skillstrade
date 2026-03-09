@@ -32,6 +32,7 @@ export function ServiceHeader({ title, freelancer }: ServiceHeaderProps) {
                             alt={getDisplayUsername(freelancer.name)}
                             fill
                             className="object-cover"
+                            unoptimized={freelancer.avatarUrl?.startsWith('/') === true}
                         />
                     </div>
                     <div className="flex flex-col">

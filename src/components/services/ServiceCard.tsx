@@ -67,10 +67,11 @@ export function ServiceCard({ id, imageUrl, deliveryDays, title, freelancer, pri
                     <div className="relative size-8 rounded-full overflow-hidden bg-white/10 shrink-0">
                         <Image
                             src={avatarSrc}
-                            alt={freelancer.name}
+                            alt={getDisplayUsername(freelancer.name)}
                             fill
                             sizes="32px"
                             className="object-cover"
+                            unoptimized={avatarSrc?.startsWith('/') === true}
                         />
                     </div>
                     <div className="flex flex-col min-w-0">

@@ -22,6 +22,7 @@ export function TalentCard({ id, image, name, flag, role, skills, statusColor = 
                             alt={name}
                             fill
                             className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out"
+                            unoptimized={image?.startsWith('/') === true}
                         />
                     </div>
                     <div

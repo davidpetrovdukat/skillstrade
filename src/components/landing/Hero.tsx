@@ -73,6 +73,7 @@ export function Hero() {
                                         priority
                                         sizes="(max-width: 768px) 100vw, 50vw"
                                         className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                                        unoptimized={currentTalent.meta.avatar_url?.startsWith('/') === true}
                                     />
                                 </motion.div>
                             </AnimatePresence>

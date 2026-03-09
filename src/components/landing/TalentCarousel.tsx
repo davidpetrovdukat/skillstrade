@@ -70,6 +70,7 @@ export function TalentCarousel({ talents }: TalentCarouselProps) {
                                         fill
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                                         className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                                        unoptimized={talent.avatarUrl?.startsWith('/') === true}
                                     />
                                 ) : (
                                     <div className="bg-neutral-800 w-full h-full" />
