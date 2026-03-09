@@ -2,7 +2,7 @@ export const SKILL_TRADE_DATA = [
     {
         "id": "user_01_arthur",
         "freelancer": {
-            "name": "Arthur Sterling",
+            "name": "arthur.brand",
             "avatar_url": "https://lh3.googleusercontent.com/aida-public/AB6AXuDslLZGNsE5vYGAXtUAJQ3aLam41exUEGrBZ2MSn9dwSTXp5BMQNYddpoT1GHN7o53gZVqYgVRMjfqE05E5IozB16GhGnfBeDVTZ6qh2dSFE5C3So3XlhmEziTrgkJVbBTttLLdYpYR0Ij77fY16t3SC-N-ZO6Mj2VGXy9EqnGc6Y52d722Br2EVlGyrBmDUBwG8csIl7X6KQ6XS1jg_fkJ3oKCS5zkd1QQKIkIE2GmrvWZDv6r-DnvFFufrJPV9CiFGzQsEAM_08_P", // Placeholder
             "location": "London, UK",
             "flag": "🇬🇧",
@@ -43,7 +43,7 @@ export const SKILL_TRADE_DATA = [
     {
         "id": "user_02_elena",
         "freelancer": {
-            "name": "Elena Richter",
+            "name": "elena.saasux",
             "avatar_url": "https://lh3.googleusercontent.com/aida-public/AB6AXuAs6vKvM0AOJG0HQc6z6JJw82usEtnHea5uAJuNwwx08-mNCD2dS-JlUgaCUZZCrrWo00mX7hO7jLDnoxQq_PxGctM4RqKoGA9KNR9nlPAMziif1f6yWJwNlVq42nQrD2ZmEhNvoPqeX-oKkJz1sL0gU6uY4FpkypklKLEQDNf2RMMeGkPZUxEYd4dU6Atd36Q860Oyvzs8X05aqd0g0Ww6xgWlV20ZUmjXf7n_gdqDRZuoqDqGsCi5bruhWplO2xE0Hn4SPVy1tELq", // Placeholder
             "location": "Berlin, Germany",
             "flag": "🇩🇪",
@@ -84,7 +84,7 @@ export const SKILL_TRADE_DATA = [
     {
         "id": "user_03_julien",
         "freelancer": {
-            "name": "Julien Dubois",
+            "name": "julien.motion",
             "avatar_url": "https://lh3.googleusercontent.com/aida-public/AB6AXuBdlt6B_z5B_2tWb9VPMbvHpFQHEV3O9jpqPhyA5Sq7umQ4CmOudaTtBWQ6At-LeP7DopKD5Jprm3IVWupovRjuCoUA5bdhD66qajV8sYI8dDg1kB62ZbFM4piZ5EENMbDv1SJ2xn9IDHdLyw7fy2TOqR_BwWTZbFZzLqZ38VPMSJ1R7QdEbouzfhBviTXYOt-Fc6Jh0VcCMh2_p89wszU2YjyeNK2e_-V-mAOocWLqY--P3gbhnSu3WEgei4XaJTdDdtWRLV9xJZ3M",
             "location": "Paris, France",
             "flag": "🇫🇷",
@@ -124,7 +124,7 @@ export const SKILL_TRADE_DATA = [
     {
         "id": "user_04_lars",
         "freelancer": {
-            "name": "Lars Jensen",
+            "name": "lars.render",
             "avatar_url": "https://lh3.googleusercontent.com/aida-public/AB6AXuB4nYnetPid5RqzITtr882EilKr3NozPYY-mO7YfCj4TLO4wjR6vpKx5oidbiHpnVDDQUQAs3R8k7PDuDovdW6mUfgzzf6mCG7JXymbTgsei7WHyDmsYGb7_qykI53XFx6NlQ94URzk1aVFNEL6WiqyAS2faUu7Lp8upNA36p7xZdeSsgIqfEadso3ZKs9v-DZM0mH_4HqOgXUXdR44rzOPewjJ23DjUDyAiEirWEBIVtTDUIxtM4Fvxv3CQDB3pQQ6ezhfp1_6axAB",
             "location": "Copenhagen, Denmark",
             "flag": "🇩🇰",

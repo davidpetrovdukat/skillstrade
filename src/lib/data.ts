@@ -61,7 +61,7 @@ const BATCH_1: FreelancerProfile[] = [
   {
     "id": "user_01_arthur",
     "meta": {
-      "name": "Arthur Sterling",
+      "name": "arthur.brand",
       "role": "Strategic Brand Identity",
       "location": "London, UK",
       "flag": "🇬🇧",
@@ -161,7 +161,7 @@ const BATCH_1: FreelancerProfile[] = [
   {
     "id": "user_02_elena",
     "meta": {
-      "name": "Elena Richter",
+      "name": "elena.saasux",
       "role": "SaaS UI/UX Design",
       "location": "Berlin, Germany",
       "flag": "🇩🇪",
@@ -262,7 +262,7 @@ const BATCH_1: FreelancerProfile[] = [
   {
     "id": "user_03_julien",
     "meta": {
-      "name": "Julien Dubois",
+      "name": "julien.motion",
       "role": "3D Motion Graphics",
       "location": "Paris, France",
       "flag": "🇫🇷",
@@ -362,7 +362,7 @@ const BATCH_1: FreelancerProfile[] = [
   {
     "id": "user_04_lars",
     "meta": {
-      "name": "Lars Jensen",
+      "name": "lars.render",
       "role": "Industrial Design Renders",
       "location": "Copenhagen, Denmark",
       "flag": "🇩🇰",
@@ -462,7 +462,7 @@ const BATCH_1: FreelancerProfile[] = [
   {
     "id": "user_05_sophie",
     "meta": {
-      "name": "Sophie Caldwell",
+      "name": "sophie.pitch",
       "role": "Pitch Deck Design",
       "location": "Manchester, UK",
       "flag": "🇬🇧",
@@ -561,7 +561,7 @@ const BATCH_1: FreelancerProfile[] = [
   {
     "id": "user_06_giulia",
     "meta": {
-      "name": "Giulia Rossi",
+      "name": "giulia.mobile",
       "role": "Mobile App UI/UX",
       "location": "Milan, Italy",
       "flag": "🇮🇹",
@@ -661,7 +661,7 @@ const BATCH_1: FreelancerProfile[] = [
   {
     "id": "user_07_marcus",
     "meta": {
-      "name": "Marcus Thorne",
+      "name": "marcus.webflow",
       "role": "Webflow Development",
       "location": "London, UK",
       "flag": "🇬🇧",
@@ -761,7 +761,7 @@ const BATCH_1: FreelancerProfile[] = [
   {
     "id": "user_08_stefan",
     "meta": {
-      "name": "Stefan Kovac",
+      "name": "stefan.next",
       "role": "React / Next.js Dev",
       "location": "Prague, Czech Republic",
       "flag": "🇨🇿",
@@ -865,7 +865,7 @@ const BATCH_2: FreelancerProfile[] = [
   {
     "id": "user_09_erik",
     "meta": {
-      "name": "Erik Tamm",
+      "name": "erik.web3",
       "role": "Smart Contracts (Solidity)",
       "location": "Tallinn, Estonia",
       "flag": "🇪🇪",
@@ -966,7 +966,7 @@ const BATCH_2: FreelancerProfile[] = [
   {
     "id": "user_10_bram",
     "meta": {
-      "name": "Bram Visser",
+      "name": "bram.shopify",
       "role": "Shopify Liquid Developer",
       "location": "Amsterdam, Netherlands",
       "flag": "🇳🇱",
@@ -1067,7 +1067,7 @@ const BATCH_2: FreelancerProfile[] = [
   {
     "id": "user_11_thomas",
     "meta": {
-      "name": "Thomas Weber",
+      "name": "thomas.python",
       "role": "Python Automation",
       "location": "Vienna, Austria",
       "flag": "🇦🇹",
@@ -1168,7 +1168,7 @@ const BATCH_2: FreelancerProfile[] = [
   {
     "id": "user_12_andreas",
     "meta": {
-      "name": "Andreas Fischer",
+      "name": "andreas.cyber",
       "role": "Cybersecurity Audit",
       "location": "Zurich, Switzerland",
       "flag": "🇨🇭",
@@ -1269,7 +1269,7 @@ const BATCH_2: FreelancerProfile[] = [
   {
     "id": "user_13_claire",
     "meta": {
-      "name": "Claire O'Connell",
+      "name": "claire.seoaudit",
       "role": "Technical SEO Strategy",
       "location": "Dublin, Ireland",
       "flag": "🇮🇪",
@@ -1369,7 +1369,7 @@ const BATCH_2: FreelancerProfile[] = [
   {
     "id": "user_14_hugo",
     "meta": {
-      "name": "Hugo Silva",
+      "name": "hugo.ppc",
       "role": "Google Ads Specialist",
       "location": "Lisbon, Portugal",
       "flag": "🇵🇹",
@@ -1470,7 +1470,7 @@ const BATCH_2: FreelancerProfile[] = [
   {
     "id": "user_15_lucia",
     "meta": {
-      "name": "Lucia Garcia",
+      "name": "lucia.social",
       "role": "Social Media Manager",
       "location": "Barcelona, Spain",
       "flag": "🇪🇸",
@@ -1571,7 +1571,7 @@ const BATCH_2: FreelancerProfile[] = [
   {
     "id": "user_16_oliver",
     "meta": {
-      "name": "Oliver Twist",
+      "name": "nigel.crm",
       "role": "Email Marketing CRM",
       "location": "London, UK",
       "flag": "🇬🇧",
@@ -1674,7 +1674,7 @@ const BATCH_3: FreelancerProfile[] = [
   {
     "id": "user_17_james",
     "meta": {
-      "name": "James Sterling",
+      "name": "james.cfo",
       "role": "Fractional CFO",
       "location": "London, UK",
       "flag": "🇬🇧",
@@ -1773,7 +1773,7 @@ const BATCH_3: FreelancerProfile[] = [
   {
     "id": "user_18_antoine",
     "meta": {
-      "name": "Antoine Martin",
+      "name": "antoine.legal",
       "role": "Tech Legal Counsel",
       "location": "Paris, France",
       "flag": "🇫🇷",
@@ -1873,7 +1873,7 @@ const BATCH_3: FreelancerProfile[] = [
   {
     "id": "user_19_petra",
     "meta": {
-      "name": "Petra Kowalski",
+      "name": "petra.product",
       "role": "Product Manager",
       "location": "Warsaw, Poland",
       "flag": "🇵🇱",
@@ -1974,7 +1974,7 @@ const BATCH_3: FreelancerProfile[] = [
   {
     "id": "user_20_kasia",
     "meta": {
-      "name": "Kasia Novak",
+      "name": "kasia.dataviz",
       "role": "Data Visualization",
       "location": "Krakow, Poland",
       "flag": "🇵🇱",
@@ -2075,7 +2075,7 @@ const BATCH_3: FreelancerProfile[] = [
   {
     "id": "user_21_eleanor",
     "meta": {
-      "name": "Eleanor Rigby",
+      "name": "eleanor.uxwrite",
       "role": "UX Writing",
       "location": "Liverpool, UK",
       "flag": "🇬🇧",
@@ -2174,7 +2174,7 @@ const BATCH_3: FreelancerProfile[] = [
   {
     "id": "user_22_leo",
     "meta": {
-      "name": "Leo Davies",
+      "name": "leo.reels",
       "role": "Video Editing",
       "location": "Cardiff, UK",
       "flag": "🇬🇧",
@@ -2274,7 +2274,7 @@ const BATCH_3: FreelancerProfile[] = [
   {
     "id": "user_23_christian",
     "meta": {
-      "name": "Christian Wessner",
+      "name": "christian.docs",
       "role": "Technical Writing",
       "location": "Munich, Germany",
       "flag": "🇩🇪",
@@ -2375,7 +2375,7 @@ const BATCH_3: FreelancerProfile[] = [
   {
     "id": "user_24_sarah",
     "meta": {
-      "name": "Sarah Jones",
+      "name": "sarah.copy",
       "role": "Conversion Copywriting",
       "location": "London, UK",
       "flag": "🇬🇧",

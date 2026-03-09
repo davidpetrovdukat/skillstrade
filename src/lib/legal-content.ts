@@ -12,125 +12,211 @@ export interface LegalDocument {
 export const LEGAL_DOCS: Record<string, LegalDocument> = {
     "terms": {
         title: "Terms and Conditions",
-        lastUpdated: "February 2, 2026",
+        lastUpdated: "February 26, 2026",
         sections: [
             {
-                title: "1. INTRODUCTION AND ACCEPTANCE",
+                title: "Introduction",
                 content: [
-                    "1.1. Parties. These Terms and Conditions (“Terms”) constitute a legally binding agreement between RENATASTRADAS MB (“Company”, “we”, “us”, “SkillsTrade”), a company registered in Lithuania (Company Number: 307123019; VAT: LT100017846812), with its registered office at Šiauliai, Vytauto g. 147-18, LT-76341, and you (“User”, “Client”, “Freelancer”, “you”).",
-                    "1.2. Nature of the Platform. SkillsTrade is an online marketplace that connects businesses and individuals (“Clients”) with vetted independent professionals (“Freelancers”) for the provision of specialized services.",
-                    "Important Notice: The Company acts solely as an intermediary and technological service provider. We are not the employer of any Freelancer, nor are we a party to the direct service contracts formed between Clients and Freelancers, except for the limited purpose of processing payments and holding funds in Escrow.",
-                    "1.3. Acceptance. By registering an account, purchasing Tokens, posting a Brief, or ordering a Service Package on skills-trade.com (the “Site”), you expressly agree to be bound by these Terms. If you do not agree, you must cease using the Site immediately."
+                    "These Terms and Conditions (“Terms”) govern your access to and use of the Skills-Trade platform available at skills-trade.com and any related services, features, dashboards, content, communications, and transactions made available through the platform (collectively, the “Platform”).",
+                    "By accessing or using the Platform, creating an account, purchasing Tokens, submitting a brief, ordering services, or otherwise interacting with Skills-Trade, you agree to be bound by these Terms. If you do not agree, you must not use the Platform."
                 ]
             },
             {
-                title: "2. DEFINITIONS",
+                title: "1. Who We Are",
                 content: [
-                    "To ensure clarity, the following terms are defined:",
-                    "• Account: The registered user profile on the Platform (Client or Freelancer).",
-                    "• Tokens (T): The internal utility currency used to transact within the Site. 1 Token represents a specific value in Fiat currency as defined at the time of purchase.",
-                    "• Service Package: A pre-defined scope of work listed by a Freelancer (e.g., \"Landing Page Copy\") with a fixed price and delivery timeline.",
-                    "• Custom Brief: A request posted by a Client for a bespoke project that does not fit into a standard Service Package.",
-                    "• Order: A binding agreement between a Client and a Freelancer, formed either by purchasing a Service Package or accepting a proposal for a Custom Brief.",
-                    "• Escrow: The holding of Tokens by the Company to ensure payment security for both parties.",
-                    "• Deliverables: The final work product (files, documents, code, designs) delivered by the Freelancer to the Client.",
-                    "• Vetted Talent: Freelancers who have undergone the Company’s verification process regarding their identity and portfolio."
+                    "The Platform is owned and operated by RENATASTRADAS MB (“Skills-Trade”, “Company”, “we”, “us”, or “our”), a company registered in Lithuania.",
+                    "Company details: RENATASTRADAS MB. Company No.: 307123019. VAT No.: LT100017846812. Registered address: Šiauliai, Vytauto g. 147-18, LT-76341, Lithuania. Email: info@skills-trade.com. Phone: +370 80000487."
                 ]
             },
             {
-                title: "3. ACCOUNT ELIGIBILITY AND SECURITY",
+                title: "2. Nature of the Platform",
                 content: [
-                    "3.1. Eligibility. You must be at least 18 years old to use the Service. By creating an account, you confirm you have the legal capacity to enter into a binding contract.",
-                    "3.2. Verification and Vetting. To maintain the \"Premium/Vetted\" status of the Platform, Freelancers must undergo a mandatory verification process (\"Vetting\") before listing services. We reserve the right to request identity documentation (KYC) and portfolio evidence.",
-                    "3.3. Security. You are responsible for safeguarding your login credentials. RENATASTRADAS MB is not liable for any loss (including theft of Tokens) arising from unauthorized access to your Account due to your failure to secure your device or password."
+                    "Skills-Trade is an online platform that connects: businesses and individual customers seeking creative, technical, strategic, or other professional services (“Clients”); and independent professionals who may provide such services through the Platform after review and approval by Skills-Trade (“Freelancers”).",
+                    "Skills-Trade operates as a marketplace, workflow platform, and payment facilitation layer for Orders placed on the Platform. Unless expressly stated otherwise, Skills-Trade is not the employer, partner, agent, representative, or joint venture partner of any Freelancer or Client.",
+                    "Freelancers are independent contractors and are solely responsible for the services they provide, their statements, qualifications, taxes, compliance obligations, and business operations."
                 ]
             },
             {
-                title: "4. TOKEN SYSTEM AND PAYMENTS",
+                title: "3. Eligibility",
                 content: [
-                    "4.1. Purchasing Tokens. Services on the Site are purchased exclusively using Tokens. Users may purchase Tokens using fiat currency (EUR, GBP, USD) via Visa or MasterCard.",
-                    "• No Cash Value: Tokens are a limited license to use digital features of our Site. They are not cryptocurrency, financial instruments, or investment vehicles.",
-                    "• Exchange Rate: The price of Tokens is displayed at checkout. The Company reserves the right to adjust Token packages and pricing at any time.",
-                    "4.2. Refunds of Tokens to Fiat. Users may request a refund of unused purchased Tokens back to their original payment method (Fiat currency) within 14 days of purchase, provided those Tokens have not been committed to an active Order.",
-                    "• Refund requests must be made via support ticket.",
-                    "• The Company reserves the right to deduct a processing fee to cover bank charges and administrative costs for Fiat refunds."
+                    "You may use the Platform only if: you are at least 18 years old; you have legal capacity to enter into binding contracts; your use of the Platform does not violate any applicable law or regulation; and any information you provide to us is complete, accurate, and not misleading.",
+                    "If you use the Platform on behalf of a company, agency, or other legal entity, you represent and warrant that you have authority to bind that entity to these Terms.",
+                    "The Platform may be used by both business customers (B2B) and individual consumers (B2C)."
                 ]
             },
             {
-                title: "5. ORDER TYPES AND PROCESS",
+                title: "4. Accounts",
                 content: [
-                    "5.1. Purchasing Service Packages. Freelancers list specific \"Service Packages\" with a fixed scope, price (in Tokens), and delivery timeframe.",
-                    "• Scope of Work: By purchasing a Service Package, the Client agrees to the exact scope described in the service listing. Any work outside this description is considered \"Out of Scope.\"",
-                    "• Add-ons: Clients may purchase additional features (\"Extras\") at the checkout (e.g., \"Fast Delivery\"). These become part of the binding Order.",
-                    "5.2. Custom Briefs & Proposals. If a Client cannot find a suitable Service Package, they may post a \"Custom Brief.\"",
-                    "• Process: The Client describes their needs. Vetted Freelancers may submit proposals (bids) with a specific Token price and timeline. An Order is created only when the Client accepts a specific Freelancer’s proposal and the Tokens are deducted into Escrow.",
-                    "5.3. Revisions. Unless otherwise stated in the Service Package or Proposal, each Order includes a limited number of revisions. A \"Revision\" is defined as a minor modification to the delivered work. It does not cover a complete redesign or a change in the initial requirements (\"Scope Creep\"). Excessive revisions may require an additional payment of Tokens."
+                    "4.1 Client accounts. Clients may register an account directly through the Platform using the registration methods made available by Skills-Trade, including email/password and any supported third-party login method. You must keep your login details confidential and must not share your account with any other person. You are responsible for all activities that occur under your account, including Orders, messages, approvals, disputes, payment activity, and any actions taken through your dashboard.",
+                    "4.2 Freelancer onboarding. Freelancers do not automatically obtain seller access by simple account registration. Any person wishing to provide services through the Platform must complete the relevant application or onboarding form and may be reviewed by Skills-Trade before being approved. Submission of an application does not guarantee approval.",
+                    "4.3 Account verification and review. We may request documents, portfolio samples, identity details, business information, or other supporting materials at any time to verify account ownership, identity, expertise, or legitimacy of activity on the Platform.",
+                    "4.4 Refusal of registration or onboarding. We may refuse registration, deny Freelancer approval, or restrict account functionality where reasonably necessary, including where: the provided information is inaccurate, incomplete, inconsistent, or appears misleading; we cannot verify identity, business details, or account ownership; we are not satisfied with the claimed skills, experience, portfolio quality, or professional reliability of a Freelancer applicant; we suspect fraud, impersonation, chargeback abuse, sanctions risk, unlawful conduct, or misuse of the Platform; the applicant or user has breached these Terms or any related policy before; the proposed services, content, or conduct are incompatible with the Platform’s standards, commercial model, or risk controls."
                 ]
             },
             {
-                title: "6. ESCROW AND ORDER COMPLETION (\"SAFE DEAL\")",
+                title: "5. Account Security",
                 content: [
-                    "To protect both parties, SkillsTrade uses an Escrow system:",
-                    "6.1. Initiation. When a Client places an Order, the agreed amount of Tokens is deducted from the Client’s wallet and held in a secure Escrow account by the Platform.",
-                    "6.2. Work Phase. The Freelancer performs the work. The Client cannot withdraw these Tokens, and the Freelancer cannot access them yet.",
-                    "6.3. Delivery and Acceptance. Once the Freelancer delivers the work, the Client has three (3) days to review it.",
-                    "• Approval: If the Client clicks \"Approve,\" Tokens are released to the Freelancer.",
-                    "• Auto-Acceptance: If the Client takes no action within three (3) days of delivery, the Order is automatically marked as \"Completed,\" and Tokens are released to the Freelancer.",
-                    "6.4. Dispute Resolution. If a Client claims the work was not delivered according to the description, they must open a Dispute ticket before the Auto-Acceptance period ends. SkillsTrade Admin acts as the final arbitrator. We may decide to release the Tokens to the Freelancer, return them to the Client, or split the amount based on the evidence of work performed. This decision is final."
+                    "You are responsible for maintaining the security of your account, credentials, devices, and email access. You must notify us promptly at info@skills-trade.com if you suspect unauthorized access or misuse.",
+                    "We are not responsible for losses caused by: your failure to secure your login credentials or email account; your sharing of access with third parties; phishing, social engineering, device compromise, or other issues outside our reasonable control."
                 ]
             },
             {
-                title: "7. FREELANCER RELATIONSHIP AND DISCLAIMERS",
+                title: "6. Token System",
                 content: [
-                    "7.1. Independent Contractor Status. Freelancers are independent contractors running their own businesses. Nothing in these Terms creates an employment, partnership, or agency relationship between RENATASTRADAS MB and any Freelancer. The Company does not control the manner, time, or method in which Freelancers perform their services.",
-                    "7.2. Vetted Talent Disclaimer. While SkillsTrade makes commercially reasonable efforts to verify the credentials and portfolios of the Freelancers (\"Vetting\"), we do not guarantee the specific quality, accuracy, or outcome of any work performed. The Client is responsible for selecting the right Freelancer for their needs.",
-                    "7.3. Non-Circumvention. You agree not to circumvent the Platform by soliciting, contracting with, or paying any Freelancer listed on our site outside of the SkillsTrade ecosystem for a period of 24 months from your last interaction.",
-                    "• Prohibited: Sharing direct email addresses, phone numbers, or handles for external messengers (Telegram, WhatsApp) before an Order is established.",
-                    "• Penalty: Violation of this clause may result in immediate account termination and forfeiture of Token balance."
+                    "6.1 Platform currency. The Platform uses an internal digital wallet and token system. Tokens are the internal unit used to pay for services available on the Platform. Base conversion rate: 1 EUR = 100 TKN. This means, unless stated otherwise in a specific package or promotion, each euro paid converts into 100 platform tokens.",
+                    "6.2 Token packages and bonuses. Skills-Trade may offer different Token packages, including packages with promotional or bonus tokens. For example: a package may include standard purchased tokens; and an additional promotional amount of bonus tokens. Bonus tokens are promotional only, have no separate cash value, and are subject to these Terms and any package-specific conditions.",
+                    "6.3 Tokens are not financial assets. Tokens: are not cryptocurrency; are not legal tender; are not bank deposits; are not e-money; are not securities, investment products, or stored-value instruments; do not generate interest; cannot be traded, transferred outside the Platform, pledged, or redeemed except as expressly permitted under these Terms. Tokens are a limited contractual right to use eligible Platform services.",
+                    "6.4 Token expiry. Purchased tokens do not expire. Bonus tokens also do not expire unless a specific promotional campaign expressly states otherwise.",
+                    "6.5 Changes to packages and pricing. We may change Token package structure, bonus mechanics, pricing, package names, promotional terms, and checkout presentation at any time for future purchases. Such changes do not retroactively alter tokens already credited to your account, except where required to correct a manifest technical error or comply with law."
                 ]
             },
             {
-                title: "8. INTELLECTUAL PROPERTY RIGHTS",
+                title: "7. Payments",
                 content: [
-                    "8.1. Platform IP. All site design, logos, software, and vetting methodologies are the intellectual property of RENATASTRADAS MB.",
-                    "8.2. Ownership of Work Product. Upon full payment of Tokens (release from Escrow) and acceptance of the work, all intellectual property rights in the Deliverables are automatically transferred from the Freelancer to the Client.",
-                    "• Exception: If the Client cancels the order and receives a refund, the Client holds no rights to use any drafts or materials delivered by the Freelancer during the cancelled order.",
-                    "• Portfolio Use: Unless explicitly agreed otherwise in a Non-Disclosure Agreement (NDA), Freelancers retain the right to display the work in their personal portfolios for promotional purposes."
+                    "7.1 Accepted payment methods. Token purchases are currently processed only by Visa and Mastercard. We may add, remove, suspend, or limit payment methods at any time.",
+                    "7.2 Payment authorization. By purchasing Tokens, you authorize us and our payment processors to charge your selected payment method for the displayed amount, including any applicable taxes or fees shown at checkout.",
+                    "7.3 Payment review. We may delay, reject, reverse, or hold a purchase where reasonably necessary for fraud screening, payment verification, compliance review, technical validation, or risk management. If a payment fails, is reversed, or is not successfully captured, we may decline to credit Tokens or may remove any Tokens credited in error."
                 ]
             },
             {
-                title: "9. CANCELLATION AND REFUNDS (ORDER LEVEL)",
+                title: "8. Refunds of Token Purchases",
                 content: [
-                    "9.1. Cancellation by Client.",
-                    "• Before Start: If a Client cancels an Order before the Freelancer has accepted it or started work, 100% of the Tokens are returned to the Client’s internal Wallet.",
-                    "• During Active Order: Cancellations during active work are subject to mutual agreement. If the Freelancer has already completed part of the work, they may be entitled to partial payment.",
-                    "9.2. Cancellation by Freelancer. If a Freelancer cancels an Order due to inability to complete the work, 100% of the Tokens are returned to the Client’s Wallet. Frequent cancellations by a Freelancer may result in loss of \"Vetted\" status."
+                    "8.1 Unused purchased tokens. A Client may request a refund of unused purchased tokens to the original payment method, provided that: the request is made within 14 days of the relevant purchase; and those purchased tokens have not been spent, committed to an active Order, reserved in escrow, or otherwise used.",
+                    "8.2 Bonus tokens. Bonus tokens are non-refundable and are excluded from fiat refunds. Where a package included both purchased tokens and bonus tokens, any approved refund will be calculated only by reference to the refundable purchased portion, and bonus tokens may be removed, cancelled, or disregarded for refund purposes.",
+                    "8.3 Refund fee. Approved fiat refunds may be subject to a processing and administration fee. The applicable fee may change from time to time and will be determined by Skills-Trade acting reasonably, taking into account payment processing costs, banking charges, administrative handling, and fraud prevention costs.",
+                    "8.4 Original payment method only. Any fiat refund, if approved, will be returned only to the original payment method used for the purchase, unless otherwise required by law.",
+                    "8.5 No refund in certain cases. We may refuse a fiat refund request where: the relevant purchased tokens were used in whole or in part; the refund request is late; the purchase is linked to fraud, abuse, chargeback activity, policy evasion, or suspicious conduct; we are required to withhold or refuse refund for legal, payment, or compliance reasons."
                 ]
             },
             {
-                title: "10. LIMITATION OF LIABILITY",
+                title: "9. Orders, Services, and Delivery",
                 content: [
-                    "10.1. Intermediary Role. To the fullest extent permitted by law, RENATASTRADAS MB shall not be liable for any damages arising from:",
-                    "• The acts or omissions of any Freelancer or Client. The quality, safety, or legality of the services provided by Freelancers.",
-                    "• Any reliance placed by you on the completeness or accuracy of Freelancer profiles.",
-                    "10.2. Maximum Liability. Our total liability for any claim arising out of these Terms is limited to the amount of fees (commissions) actually earned by RENATASTRADAS MB from your transactions in the 6 months preceding the claim."
+                    "9.1 Order types. Clients may obtain services through the Platform by: purchasing a listed fixed-price service package; or submitting a custom brief and proceeding with an approved scope or offer through the Platform. Each confirmed Order will reflect the applicable scope, price in Tokens, and expected delivery parameters.",
+                    "9.2 Scope of service. The binding scope of an Order is determined by the service listing, package description, custom brief, approved offer, dashboard order details, and any written clarifications accepted through the Platform. Anything outside the agreed scope is considered out of scope and may require a new Order, extra Tokens, or a revised agreement.",
+                    "9.3 Delivery method. Services, files, outputs, deliverables, or other Order results are delivered to the Client through: the Client’s dashboard on the Platform; and/or the email address linked to the Client’s registered account. Skills-Trade may use one or both of these delivery channels depending on the workflow, file type, project structure, technical limitations, or operational process.",
+                    "9.4 When an Order is considered delivered. An Order is considered delivered when the relevant work result is made available to the Client and the Order status on the Platform reflects completion workflow, including where the Order appears in the Client dashboard as Completed. For operational clarity: delivery may first occur when the work result is uploaded, shared, or issued through the Platform workflow; and the Order is treated as fully completed for payment release purposes when it is marked Completed in the dashboard, whether by approval, dispute outcome, or automatic completion under these Terms.",
+                    "9.5 Review period. After delivery, the Client has three (3) calendar days to review the delivered work and take one of the following actions through the Platform: accept the work; request changes that fall within the agreed scope, where applicable; or open a dispute before the review period ends.",
+                    "9.6 Automatic completion. If the Client takes no valid action during the review period, the Order may be automatically marked Completed, and the corresponding Tokens may be released to the Freelancer.",
+                    "9.7 Delivery by email and dashboard. The Client is responsible for monitoring both: the registered account dashboard; and the registered email inbox, including spam/junk folders where relevant. Failure to review or respond because the Client did not check their dashboard or registered email does not prevent completion or auto-completion of an Order."
                 ]
             },
             {
-                title: "11. GOVERNING LAW AND JURISDICTION",
+                title: "10. Revisions and Scope Changes",
                 content: [
-                    "11.1. Governing Law. These Terms shall be governed by and construed in accordance with the laws of the Republic of Lithuania.",
-                    "11.2. Jurisdiction. Any disputes arising under or in connection with these Terms shall be subject to the exclusive jurisdiction of the courts of Šiauliai, Lithuania."
+                    "Where revisions are included in the relevant package, offer, or Order details, such revisions are limited to adjustments that remain within the originally agreed scope. A revision does not include: a new concept; a materially different direction; a rewrite or redesign of the whole work; new deliverables not originally ordered; major changes caused by a change in the Client’s brief, business decision, or preferences after work began.",
+                    "Any request outside the original scope may be treated as an additional service requiring extra Tokens, a revised timeline, or a new Order. If a package or Order does not specify a revision count, Skills-Trade and/or the responsible Freelancer may determine, acting reasonably, whether a requested change is an in-scope correction or an out-of-scope change."
                 ]
             },
             {
-                title: "12. CONTACT INFORMATION",
+                title: "11. Escrow and Release of Tokens",
                 content: [
-                    "If you have questions regarding these Terms, Escrow procedures, or technical support, please contact us:",
-                    "RENATASTRADAS MB",
-                    "• Address: Šiauliai, Vytauto g. 147-18, LT-76341",
-                    "• Email: info@skills-trade.com",
-                    "• Phone: +37080000487"
+                    "11.1 Escrow holding. When a Client places an Order, the relevant Tokens may be deducted from the Client’s wallet and held within the Platform’s internal escrow workflow until the Order is completed, cancelled, or otherwise resolved.",
+                    "11.2 Release. Tokens held for an Order may be released to the Freelancer when: the Client accepts the work; the Order is automatically completed after the review period; or a dispute is resolved in favor of full or partial release.",
+                    "11.3 Completion after termination. If an account is terminated or suspended while an Order is active, Skills-Trade may permit the Order to be completed and may release the corresponding Tokens in accordance with the actual work status, dispute outcome, or reasonable internal assessment."
+                ]
+            },
+            {
+                title: "12. Manager Intervention and Order Problems",
+                content: [
+                    "If a Freelancer misses a deadline, stops responding, delivers incomplete work, or if a Client becomes unresponsive or otherwise disrupts the Order flow, Skills-Trade may intervene through a manager, support representative, moderation team, or legal/compliance representative, as applicable.",
+                    "We may take one or more of the following actions: request clarification or additional evidence from either party; extend timelines; pause the Order; facilitate a practical solution; determine whether work has been sufficiently delivered; issue a full or partial Token return to the Client; release full or partial Tokens to the Freelancer; cancel the Order where appropriate.",
+                    "Our decision on Platform-level order administration and disputes will be based on the materials available to us and may include dashboard history, communications, file submissions, timestamps, scope details, and conduct of the parties."
+                ]
+            },
+            {
+                title: "13. Intellectual Property",
+                content: [
+                    "13.1 Platform IP. The Platform itself, including its software, branding, design, layout, text, databases, workflows, graphics, and related materials, belongs to Skills-Trade or its licensors and is protected by intellectual property laws. You may not copy, scrape, reproduce, republish, reverse engineer, decompile, distribute, or exploit any part of the Platform except as permitted by law or by our prior written consent.",
+                    "13.2 Client ownership of delivered work. Subject to full payment for the relevant Order, the Client receives ownership of the final deliverables produced for that Order when the Client receives the completed Order through the Platform workflow. For practical purposes under the Platform, this means ownership transfers once the Order has been duly completed and paid through the Platform.",
+                    "13.3 Exclusions and third-party rights. The transfer described above applies to the final deliverables created for the Client under the relevant Order, but does not automatically include: rights in the Platform itself; pre-existing tools, methods, know-how, libraries, frameworks, templates, or general skills used by the Freelancer; open-source components subject to their own licenses; third-party fonts, stock assets, plugins, integrations, software, datasets, or other materials that are subject to separate license terms; any materials that the Freelancer or Client had before the Order began. To the extent any third-party or background elements are embedded in the deliverables, such elements remain subject to their own applicable terms and limitations.",
+                    "13.4 No rights if unpaid or refunded. If an Order is cancelled, reversed, refunded, or not fully paid through the Platform, the Client does not obtain the right to use draft materials, partial work, concepts, or deliverables associated with that Order unless expressly agreed otherwise in writing.",
+                    "13.5 No public portfolio display. Work completed through the Platform is not intended for public Freelancer portfolio display through the Platform workflow unless explicitly authorized in writing by Skills-Trade and the relevant Client. As a default rule for Skills-Trade transactions, such work is treated as non-public."
+                ]
+            },
+            {
+                title: "14. User Conduct Rules",
+                content: [
+                    "You must use the Platform lawfully, honestly, and in good faith. You must not: provide false, misleading, or incomplete information; impersonate another person or entity; create duplicate, deceptive, or unauthorized accounts; attempt to bypass onboarding, vetting, payment, or moderation controls; arrange or encourage off-platform payment, side deals, or direct contracting that circumvents Skills-Trade; share contact details or attempt to move a transaction outside the Platform for the purpose of avoiding fees, controls, or review; upload unlawful, infringing, abusive, defamatory, harmful, deceptive, or fraudulent content; infringe intellectual property, privacy, or confidentiality rights; misuse disputes, approvals, revisions, or chargebacks; harass, threaten, abuse, or intimidate other users or staff; use bots, scraping tools, automated extraction, or other technical means to harvest data or interfere with the Platform; upload malware, malicious code, or harmful files; resell, lease, transfer, or unlawfully use another account; engage in spam, manipulation, review abuse, traffic fraud, or fake activity."
+                ]
+            },
+            {
+                title: "15. Non-Circumvention and Off-Platform Dealing",
+                content: [
+                    "To protect the Platform and its business model, you must not circumvent Skills-Trade by taking business, payment, or service delivery outside the Platform with users you met through Skills-Trade. This includes: requesting or sharing direct payment details to complete work outside the Platform; moving negotiations or service performance off-platform to avoid Tokens, fees, review controls, or dispute handling; using information obtained through the Platform to contract directly with another user outside the Platform. We may suspend or terminate accounts, cancel Orders, remove balances, or take other protective measures where we reasonably believe circumvention has occurred."
+                ]
+            },
+            {
+                title: "16. Chargebacks, Payment Reversals, and Fraud",
+                content: [
+                    "If you initiate a chargeback, reversal, payment dispute, or similar recovery attempt through your bank or card issuer without first seeking resolution through the Platform, we may: suspend or restrict your account; freeze or remove associated Tokens or balances; contest the chargeback using available evidence; recover associated losses, fees, and administrative costs from you where permitted by law; permanently terminate your account.",
+                    "Where a chargeback relates to Tokens already used for Orders or services already delivered, you remain liable for the full value of the relevant transaction and any related costs, losses, processor penalties, and collection expenses incurred by Skills-Trade. We also reserve the right to report suspected fraud, payment abuse, stolen payment instrument use, or unlawful conduct to payment processors, banks, authorities, or relevant third parties where appropriate."
+                ]
+            },
+            {
+                title: "17. Suspension and Termination",
+                content: [
+                    "17.1 Our rights. We may suspend, restrict, or terminate any account, listing, Order access, wallet functionality, or Platform access at any time where reasonably necessary to: enforce these Terms; protect other users, the Platform, or payment systems; investigate fraud, abuse, unlawful conduct, or policy breaches; comply with legal obligations, sanctions, court orders, or regulatory requirements; respond to security, technical, or reputational risks.",
+                    "17.2 Effect on active Orders. Where reasonably possible, active Orders may be allowed to proceed to resolution or completion even if one party’s account is restricted or terminated.",
+                    "17.3 Effect on Tokens and payouts. Where an active Order is completed, the related Tokens may still be released to the Freelancer for work properly performed. Pending payouts properly earned by Freelancers may still be processed, subject to fraud review, dispute status, payment risk checks, and compliance requirements.",
+                    "17.4 Access to completed work. Following termination, completed work and order records may remain accessible through the delivery channels previously used for the transaction, including the Client’s registered email. We do not guarantee indefinite dashboard hosting or permanent storage of files or order history.",
+                    "17.5 No compensation. We are not liable to you for suspension, restriction, or termination taken in good faith under these Terms."
+                ]
+            },
+            {
+                title: "18. Disputes Between Users",
+                content: [
+                    "18.1 Internal handling. If a dispute arises regarding delivery, scope, quality, completion, delay, communication failure, or payment release, the matter should first be raised through the Platform’s dispute or support process.",
+                    "18.2 Review and decision. Skills-Trade may review available evidence and make a Platform-level decision through its support, management, moderation, legal, or compliance function. We may decide, at our discretion acting reasonably, to: reject the claim; return all Tokens to the Client; return part of the Tokens to the Client; release all Tokens to the Freelancer; or split the Tokens between the parties.",
+                    "18.3 Finality within the Platform. To the maximum extent permitted by law, Skills-Trade’s internal decision regarding the Platform handling of escrowed Tokens, Order status, and account measures is final for purposes of Platform administration. Nothing in this clause removes any non-waivable legal rights a consumer may have under applicable law."
+                ]
+            },
+            {
+                title: "19. Consumer Notice",
+                content: [
+                    "If you are a consumer, mandatory consumer rights that cannot legally be excluded will continue to apply. Where digital services begin immediately or Tokens are credited promptly after purchase at your request, your rights to cancel or withdraw may be limited to the extent permitted by applicable law once performance has begun, content has been supplied, or the purchased digital functionality has been used. Nothing in these Terms excludes rights that cannot lawfully be excluded."
+                ]
+            },
+            {
+                title: "20. Disclaimers",
+                content: [
+                    "The Platform is provided on an “as is” and “as available” basis. To the fullest extent permitted by law, Skills-Trade does not guarantee that: the Platform will be uninterrupted, error-free, secure, or always available; any Freelancer will be suitable for your needs; any service will achieve a particular business, creative, technical, or commercial result; files, communications, dashboards, or email delivery will always be free from delay, corruption, or third-party failure. We do not guarantee the legality, accuracy, quality, commercial value, fitness, or outcomes of services provided by independent Freelancers."
+                ]
+            },
+            {
+                title: "21. Limitation of Liability",
+                content: [
+                    "To the fullest extent permitted by law: Skills-Trade shall not be liable for indirect, incidental, consequential, special, exemplary, or punitive damages; Skills-Trade shall not be liable for loss of profit, revenue, business, contracts, goodwill, data, anticipated savings, business opportunities, or reputation; Skills-Trade shall not be liable for acts, omissions, fraud, negligence, misconduct, or contractual failures of Clients, Freelancers, payment processors, email providers, hosting providers, third-party software, or other third parties; Skills-Trade shall not be liable for delays, interruptions, security incidents, data loss, system failures, or technical errors beyond our reasonable control.",
+                    "To the fullest extent permitted by law, Skills-Trade’s total aggregate liability arising out of or in connection with the Platform or these Terms shall not exceed the total amount of Platform fees or commissions actually retained by Skills-Trade from the specific user giving rise to the claim during the six (6) months immediately preceding the event giving rise to liability. If applicable law does not permit some of the exclusions or limitations above, they shall apply only to the maximum extent permitted."
+                ]
+            },
+            {
+                title: "22. Indemnity",
+                content: [
+                    "You agree to defend, indemnify, and hold harmless Skills-Trade, RENATASTRADAS MB, its directors, officers, employees, contractors, advisors, and affiliates from and against any claims, liabilities, damages, losses, costs, and expenses, including reasonable legal fees, arising out of or related to: your use of the Platform; your breach of these Terms; your violation of law; your infringement of intellectual property, privacy, confidentiality, or other rights; your dispute with another user; your fraud, negligence, abuse, or misconduct."
+                ]
+            },
+            {
+                title: "23. Changes to These Terms",
+                content: [
+                    "We may update or modify these Terms from time to time. Where we make material changes, we may publish the updated version on the Platform and may also provide notice by dashboard notice, email, or other reasonable means. Unless a different effective date is stated, the updated Terms take effect when published on the Platform. Your continued use of the Platform after the effective date of updated Terms constitutes acceptance of the revised Terms. If you do not agree to the updated Terms, you must stop using the Platform."
+                ]
+            },
+            {
+                title: "24. Governing Law and Jurisdiction",
+                content: [
+                    "These Terms and any non-contractual obligations arising out of or in connection with them shall be governed by the laws of the Republic of Lithuania. Subject to any mandatory rights under applicable consumer law, the courts of Lithuania shall have exclusive jurisdiction over disputes arising out of or in connection with these Terms, and venue may be brought in the competent courts of Šiauliai, Lithuania where applicable."
+                ]
+            },
+            {
+                title: "25. Notices and Contact",
+                content: [
+                    "All legal notices, complaints, support requests, and communications relating to these Terms should be sent to: info@skills-trade.com or by post to: RENATASTRADAS MB, Šiauliai, Vytauto g. 147-18, LT-76341, Lithuania."
+                ]
+            },
+            {
+                title: "26. Miscellaneous",
+                content: [
+                    "If any provision of these Terms is found to be unlawful, invalid, or unenforceable, the remaining provisions will remain in full force and effect. Our failure to enforce any provision does not waive our right to enforce it later. You may not assign or transfer your rights or obligations under these Terms without our prior written consent. We may assign or transfer our rights and obligations under these Terms where reasonably necessary in connection with business restructuring, sale, merger, or operational reorganization. These Terms, together with any policies expressly incorporated into them, constitute the entire agreement between you and Skills-Trade regarding the Platform."
                 ]
             }
         ]

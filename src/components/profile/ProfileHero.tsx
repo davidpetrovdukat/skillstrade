@@ -42,11 +42,11 @@ export function ProfileHero({ profile }: ProfileHeroProps) {
                         <span>{profile.meta.location} {profile.meta.flag}</span>
                     </div>
 
-                    {/* Huge Name */}
+                    {/* Huge Name (username, e.g. arthur.brand) */}
                     <h1 className="text-6xl md:text-7xl xl:text-8xl font-bold uppercase leading-[0.85] tracking-tighter text-white font-heading">
-                        {profile.meta.name.split(' ')[0]} <br />
+                        {profile.meta.name.includes('.') ? profile.meta.name.split('.')[0] : profile.meta.name} <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/40">
-                            {profile.meta.name.split(' ').slice(1).join(' ')}
+                            {profile.meta.name.includes('.') ? profile.meta.name.split('.')[1] : ''}
                         </span>
                     </h1>
 

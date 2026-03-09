@@ -35,7 +35,7 @@ export default async function MyOrdersPage() {
 
     if (orderCount === 0) {
         // Find Sarah Jenkins
-        const sarah = await Freelancer.findOne({ name: 'Sarah Jenkins' });
+        const sarah = await Freelancer.findOne({ name: 'sarah.copy' });
 
         if (sarah) {
             // Find a service by Sarah or create a mock one if needed, but let's try to find one first

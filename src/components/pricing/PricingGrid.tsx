@@ -12,10 +12,13 @@ interface PricingGridProps {
     isDashboard?: boolean;
 }
 
+const TERMS_LINK = '/legal/terms';
+
 export default function PricingGrid({ isDashboard = false }: PricingGridProps) {
     const { convert, currency } = useCurrencyStore();
     const [customAmount, setCustomAmount] = useState<string>("");
     const [mounted, setMounted] = useState(false);
+    const [termsAgreed, setTermsAgreed] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -109,9 +112,24 @@ export default function PricingGrid({ isDashboard = false }: PricingGridProps) {
                         ))}
                     </ul>
 
+                    <label className="flex items-start gap-3 mt-auto cursor-pointer group/terms">
+                        <input
+                            type="checkbox"
+                            checked={termsAgreed}
+                            onChange={(e) => setTermsAgreed(e.target.checked)}
+                            className="mt-1 size-4 rounded border-white/30 bg-white/5 text-primary focus:ring-primary focus:ring-offset-0 focus:ring-2 cursor-pointer"
+                        />
+                        <span className="text-sm text-white/80 group-hover/terms:text-white">
+                            I have read and agree to the{' '}
+                            <Link href={TERMS_LINK} className="underline hover:text-primary transition-colors">
+                                Terms
+                            </Link>
+                        </span>
+                    </label>
                     <button
+                        disabled={!termsAgreed}
                         onClick={() => handleBuy(pkg.name, pkg.price_eur, pkg.tokens_total)}
-                        className={`w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 ${pkg.badge
+                        className={`w-full py-4 text-sm font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/10 ${pkg.badge
                             ? 'bg-primary hover:bg-white text-black'
                             : 'bg-white/10 hover:bg-white text-white hover:text-black'
                             }`}
@@ -165,9 +183,24 @@ export default function PricingGrid({ isDashboard = false }: PricingGridProps) {
                     </div>
                 </div>
 
+                <label className="flex items-start gap-3 mt-auto cursor-pointer group/terms">
+                    <input
+                        type="checkbox"
+                        checked={termsAgreed}
+                        onChange={(e) => setTermsAgreed(e.target.checked)}
+                        className="mt-1 size-4 rounded border-white/30 bg-white/5 text-primary focus:ring-primary focus:ring-offset-0 focus:ring-2 cursor-pointer"
+                    />
+                    <span className="text-sm text-white/80 group-hover/terms:text-white">
+                        I have read and agree to the{' '}
+                        <Link href={TERMS_LINK} className="underline hover:text-primary transition-colors">
+                            Terms
+                        </Link>
+                    </span>
+                </label>
                 <button
+                    disabled={!termsAgreed}
                     onClick={() => handleBuy(`Custom Amount`, amountInEur, customTokens)}
-                    className="w-full py-4 text-sm font-bold uppercase tracking-widest transition-all mt-auto flex items-center justify-center gap-2 bg-white/10 hover:bg-white text-white hover:text-black">
+                    className="w-full py-4 text-sm font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 bg-white/10 hover:bg-white text-white hover:text-black disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/10">
                     <Zap className="w-4 h-4 fill-current" />
                     Buy Now
                 </button>

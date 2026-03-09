@@ -6,6 +6,7 @@ import { JoinRosterCTA } from '@/components/talents/JoinRosterCTA'
 import { connectMongo } from '@/lib/db'
 import { Freelancer } from '@/models/Freelancer'
 import { RAW_SERVICES_DATA } from '@/lib/services-data'
+import { getDisplayUsername } from '@/lib/freelancer-usernames'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,7 +20,7 @@ async function getFreelancers() {
     return freelancers.map(f => ({
         id: (f as any)._id.toString(),
         image: canonicalAvatarByName.get(f.name) || f.avatarUrl,
-        name: f.name,
+        name: getDisplayUsername(f.name),
         flag: f.flag,
         role: f.role,
         skills: f.skills || [],

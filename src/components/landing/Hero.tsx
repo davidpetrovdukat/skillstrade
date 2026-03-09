@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { RAW_SERVICES_DATA } from '@/lib/services-data'
 
 // Stable list for hero slideshow (excluded from carousel) – avoids useEffect dependency size changing between renders
-const HERO_SLIDESHOW_DATA = RAW_SERVICES_DATA.filter((item) => item.meta.name !== 'Arthur Sterling');
+const HERO_SLIDESHOW_DATA = RAW_SERVICES_DATA.filter((item) => item.meta.name !== 'arthur.brand');
 const HERO_SLIDESHOW_LENGTH = HERO_SLIDESHOW_DATA.length;
 
 export function Hero() {

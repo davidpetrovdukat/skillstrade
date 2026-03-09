@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ExternalLink, Box } from 'lucide-react';
+import { getDisplayUsername } from '@/lib/freelancer-usernames';
 
 interface OrderHistoryTableProps {
     orders: any[]; // Ideally properly typed, but using any for rapid iteration as populated types can be tricky
@@ -115,11 +116,11 @@ export function OrderHistoryTable({ orders }: OrderHistoryTableProps) {
                                             <div className="size-8 rounded-full bg-gray-700 overflow-hidden flex-shrink-0 relative">
                                                 {/* In real app, use Image with freelancer.user.avatarUrl */}
                                                 <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white">
-                                                    {order.freelancer?.name?.[0] || 'F'}
+                                                    {getDisplayUsername(order.freelancer?.name)[0] || 'F'}
                                                 </div>
                                             </div>
                                             <div className="flex flex-col">
-                                                <span className="text-sm font-bold text-white leading-none mb-1">{order.freelancer?.name || 'Unknown'}</span>
+                                                <span className="text-sm font-bold text-white leading-none mb-1">{getDisplayUsername(order.freelancer?.name)}</span>
                                                 <span className="text-[10px] text-gray-500 font-mono uppercase bg-white/5 px-1 rounded w-fit">Dev</span>
                                             </div>
                                         </div>

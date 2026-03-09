@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { getDisplayUsername } from '@/lib/freelancer-usernames'
 
 interface TalentCarouselProps {
     talents: any[];
@@ -65,7 +66,7 @@ export function TalentCarousel({ talents }: TalentCarouselProps) {
                                 {talent.avatarUrl ? (
                                     <Image
                                         src={talent.avatarUrl}
-                                        alt={talent.name}
+                                        alt={getDisplayUsername(talent.name)}
                                         fill
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                                         className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
@@ -76,7 +77,7 @@ export function TalentCarousel({ talents }: TalentCarouselProps) {
                             </div>
                             <div className="p-6">
                                 <div className="flex justify-between items-start mb-2">
-                                    <h3 className="text-xl font-bold uppercase font-heading">{talent.name}</h3>
+                                    <h3 className="text-xl font-bold uppercase font-heading">{getDisplayUsername(talent.name)}</h3>
                                     <span className="text-xl">{talent.flag}</span>
                                 </div>
                                 <p className="text-white/40 text-sm font-mono mb-4">{talent.role}</p>

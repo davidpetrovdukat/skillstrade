@@ -12,6 +12,7 @@ import { connectMongo } from '@/lib/db';
 import { Service } from '@/models/Service';
 import { Freelancer } from '@/models/Freelancer';
 import { RAW_SERVICES_DATA } from '@/lib/services-data';
+import { getDisplayUsername } from '@/lib/freelancer-usernames';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +31,7 @@ export default async function Home() {
     featuredTalents = await Freelancer.find({ isAvailable: true }).limit(8).lean();
     featuredTalents = featuredTalents.map((talent: any) => ({
       ...talent,
+      name: getDisplayUsername(talent.name),
       avatarUrl: canonicalAvatarByName.get(talent.name) || talent.avatarUrl,
     }));
   } catch (error) {

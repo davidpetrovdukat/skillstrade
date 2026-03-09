@@ -1,6 +1,6 @@
-
 import Image from 'next/image';
 import { Clock, Globe, Star, Calendar } from 'lucide-react';
+import { getDisplayUsername } from '@/lib/freelancer-usernames';
 
 interface ServiceHeaderProps {
     title: string;
@@ -29,14 +29,14 @@ export function ServiceHeader({ title, freelancer }: ServiceHeaderProps) {
                     <div className="relative h-14 w-14 rounded-full border border-white/20 overflow-hidden shrink-0">
                         <Image
                             src={freelancer.avatarUrl}
-                            alt={freelancer.name}
+                            alt={getDisplayUsername(freelancer.name)}
                             fill
                             className="object-cover"
                         />
                     </div>
                     <div className="flex flex-col">
                         <p className="text-white text-lg font-bold uppercase tracking-wide flex items-center gap-2">
-                            {freelancer.name}
+                            {getDisplayUsername(freelancer.name)}
                             {freelancer.verified && (
                                 <span className="bg-primary text-black text-[10px] px-1.5 py-0.5 font-bold uppercase">Pro</span>
                             )}

@@ -67,23 +67,22 @@ async function seed() {
         const skills = staticProfile?.bio.skills || [];
         const portfolio = staticProfile?.portfolio || [];
 
-        // Create User (Freelancer)
-        const firstName = meta.name.split(' ')[0];
-        const lastName = meta.name.split(' ').slice(1).join(' ') || '';
-        const slug = item.id.split('_').length > 2 ? item.id.split('_')[2] : firstName.toLowerCase();
+        // Create User (Freelancer) — meta.name is now username (e.g. arthur.brand)
+        const username = meta.name;
+        const slug = item.id.split('_').length > 2 ? item.id.split('_')[2] : username.split('.')[0];
 
         const fUser = await User.create({
-            firstName: firstName,
-            lastName: lastName,
+            firstName: username,
+            lastName: '',
             email: `${slug}@SKILLS-TRADE.com`,
             role: UserRole.FREELANCER,
             walletBalance: 0
         });
 
-        // Create Freelancer Profile
+        // Create Freelancer Profile (name = username)
         const freelancer = await Freelancer.create({
             user: fUser._id,
-            slug: meta.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, ''),
+            slug: meta.name.toLowerCase().replace(/[^\w.-]/g, ''),
             name: meta.name,
             avatarUrl: meta.avatar_url,
             location: meta.location,

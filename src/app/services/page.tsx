@@ -9,6 +9,7 @@ import { connectMongo } from '@/lib/db'
 import { Service } from '@/models/Service'
 import { Freelancer } from '@/models/Freelancer'
 import { RAW_SERVICES_DATA } from '@/lib/services-data'
+import { getDisplayUsername } from '@/lib/freelancer-usernames'
 
 export const dynamic = 'force-dynamic'; // Force dynamic rendering for searchParams access
 
@@ -87,7 +88,7 @@ export default async function ServicesPage(props: PageProps) {
             tags: doc.tags || [],
             freelancer: {
                 id: doc.freelancer?._id?.toString(),
-                name: doc.freelancer?.name || "Unknown",
+                name: getDisplayUsername(doc.freelancer?.name),
                 avatarUrl: canonicalAvatarByName.get(doc.freelancer?.name) || doc.freelancer?.avatarUrl || '/avatars/default.jpg',
                 slug: doc.freelancer?.slug || "#",
                 verified: doc.freelancer?.verified ?? false,

@@ -11,6 +11,7 @@ import { Freelancer } from '@/models/Freelancer'
 import { Service } from '@/models/Service'
 import mongoose from 'mongoose'
 import { RAW_SERVICES_DATA } from '@/lib/services-data'
+import { getDisplayUsername } from '@/lib/freelancer-usernames'
 
 export const dynamic = 'force-dynamic'
 
@@ -47,7 +48,7 @@ async function getProfile(id: string) {
     const profile = {
         id: (freelancer as any)._id.toString(),
         meta: {
-            name: freelancer.name,
+            name: getDisplayUsername(freelancer.name),
             role: freelancer.role,
             location: freelancer.location,
             flag: freelancer.flag,

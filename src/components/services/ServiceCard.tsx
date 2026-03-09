@@ -22,6 +22,7 @@ export interface ServiceCardProps {
 
 import { useCurrencyStore } from '@/store/useCurrencyStore';
 import { TOKEN_EXCHANGE_RATE } from '@/lib/constants';
+import { getDisplayUsername } from '@/lib/freelancer-usernames';
 
 export function ServiceCard({ id, imageUrl, deliveryDays, title, freelancer, price }: ServiceCardProps) {
     // Simple avatar fallback logic
@@ -73,7 +74,7 @@ export function ServiceCard({ id, imageUrl, deliveryDays, title, freelancer, pri
                         />
                     </div>
                     <div className="flex flex-col min-w-0">
-                        <span className="text-xs text-white/40 font-mono truncate">by <span className="text-white font-medium">{freelancer.name}</span></span>
+                        <span className="text-xs text-white/40 font-mono truncate">by <span className="text-white font-medium">{getDisplayUsername(freelancer.name)}</span></span>
                         {freelancer.verified && (
                             <div className="flex items-center gap-1 text-[10px] text-primary font-mono">
                                 <Verified className="w-3 h-3" /> Vetted Pro

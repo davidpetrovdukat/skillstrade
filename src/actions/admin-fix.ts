@@ -35,9 +35,9 @@ export async function fixDashboardData() {
         await Order.deleteMany({ client: user._id });
 
         // -- FIND FREELANCERS --
-        const sarah = await Freelancer.findOne({ name: 'Sarah Jenkins' });
-        const nigel = await Freelancer.findOne({ name: 'Nigel Rivers' });
-        const arthur = await Freelancer.findOne({ name: 'Arthur Sterling' });
+        const sarah = await Freelancer.findOne({ name: 'sarah.copy' });
+        const nigel = await Freelancer.findOne({ name: 'nigel.crm' });
+        const arthur = await Freelancer.findOne({ name: 'arthur.brand' });
 
         if (!sarah) console.log('Warning: Sarah Jenkins not found');
         if (!nigel) console.log('Warning: Nigel Rivers not found');
