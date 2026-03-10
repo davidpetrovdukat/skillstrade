@@ -23,6 +23,7 @@ export interface ServiceCardProps {
 import { useCurrencyStore } from '@/store/useCurrencyStore';
 import { TOKEN_EXCHANGE_RATE } from '@/lib/constants';
 import { getDisplayUsername } from '@/lib/freelancer-usernames';
+import { FEATURE_FLAGS } from '@/lib/feature-flags';
 
 export function ServiceCard({ id, imageUrl, deliveryDays, title, freelancer, price }: ServiceCardProps) {
     // Simple avatar fallback logic
@@ -63,33 +64,35 @@ export function ServiceCard({ id, imageUrl, deliveryDays, title, freelancer, pri
                     </h3>
                 </div>
 
-                <div className="flex items-center gap-3 mt-auto">
-                    <div className="relative size-8 rounded-full overflow-hidden bg-white/10 shrink-0">
-                        <Image
-                            src={avatarSrc}
-                            alt={getDisplayUsername(freelancer.name)}
-                            fill
-                            sizes="32px"
-                            className="object-cover"
-                            unoptimized={avatarSrc?.startsWith('/') === true}
-                        />
+                {FEATURE_FLAGS.showFreelancerOnServiceCard && (
+                    <div className="flex items-center gap-3 mt-auto">
+                        <div className="relative size-8 rounded-full overflow-hidden bg-white/10 shrink-0">
+                            <Image
+                                src={avatarSrc}
+                                alt={getDisplayUsername(freelancer.name)}
+                                fill
+                                sizes="32px"
+                                className="object-cover"
+                                unoptimized={avatarSrc?.startsWith('/') === true}
+                            />
+                        </div>
+                        <div className="flex flex-col min-w-0">
+                            <span className="text-xs text-white/40 font-mono truncate">by <span className="text-white font-medium">{getDisplayUsername(freelancer.name)}</span></span>
+                            {freelancer.verified && (
+                                <div className="flex items-center gap-1 text-[10px] text-primary font-mono">
+                                    <Verified className="w-3 h-3" /> Vetted Pro
+                                </div>
+                            )}
+                        </div>
                     </div>
-                    <div className="flex flex-col min-w-0">
-                        <span className="text-xs text-white/40 font-mono truncate">by <span className="text-white font-medium">{getDisplayUsername(freelancer.name)}</span></span>
-                        {freelancer.verified && (
-                            <div className="flex items-center gap-1 text-[10px] text-primary font-mono">
-                                <Verified className="w-3 h-3" /> Vetted Pro
-                            </div>
-                        )}
-                    </div>
-                </div>
+                )}
 
                 <div className="h-px w-full bg-white/10" />
 
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col">
                         <span className="text-xs text-white/50 uppercase font-bold font-mono">Starting from</span>
-                        <p className="text-primary font-bold font-mono">{formattedFiat} <span className="text-white/40 text-xs font-normal">({price.toLocaleString()} TKN)</span></p>
+                        <p className="text-primary font-bold font-mono">{formattedFiat} <span className="text-white/40 text-xs font-normal">({price.toLocaleString('en-US')} TKN)</span></p>
                     </div>
                     <Link
                         href={`/services/${id}`}

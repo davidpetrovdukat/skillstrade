@@ -3,10 +3,12 @@ import { Footer } from '@/components/layout/Footer'
 import { TalentHero } from '@/components/talents/TalentHero'
 import { TalentCard } from '@/components/talents/TalentCard'
 import { JoinRosterCTA } from '@/components/talents/JoinRosterCTA'
+import { notFound } from 'next/navigation'
 import { connectMongo } from '@/lib/db'
 import { Freelancer } from '@/models/Freelancer'
 import { getDisplayUsername } from '@/lib/freelancer-usernames'
 import { buildCanonicalAvatarMap } from '@/lib/avatar-utils'
+import { FEATURE_FLAGS } from '@/lib/feature-flags'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,6 +29,9 @@ async function getFreelancers() {
 }
 
 export default async function TalentsPage() {
+    if (!FEATURE_FLAGS.showTalentsPage) {
+        notFound()
+    }
     const profiles = await getFreelancers()
 
     return (

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { getDisplayUsername } from '@/lib/freelancer-usernames'
+import { FEATURE_FLAGS } from '@/lib/feature-flags'
 
 interface TalentCarouselProps {
     talents: any[];
@@ -95,11 +96,13 @@ export function TalentCarousel({ talents }: TalentCarouselProps) {
                 ))}
             </div>
 
-            <div className="mt-8 px-6 md:px-12">
-                <Link href="/talents" className="block w-full text-center bg-transparent border border-white/20 text-white py-6 text-xl font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-black hover:border-primary transition-all font-heading">
-                    Explore All Freelancers
-                </Link>
-            </div>
+            {FEATURE_FLAGS.showTalentsPage && (
+                <div className="mt-8 px-6 md:px-12">
+                    <Link href="/talents" className="block w-full text-center bg-transparent border border-white/20 text-white py-6 text-xl font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-black hover:border-primary transition-all font-heading">
+                        Explore All Freelancers
+                    </Link>
+                </div>
+            )}
         </section>
     )
 }

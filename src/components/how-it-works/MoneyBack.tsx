@@ -2,6 +2,7 @@
 
 import { Gavel } from 'lucide-react'
 import Link from 'next/link'
+import { FEATURE_FLAGS } from '@/lib/feature-flags'
 
 export function MoneyBack() {
     return (
@@ -16,11 +17,13 @@ export function MoneyBack() {
                 <p className="text-white/80 max-w-2xl text-lg leading-relaxed italic font-mono">
                     &quot;If the final delivery does not meet the technical specifications outlined in your initial brief, our arbitration board will ensure a full token refund within 24 hours. No exceptions.&quot;
                 </p>
-                <div className="pt-8">
-                    <Link href="/talents" className="bg-primary text-black px-12 py-5 text-lg font-black uppercase tracking-widest hover:bg-white transition-all transform hover:-translate-y-1 font-heading inline-block">
-                        Browse Talent Now
-                    </Link>
-                </div>
+                {FEATURE_FLAGS.showTalentsPage && (
+                    <div className="pt-8">
+                        <Link href="/talents" className="bg-primary text-black px-12 py-5 text-lg font-black uppercase tracking-widest hover:bg-white transition-all transform hover:-translate-y-1 font-heading inline-block">
+                            Browse Talent Now
+                        </Link>
+                    </div>
+                )}
                 <p className="text-white/30 text-[10px] uppercase tracking-widest font-mono">
                     Subject to Skills-Trade Terms of Conditions | v4.2.0 Protocol
                 </p>

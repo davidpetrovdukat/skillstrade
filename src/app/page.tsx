@@ -13,6 +13,7 @@ import { Service } from '@/models/Service';
 import { Freelancer } from '@/models/Freelancer';
 import { getDisplayUsername } from '@/lib/freelancer-usernames';
 import { buildCanonicalAvatarMap } from '@/lib/avatar-utils';
+import { FEATURE_FLAGS } from '@/lib/feature-flags';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,18 +24,17 @@ export default async function Home() {
 
   try {
     await connectMongo();
-    // Fetch Services (Limit 6 for the grid)
     topServices = await Service.find({}).limit(6).lean();
-    // Fetch Freelancers (Limit 8 for carousel)
-    featuredTalents = await Freelancer.find({ isAvailable: true }).limit(8).lean();
-    featuredTalents = featuredTalents.map((talent: any) => ({
-      ...talent,
-      name: getDisplayUsername(talent.name),
-      avatarUrl: canonicalAvatarByName.get(talent.name) || talent.avatarUrl,
-    }));
+    if (FEATURE_FLAGS.showHomepageCollectiveBlock) {
+      const raw = await Freelancer.find({ isAvailable: true }).limit(8).lean();
+      featuredTalents = raw.map((talent: any) => ({
+        ...talent,
+        name: getDisplayUsername(talent.name),
+        avatarUrl: canonicalAvatarByName.get(talent.name) || talent.avatarUrl,
+      }));
+    }
   } catch (error) {
     console.error("Home Page DB Error:", error);
-    // Silent fail: empty arrays are already set
   }
 
   return (
@@ -45,7 +45,9 @@ export default async function Home() {
         <Marquee />
         <Features />
         <Services services={JSON.parse(JSON.stringify(topServices))} />
-        <TalentCarousel talents={JSON.parse(JSON.stringify(featuredTalents))} />
+        {FEATURE_FLAGS.showHomepageCollectiveBlock && (
+          <TalentCarousel talents={JSON.parse(JSON.stringify(featuredTalents))} />
+        )}
         <HowItWorks />
         <Pricing />
       </main>

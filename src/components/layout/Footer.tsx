@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Zap, Instagram, Linkedin } from 'lucide-react'
+import { FEATURE_FLAGS } from '@/lib/feature-flags'
 
 export function Footer() {
     return (
@@ -28,7 +29,9 @@ export function Footer() {
                 <div className="lg:col-span-1 lg:pl-8 lg:border-l border-white/10">
                     <h4 className="text-primary text-xs font-bold uppercase tracking-widest mb-6 font-heading">Platform</h4>
                     <ul className="space-y-4">
-                        <li><Link className="text-white/60 hover:text-white uppercase text-sm font-bold tracking-wide font-heading" href="/talents">Talent</Link></li>
+                        {FEATURE_FLAGS.showTalentsPage && (
+                            <li><Link className="text-white/60 hover:text-white uppercase text-sm font-bold tracking-wide font-heading" href="/talents">Talent</Link></li>
+                        )}
                         <li><Link className="text-white/60 hover:text-white uppercase text-sm font-bold tracking-wide font-heading" href="/services">Services</Link></li>
                         <li><Link className="text-white/60 hover:text-white uppercase text-sm font-bold tracking-wide font-heading" href="/join">Join the roster</Link></li>
                         <li><Link className="text-white/60 hover:text-white uppercase text-sm font-bold tracking-wide font-heading" href="/post-brief">Post a brief</Link></li>

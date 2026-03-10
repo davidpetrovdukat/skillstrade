@@ -4,24 +4,28 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { RAW_SERVICES_DATA } from '@/lib/services-data'
 
-// Stable list for hero slideshow (excluded from carousel) – avoids useEffect dependency size changing between renders
-const HERO_SLIDESHOW_DATA = RAW_SERVICES_DATA.filter((item) => item.meta.name !== 'arthur.brand');
-const HERO_SLIDESHOW_LENGTH = HERO_SLIDESHOW_DATA.length;
+// Service-driven hero slider (right side). Images from /public.
+const HERO_SLIDES = [
+    { image: '/strategic_brand_identity.webp', title: 'BRAND SYSTEMS', subtitle: 'Strategy / Identity / Guidelines' },
+    { image: '/scalable_SaaS_design_system.webp', title: 'PRODUCT DESIGN SYSTEMS', subtitle: 'UX Flows / UI / Components' },
+    { image: '/series_a_pitch_deck.webp', title: 'INVESTOR DECKS', subtitle: 'Storyline / Slides / Presentation Design' },
+    { image: '/product_visualization.webp', title: 'VISUAL LAUNCH ASSETS', subtitle: '3D / Motion / Product Imagery' },
+] as const;
+const HERO_SLIDES_LENGTH: number = HERO_SLIDES.length;
 
 export function Hero() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
-        if (HERO_SLIDESHOW_LENGTH === 0) return;
+        if (HERO_SLIDES_LENGTH === 0) return;
         const timer = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % HERO_SLIDESHOW_LENGTH);
+            setCurrentIndex((prev) => (prev + 1) % HERO_SLIDES_LENGTH);
         }, 4000);
         return () => clearInterval(timer);
     }, []);
 
-    const currentTalent = HERO_SLIDESHOW_LENGTH > 0 ? HERO_SLIDESHOW_DATA[currentIndex % HERO_SLIDESHOW_LENGTH] : null;
+    const currentSlide = HERO_SLIDES_LENGTH > 0 ? HERO_SLIDES[currentIndex % HERO_SLIDES_LENGTH] : null;
 
     return (
         <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[85vh] border-b border-white/20 relative">
@@ -29,14 +33,14 @@ export function Hero() {
                 <div>
                     <h1 className="text-6xl md:text-8xl font-bold leading-[0.85] tracking-tighter uppercase mb-8 font-heading">
                         Your Vision.<br />
-                        <span className="text-primary">Our Skills.</span>
+                        <span className="text-primary">Our Execution.</span>
                     </h1>
                     <p className="text-white/60 text-lg md:text-xl font-mono max-w-md mb-12">
-                        Access the top 1% of global creative talent. Secure, verified, and ready to deploy on your schedule.
+                    Access vetted creative services for high-stakes projects. Clear scope, secure escrow, and production-ready delivery through a private expert network.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <Link href="/talents" className="bg-primary text-black px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white transition-colors font-heading text-center">
-                            Browse Talent
+                        <Link href="/post-brief" className="bg-primary text-black px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white transition-colors font-heading text-center">
+                            POST A BRIEF
                         </Link>
                         <Link href="/services" className="border border-white/20 text-white px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors font-heading text-center">
                             VIEW SERVICES
@@ -55,11 +59,11 @@ export function Hero() {
                 />
 
                 <div className="relative w-full h-full max-h-[70vh] bg-neutral-800 rounded-t-[5rem] md:rounded-t-[20rem] overflow-hidden border border-white/10 group mt-10">
-                    {currentTalent && (
+                    {currentSlide && (
                         <>
                             <AnimatePresence mode="popLayout">
                                 <motion.div
-                                    key={currentTalent.id}
+                                    key={currentSlide.image}
                                     initial={{ opacity: 0.5, scale: 1.05 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     exit={{ opacity: 0 }}
@@ -67,13 +71,13 @@ export function Hero() {
                                     className="absolute inset-0 w-full h-full"
                                 >
                                     <Image
-                                        alt={currentTalent.meta.name}
-                                        src={currentTalent.meta.avatar_url}
+                                        alt={`${currentSlide.title} – ${currentSlide.subtitle}`}
+                                        src={currentSlide.image}
                                         fill
                                         priority
                                         sizes="(max-width: 768px) 100vw, 50vw"
                                         className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
-                                        unoptimized={currentTalent.meta.avatar_url?.startsWith('/') === true}
+                                        unoptimized={currentSlide.image.startsWith('/')}
                                     />
                                 </motion.div>
                             </AnimatePresence>
@@ -83,17 +87,17 @@ export function Hero() {
                                     <div className="size-2 bg-primary animate-pulse rounded-full" />
                                     <AnimatePresence mode="wait">
                                         <motion.div
-                                            key={currentTalent.id}
+                                            key={currentSlide.image}
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, y: -10 }}
                                             transition={{ duration: 0.3 }}
                                         >
                                             <p className="text-white font-bold text-lg uppercase leading-none font-heading">
-                                                {currentTalent.meta.name}
+                                                {currentSlide.title}
                                             </p>
                                             <p className="text-white/40 text-xs font-mono uppercase mt-1">
-                                                {currentTalent.meta.role}
+                                                {currentSlide.subtitle}
                                             </p>
                                         </motion.div>
                                     </AnimatePresence>

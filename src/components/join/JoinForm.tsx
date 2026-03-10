@@ -97,6 +97,16 @@ export function JoinForm() {
 
     const isOtherSkill = formData.primarySkill === 'Other';
 
+    // Required: Full Name, Email, Country, Languages, Primary Skill, Why You
+    const requiredFilled =
+        formData.fullName.trim() !== '' &&
+        formData.email.trim() !== '' &&
+        formData.country.trim() !== '' &&
+        formData.languages.trim() !== '' &&
+        formData.primarySkill.trim() !== '' &&
+        formData.whyYou.trim() !== '';
+    const isApplyDisabled = !requiredFilled || isSubmitting;
+
     if (isSuccess) {
         return (
             <div className="w-full max-w-[600px] border border-primary/20 bg-primary/5 p-12 text-center animate-in fade-in duration-500">
@@ -115,7 +125,7 @@ export function JoinForm() {
             {/* Full Name */}
             <label className="flex flex-col w-full gap-2 group">
                 <span className="text-xs uppercase tracking-widest text-white/40 font-bold group-focus-within:text-primary transition-colors font-heading">
-                    Full Name
+                    Full Name <span className="text-primary">*</span>
                 </span>
                 <input
                     className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-lg text-white placeholder-white/20 focus:outline-none focus:ring-0 focus:border-primary transition-colors rounded-none font-display"
@@ -124,13 +134,14 @@ export function JoinForm() {
                     name="fullName"
                     value={formData.fullName}
                     onChange={handleChange}
+                    required
                 />
             </label>
 
             {/* Email */}
             <label className="flex flex-col w-full gap-2 group">
                 <span className="text-xs uppercase tracking-widest text-white/40 font-bold group-focus-within:text-primary transition-colors font-heading">
-                    Email Address
+                    Email Address <span className="text-primary">*</span>
                 </span>
                 <input
                     className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-lg text-white placeholder-white/20 focus:outline-none focus:ring-0 focus:border-primary transition-colors rounded-none font-display"
@@ -139,19 +150,21 @@ export function JoinForm() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
+                    required
                 />
             </label>
 
             {/* Country */}
             <label className="flex flex-col w-full gap-2 group relative">
                 <span className="text-xs uppercase tracking-widest text-white/40 font-bold group-focus-within:text-primary transition-colors font-heading">
-                    Country
+                    Country <span className="text-primary">*</span>
                 </span>
                 <select
                     className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-lg text-white focus:outline-none focus:ring-0 focus:border-primary transition-colors rounded-none appearance-none cursor-pointer font-display [&>option]:bg-black"
                     name="country"
                     value={formData.country}
                     onChange={handleChange}
+                    required
                 >
                     <option disabled value="">Select your country</option>
                     {COUNTRIES.map(country => (
@@ -166,7 +179,7 @@ export function JoinForm() {
             {/* Languages */}
             <label className="flex flex-col w-full gap-2 group">
                 <span className="text-xs uppercase tracking-widest text-white/40 font-bold group-focus-within:text-primary transition-colors font-heading">
-                    Languages
+                    Languages <span className="text-primary">*</span>
                 </span>
                 <input
                     className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-lg text-white placeholder-white/20 focus:outline-none focus:ring-0 focus:border-primary transition-colors rounded-none font-display"
@@ -175,6 +188,7 @@ export function JoinForm() {
                     name="languages"
                     value={formData.languages}
                     onChange={handleChange}
+                    required
                 />
             </label>
 
@@ -211,13 +225,14 @@ export function JoinForm() {
             {/* Primary Skill Dropdown */}
             <label className="flex flex-col w-full gap-2 group relative">
                 <span className="text-xs uppercase tracking-widest text-white/40 font-bold group-focus-within:text-primary transition-colors font-heading">
-                    Primary Skill
+                    Primary Skill <span className="text-primary">*</span>
                 </span>
                 <select
                     className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-lg text-white focus:outline-none focus:ring-0 focus:border-primary transition-colors rounded-none appearance-none cursor-pointer font-display [&>option]:bg-black"
                     name="primarySkill"
                     value={formData.primarySkill}
                     onChange={handleChange}
+                    required
                 >
                     <option disabled value="">Select your craft</option>
                     {SKILLS.map(skill => (
@@ -249,7 +264,7 @@ export function JoinForm() {
             {/* Why You Textarea */}
             <label className="flex flex-col w-full gap-2 group">
                 <span className="text-xs uppercase tracking-widest text-white/40 font-bold group-focus-within:text-primary transition-colors font-heading">
-                    Why You?
+                    Why You? <span className="text-primary">*</span>
                 </span>
                 <textarea
                     className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-lg text-white placeholder-white/20 focus:outline-none focus:ring-0 focus:border-primary transition-colors resize-none rounded-none font-display"
@@ -258,14 +273,15 @@ export function JoinForm() {
                     name="whyYou"
                     value={formData.whyYou}
                     onChange={handleChange}
+                    required
                 ></textarea>
             </label>
 
             {/* Submit Button */}
             <button
-                className={`mt-8 w-full bg-primary hover:bg-white text-black font-bold text-lg py-5 px-8 rounded-none uppercase tracking-widest transition-colors duration-200 font-heading flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed`}
+                className="mt-8 w-full bg-primary hover:bg-white text-black font-bold text-lg py-5 px-8 rounded-none uppercase tracking-widest transition-colors duration-200 font-heading flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary"
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isApplyDisabled}
             >
                 {isSubmitting ? (
                     <Loader2 className="w-6 h-6 animate-spin" />

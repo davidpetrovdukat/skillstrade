@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Clock, Globe, Star, Calendar } from 'lucide-react';
 import { getDisplayUsername } from '@/lib/freelancer-usernames';
+import { FEATURE_FLAGS } from '@/lib/feature-flags';
 
 interface ServiceHeaderProps {
     title: string;
@@ -26,22 +27,26 @@ export function ServiceHeader({ title, freelancer }: ServiceHeaderProps) {
             </h1>
             <div className="flex flex-col md:flex-row flex-wrap items-start md:items-center justify-between gap-6 p-4 bg-surface border border-white/10">
                 <div className="flex items-center gap-4">
-                    <div className="relative h-14 w-14 rounded-full border border-white/20 overflow-hidden shrink-0">
-                        <Image
-                            src={freelancer.avatarUrl}
-                            alt={getDisplayUsername(freelancer.name)}
-                            fill
-                            className="object-cover"
-                            unoptimized={freelancer.avatarUrl?.startsWith('/') === true}
-                        />
-                    </div>
+                    {FEATURE_FLAGS.showFreelancerOnServiceDetail && (
+                        <div className="relative h-14 w-14 rounded-full border border-white/20 overflow-hidden shrink-0">
+                            <Image
+                                src={freelancer.avatarUrl}
+                                alt={getDisplayUsername(freelancer.name)}
+                                fill
+                                className="object-cover"
+                                unoptimized={freelancer.avatarUrl?.startsWith('/') === true}
+                            />
+                        </div>
+                    )}
                     <div className="flex flex-col">
-                        <p className="text-white text-lg font-bold uppercase tracking-wide flex items-center gap-2">
-                            {getDisplayUsername(freelancer.name)}
-                            {freelancer.verified && (
-                                <span className="bg-primary text-black text-[10px] px-1.5 py-0.5 font-bold uppercase">Pro</span>
-                            )}
-                        </p>
+                        {FEATURE_FLAGS.showFreelancerOnServiceDetail && (
+                            <p className="text-white text-lg font-bold uppercase tracking-wide flex items-center gap-2">
+                                {getDisplayUsername(freelancer.name)}
+                                {freelancer.verified && (
+                                    <span className="bg-primary text-black text-[10px] px-1.5 py-0.5 font-bold uppercase">Pro</span>
+                                )}
+                            </p>
+                        )}
                         <p className="text-white/60 text-sm font-mono">{freelancer.role}</p>
                     </div>
                 </div>

@@ -87,7 +87,8 @@ export const SERVICE_IMAGE_MAP: Record<string, string> = {
     "Developer API Docs": "/tech_docs.webp", // Updated title match
     "Developer-First API Documentation": "/tech_docs.webp",
     "Landing Page Copy": "/copywriting.webp", // Updated title match
-    "High-Converting Landing Page Copy": "/copywriting.webp"
+    "High-Converting Landing Page Copy": "/copywriting.webp",
+    "Conversion Copywriting": "/copywriting.webp"
 };
 
 // FULL DATASET

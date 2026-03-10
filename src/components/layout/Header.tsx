@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link'
 import { Zap, Menu, ChevronDown } from 'lucide-react'
+import { FEATURE_FLAGS } from '@/lib/feature-flags'
 import { useCurrencyStore, CurrencyCode } from '@/store/useCurrencyStore';
 import { useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
@@ -28,7 +29,9 @@ export function Header() {
             </Link>
 
             <nav className="hidden md:flex gap-8 text-sm font-bold uppercase tracking-widest font-heading">
-                <Link className="hover:text-primary transition-colors" href="/talents">Talent</Link>
+                {FEATURE_FLAGS.showTalentsPage && (
+                    <Link className="hover:text-primary transition-colors" href="/talents">Talent</Link>
+                )}
                 <Link className="hover:text-primary transition-colors" href="/services">Services</Link>
                 <Link className="hover:text-primary transition-colors" href="/how-it-works">How it Works</Link>
                 <Link className="hover:text-primary transition-colors" href="/tokens">Tokens</Link>
@@ -113,7 +116,9 @@ export function Header() {
             {isMenuOpen && (
                 <div className="mobile-menu-panel absolute top-full left-0 right-0 z-[60] min-h-[calc(100vh-73px)] flex flex-col p-6 md:hidden">
                     <nav className="flex flex-col gap-6 text-2xl font-bold uppercase tracking-widest font-heading mb-6">
-                        <Link onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors" href="/talents">Talent</Link>
+                        {FEATURE_FLAGS.showTalentsPage && (
+                            <Link onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors" href="/talents">Talent</Link>
+                        )}
                         <Link onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors" href="/services">Services</Link>
                         <Link onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors" href="/how-it-works">How it Works</Link>
                         <Link onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors" href="/tokens">Tokens</Link>

@@ -3,6 +3,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Filter, Eye, Zap, Scale, Globe } from "lucide-react";
 import Link from "next/link";
+import { FEATURE_FLAGS } from "@/lib/feature-flags";
 
 export default function AboutPage() {
     return (
@@ -272,9 +273,11 @@ export default function AboutPage() {
                         <span className="text-gray-500">and start building?</span>
                     </h2>
                     <div className="flex flex-col md:flex-row gap-6 w-full max-w-md">
-                        <Link href="/talents" className="flex-1 h-14 flex items-center justify-center bg-primary text-black text-base font-bold uppercase tracking-wider hover:bg-white hover:scale-[1.02] transition-all font-heading">
-                            Browse Talent
-                        </Link>
+                        {FEATURE_FLAGS.showTalentsPage && (
+                            <Link href="/talents" className="flex-1 h-14 flex items-center justify-center bg-primary text-black text-base font-bold uppercase tracking-wider hover:bg-white hover:scale-[1.02] transition-all font-heading">
+                                Browse Talent
+                            </Link>
+                        )}
                         <Link href="/join" className="flex-1 h-14 flex items-center justify-center border border-white text-white text-base font-bold uppercase tracking-wider hover:bg-white hover:text-black hover:scale-[1.02] transition-all font-heading">
                             Apply as Talent
                         </Link>

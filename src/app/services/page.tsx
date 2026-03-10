@@ -10,6 +10,7 @@ import { Service } from '@/models/Service'
 import { Freelancer } from '@/models/Freelancer'
 import { getDisplayUsername } from '@/lib/freelancer-usernames'
 import { buildCanonicalAvatarMap } from '@/lib/avatar-utils'
+import { SERVICE_IMAGE_MAP } from '@/lib/services-data'
 
 export const dynamic = 'force-dynamic'; // Force dynamic rendering for searchParams access
 
@@ -78,7 +79,7 @@ export default async function ServicesPage(props: PageProps) {
         return {
             id: doc._id.toString(),
             title: doc.title,
-            imageUrl: doc.imageUrl || '/window.svg',
+            imageUrl: SERVICE_IMAGE_MAP[doc.title] || doc.imageUrl || '/window.svg',
             delivery_days: doc.deliveryDays,
             price_tokens: doc.priceTokens,
             rating: rating,

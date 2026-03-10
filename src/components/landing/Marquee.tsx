@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 
 export function Marquee() {
-    const text = "VERIFIED EXPERTS • SECURE PAYMENTS • 24/7 SUPPORT • "
+    const text = "SECURED ESCROW • PRIVATE MATCHING • VERIFIED EXPERTS • FAST DELIVERY • 24/7 SUPPORT  •"
     const repeatedText = Array(10).fill(text).join("")
 
     return (

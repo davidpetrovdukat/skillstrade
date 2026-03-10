@@ -16,7 +16,24 @@ export default function PostBriefPage() {
     const [file, setFile] = useState<File | null>(null);
     const [category, setCategory] = useState('Design & Creative');
     const [otherCategory, setOtherCategory] = useState('');
+    const [title, setTitle] = useState('');
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [email, setEmail] = useState('');
+    const [deadline, setDeadline] = useState('');
+    const [description, setDescription] = useState('');
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Required: title, name, surname, email, deadline, description; when category is Other, otherCategory too
+    const requiredFilled =
+        title.trim() !== '' &&
+        name.trim() !== '' &&
+        surname.trim() !== '' &&
+        email.trim() !== '' &&
+        deadline.trim() !== '' &&
+        description.trim() !== '' &&
+        (category !== 'Other' || otherCategory.trim() !== '');
+    const isSubmitDisabled = !requiredFilled || isSubmitting;
 
     // Dynamic Budget Ranges based on currency
     // Using approx exchange rates for display logic: 1 EUR = 1.1 USD = 0.85 GBP
@@ -87,10 +104,16 @@ export default function PostBriefPage() {
         setIsSubmitting(false);
         if (result.success) {
             setShowToast(true);
-            setFile(null); // Reset file
-            (e.target as HTMLFormElement).reset(); // Reset form
+            setFile(null);
+            (e.target as HTMLFormElement).reset();
             setCategory('Design & Creative');
             setOtherCategory('');
+            setTitle('');
+            setName('');
+            setSurname('');
+            setEmail('');
+            setDeadline('');
+            setDescription('');
             setTimeout(() => setShowToast(false), 5000);
         } else {
             alert('Error sending brief: ' + result.error);
@@ -128,11 +151,13 @@ export default function PostBriefPage() {
                             {/* Project Title */}
                             <div className="group">
                                 <label className="block text-xs uppercase tracking-widest text-[#b5b79e] mb-2 font-bold font-mono">
-                                    Project Title
+                                    Project Title <span className="text-primary">*</span>
                                 </label>
                                 <input
                                     name="title"
                                     required
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
                                     className="w-full bg-transparent border-0 border-b border-white/20 px-0 py-3 text-2xl font-medium text-white placeholder:text-white/20 focus:border-primary focus:ring-0 transition-colors rounded-none outline-none font-heading"
                                     placeholder="e.g. Fintech App Redesign"
                                     type="text"
@@ -143,11 +168,13 @@ export default function PostBriefPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="group">
                                     <label className="block text-xs uppercase tracking-widest text-[#b5b79e] mb-2 font-bold font-mono">
-                                        Name
+                                        Name <span className="text-primary">*</span>
                                     </label>
                                     <input
                                         name="name"
                                         required
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
                                         className="w-full bg-transparent border-0 border-b border-white/20 px-0 py-3 text-lg font-medium text-white placeholder:text-white/20 focus:border-primary focus:ring-0 transition-colors rounded-none outline-none font-heading"
                                         placeholder="John"
                                         type="text"
@@ -155,11 +182,13 @@ export default function PostBriefPage() {
                                 </div>
                                 <div className="group">
                                     <label className="block text-xs uppercase tracking-widest text-[#b5b79e] mb-2 font-bold font-mono">
-                                        Surname
+                                        Surname <span className="text-primary">*</span>
                                     </label>
                                     <input
                                         name="surname"
                                         required
+                                        value={surname}
+                                        onChange={(e) => setSurname(e.target.value)}
                                         className="w-full bg-transparent border-0 border-b border-white/20 px-0 py-3 text-lg font-medium text-white placeholder:text-white/20 focus:border-primary focus:ring-0 transition-colors rounded-none outline-none font-heading"
                                         placeholder="Doe"
                                         type="text"
@@ -169,11 +198,13 @@ export default function PostBriefPage() {
 
                             <div className="group">
                                 <label className="block text-xs uppercase tracking-widest text-[#b5b79e] mb-2 font-bold font-mono">
-                                    Email
+                                    Email <span className="text-primary">*</span>
                                 </label>
                                 <input
                                     name="email"
                                     required
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     className="w-full bg-transparent border-0 border-b border-white/20 px-0 py-3 text-lg font-medium text-white placeholder:text-white/20 focus:border-primary focus:ring-0 transition-colors rounded-none outline-none font-heading"
                                     placeholder="john@example.com"
                                     type="email"
@@ -185,7 +216,7 @@ export default function PostBriefPage() {
                                 {/* Category */}
                                 <div className="md:col-span-1">
                                     <label className="block text-xs uppercase tracking-widest text-[#b5b79e] mb-2 font-bold font-mono">
-                                        Category
+                                        Category <span className="text-primary">*</span>
                                     </label>
                                     <div className="relative">
                                         <select
@@ -207,8 +238,8 @@ export default function PostBriefPage() {
                                                 value={otherCategory}
                                                 onChange={(e) => setOtherCategory(e.target.value)}
                                                 className="w-full bg-transparent border-0 border-b border-white/20 px-0 py-2 text-sm text-white placeholder:text-white/20 focus:border-primary focus:ring-0 transition-colors rounded-none outline-none font-mono"
-                                                placeholder="Specify category..."
-                                                required
+                                                placeholder="Specify category... *"
+                                                required={category === 'Other'}
                                             />
                                         </div>
                                     )}
@@ -217,7 +248,7 @@ export default function PostBriefPage() {
                                 {/* Budget */}
                                 <div className="md:col-span-1">
                                     <label className="block text-xs uppercase tracking-widest text-[#b5b79e] mb-2 font-bold font-mono">
-                                        Budget Range
+                                        Budget Range <span className="text-primary">*</span>
                                     </label>
                                     <div className="relative">
                                         <select name="budget" className="w-full bg-[#2a2b20] text-white border border-transparent rounded-none px-4 py-3 appearance-none focus:border-primary focus:ring-0 cursor-pointer hover:bg-[#323326] transition-colors font-mono outline-none">
@@ -232,10 +263,13 @@ export default function PostBriefPage() {
                                 {/* Deadline */}
                                 <div className="md:col-span-1">
                                     <label className="block text-xs uppercase tracking-widest text-[#b5b79e] mb-2 font-bold font-mono">
-                                        Deadline
+                                        Deadline <span className="text-primary">*</span>
                                     </label>
                                     <input
                                         name="deadline"
+                                        required
+                                        value={deadline}
+                                        onChange={(e) => setDeadline(e.target.value)}
                                         className="w-full bg-[#2a2b20] text-white border border-transparent rounded-none px-4 py-3 focus:border-primary focus:ring-0 cursor-pointer hover:bg-[#323326] transition-colors h-[48px] font-mono outline-none dark:[color-scheme:dark]"
                                         type="date"
                                     />
@@ -245,11 +279,13 @@ export default function PostBriefPage() {
                             {/* Description */}
                             <div>
                                 <label className="block text-xs uppercase tracking-widest text-[#b5b79e] mb-2 font-bold font-mono">
-                                    Description
+                                    Description <span className="text-primary">*</span>
                                 </label>
                                 <textarea
                                     name="description"
                                     required
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
                                     className="w-full bg-[#2a2b20] text-white border border-transparent rounded-none p-4 min-h-[160px] focus:border-primary focus:ring-0 placeholder:text-white/30 resize-y font-mono outline-none"
                                     placeholder="Describe goals, deliverables, and scope..."
                                 />
@@ -298,8 +334,8 @@ export default function PostBriefPage() {
                             <div className="pt-4">
                                 <button
                                     type="submit"
-                                    disabled={isSubmitting}
-                                    className="w-full bg-primary hover:bg-[#c4d325] text-black font-bold text-lg py-4 px-6 rounded-none tracking-wide uppercase transition-all active:scale-[0.99] flex items-center justify-center gap-2 group font-heading hover:shadow-[0_0_20px_rgba(208,249,6,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+                                    disabled={isSubmitDisabled}
+                                    className="w-full bg-primary hover:bg-[#c4d325] text-black font-bold text-lg py-4 px-6 rounded-none tracking-wide uppercase transition-all active:scale-[0.99] flex items-center justify-center gap-2 group font-heading hover:shadow-[0_0_20px_rgba(208,249,6,0.3)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary"
                                 >
                                     {isSubmitting ? (
                                         <>
