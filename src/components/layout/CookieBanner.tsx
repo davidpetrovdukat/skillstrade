@@ -1,19 +1,19 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 
-export function CookieBanner() {
-    const [isVisible, setIsVisible] = useState(false)
+function shouldShowBanner() {
+    if (typeof window === 'undefined') {
+        return false
+    }
 
-    useEffect(() => {
-        // Check if user has already made a choice
-        const consent = localStorage.getItem('cookie-consent')
-        if (!consent) {
-            setIsVisible(true)
-        }
-    }, [])
+    return !window.localStorage.getItem('cookie-consent')
+}
+
+export function CookieBanner() {
+    const [isVisible, setIsVisible] = useState(shouldShowBanner)
 
     const handleAccept = () => {
         localStorage.setItem('cookie-consent', 'accepted')
@@ -41,7 +41,7 @@ export function CookieBanner() {
                                 COOKIE PREFERENCES
                             </h3>
                             <p className="text-white/60 text-xs md:text-sm font-mono leading-relaxed">
-                                We use cookies to enhance your experience, analyze site traffic, and personalize content. By clicking "Accept All", you consent to our use of cookies. Read our <Link href="/legal/cookies" className="text-primary hover:underline underline-offset-4 decoration-primary/30">Cookie Policy</Link>.
+                                We use cookies to enhance your experience, analyze site traffic, and personalize content. By clicking &quot;Accept All&quot;, you consent to our use of cookies. Read our <Link href="/legal/cookies" className="text-primary hover:underline underline-offset-4 decoration-primary/30">Cookie Policy</Link>.
                             </p>
                         </div>
 

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Zap, Instagram, Linkedin } from 'lucide-react'
 import { FEATURE_FLAGS } from '@/lib/feature-flags'
 
@@ -12,7 +13,7 @@ export function Footer() {
                         <span className="text-2xl font-bold tracking-tighter uppercase font-heading">Skills-Trade</span>
                     </div>
                     <p className="text-white/40 text-xs font-mono leading-relaxed max-w-[200px] mb-6">
-                        The premier decentralized platform for top-tier creative talent.
+                        A private marketplace for top-tier creative talent.
                     </p>
 
                     {/* Company Details */}
@@ -77,10 +78,10 @@ export function Footer() {
                     <p className="text-[10px] text-white/30 uppercase tracking-widest font-mono">© 2026 RENATASTRADAS MB | Skills-Trade. All Rights Reserved.</p>
                 </div>
                 <div className="flex gap-4 items-center">
-                    <img src="/pci-dss-logo.svg" alt="PCI DSS" className="h-8 w-auto" />
-                    <img src="/visa-logo.svg" alt="Visa" className="h-6 w-auto" />
-                    <img src="/mastercard-logo.svg" alt="Mastercard" className="h-6 w-auto" />
-                    <img src="/3ds.png" alt="3D Secure" className="h-8 w-auto" />
+                    <Image src="/pci-dss-logo.svg" alt="PCI DSS" width={80} height={32} className="h-8 w-auto" />
+                    <Image src="/visa-logo.svg" alt="Visa" width={60} height={24} className="h-6 w-auto" />
+                    <Image src="/mastercard-logo.svg" alt="Mastercard" width={60} height={24} className="h-6 w-auto" />
+                    <Image src="/3ds.png" alt="3D Secure" width={80} height={32} className="h-8 w-auto" />
                 </div>
             </div>
         </footer>

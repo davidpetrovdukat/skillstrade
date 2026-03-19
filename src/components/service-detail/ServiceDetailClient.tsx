@@ -9,10 +9,40 @@ import { AddonsSection } from '@/components/service-detail/AddonsSection';
 import { ServicePricingCard } from '@/components/service-detail/ServicePricingCard';
 import { Addon } from '@/lib/services-data';
 
+interface ServiceDetailPageData {
+    _id: string;
+    title: string;
+    overview: string;
+    deliverables?: string[];
+    imageUrl?: string;
+    displayPrice?: string;
+    deliveryDays: number;
+    priceTokens: number;
+}
+
+interface ServiceDetailFreelancer {
+    name: string;
+    avatarUrl: string;
+    role: string;
+    rating: number;
+    reviewsCount?: number;
+    verified?: boolean;
+    location: string;
+    flag: string;
+}
+
+interface ServiceDetailReview {
+    id: string;
+    user: string;
+    rating: number;
+    text: string;
+    date: string;
+}
+
 interface ServiceDetailClientProps {
-    service: any;
-    freelancer: any;
-    formattedReviews: any[];
+    service: ServiceDetailPageData;
+    freelancer: ServiceDetailFreelancer;
+    formattedReviews: ServiceDetailReview[];
     formattedAddons: Addon[];
 }
 

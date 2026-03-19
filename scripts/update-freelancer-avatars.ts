@@ -23,10 +23,10 @@ const LEGACY_NAME_TO_USERNAME: Record<string, string> = {
 
 dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI || process.env.DATABASE_URL;
 
 if (!MONGODB_URI) {
-    console.error('❌ MONGODB_URI is required in .env');
+    console.error('MongoDB connection string is required in .env. Set MONGODB_URI or DATABASE_URL.');
     process.exit(1);
 }
 

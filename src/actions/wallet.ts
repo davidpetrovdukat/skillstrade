@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache";
 
 export async function topUpWallet(tokens: number, description: string, amountPaid: number) {
     try {
+        void amountPaid;
         const session = await getServerSession(authOptions);
         if (!session?.user?.email) {
             return { success: false, error: "Unauthorized" };

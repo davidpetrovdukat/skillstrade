@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { registerUser } from '@/actions/auth';
 
-import { ArrowRight, Lock, Verified, Phone, CalendarDays, ChevronDown, Loader2, AlertCircle } from 'lucide-react';
+import { ArrowRight, ChevronDown, Loader2, AlertCircle } from 'lucide-react';
 // import { cn } from '@/lib/utils'; // Not used yet
 
 const RESTRICTED_COUNTRIES = [
@@ -61,31 +61,26 @@ export function SignUpForm() {
         terms: false
     });
 
-    const [isFormValid, setIsFormValid] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [error, setError] = useState('');
     const router = useRouter();
 
-    useEffect(() => {
-        const { email, password, confirmPassword, firstName, lastName, phone, dob, street, country, city, postcode, terms } = formData;
-        const isValid =
-            email.trim() !== '' &&
-            password.trim() !== '' &&
-            confirmPassword.trim() !== '' &&
-            password === confirmPassword &&
-            firstName.trim() !== '' &&
-            lastName.trim() !== '' &&
-            phone.trim() !== '' &&
-            dob.trim() !== '' &&
-            street.trim() !== '' &&
-            country.trim() !== '' &&
-            city.trim() !== '' &&
-            postcode.trim() !== '' &&
-            terms === true;
-
-        setIsFormValid(isValid);
-    }, [formData]);
+    const { email, password, confirmPassword, firstName, lastName, phone, dob, street, country, city, postcode, terms } = formData;
+    const isFormValid =
+        email.trim() !== '' &&
+        password.trim() !== '' &&
+        confirmPassword.trim() !== '' &&
+        password === confirmPassword &&
+        firstName.trim() !== '' &&
+        lastName.trim() !== '' &&
+        phone.trim() !== '' &&
+        dob.trim() !== '' &&
+        street.trim() !== '' &&
+        country.trim() !== '' &&
+        city.trim() !== '' &&
+        postcode.trim() !== '' &&
+        terms === true;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { id, value } = e.target;

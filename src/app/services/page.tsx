@@ -11,11 +11,50 @@ import { Freelancer } from '@/models/Freelancer'
 import { getDisplayUsername } from '@/lib/freelancer-usernames'
 import { buildCanonicalAvatarMap } from '@/lib/avatar-utils'
 import { SERVICE_IMAGE_MAP } from '@/lib/services-data'
+import type { Types } from 'mongoose'
 
 export const dynamic = 'force-dynamic'; // Force dynamic rendering for searchParams access
 
 interface PageProps {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+interface SearchRegex {
+    $regex: string | RegExp;
+    $options?: string;
+}
+
+interface ServiceSearchQuery {
+    $or?: Array<Record<string, SearchRegex>>;
+    category?: {
+        $regex: RegExp;
+    };
+}
+
+interface ServiceReview {
+    rating: number;
+}
+
+interface ServiceFreelancer {
+    _id?: Types.ObjectId;
+    name?: string;
+    avatarUrl?: string;
+    rating?: number;
+    slug?: string;
+    verified?: boolean;
+}
+
+interface ServiceListItem {
+    _id: Types.ObjectId;
+    title: string;
+    imageUrl?: string;
+    deliveryDays: number;
+    priceTokens: number;
+    category: string;
+    tags?: string[];
+    overview: string;
+    reviews?: ServiceReview[];
+    freelancer?: ServiceFreelancer | null;
 }
 
 export default async function ServicesPage(props: PageProps) {
@@ -29,7 +68,7 @@ export default async function ServicesPage(props: PageProps) {
     await connectMongo()
 
     // 1. Build Query
-    const query: any = {}
+    const query: ServiceSearchQuery = {}
 
     if (search) {
         const searchRegex = { $regex: search, $options: 'i' }
@@ -47,7 +86,7 @@ export default async function ServicesPage(props: PageProps) {
     }
 
     // 2. Sort
-    let sortOption: any = { createdAt: -1 } // Default: Newest
+    let sortOption: { createdAt?: -1; priceTokens?: 1 | -1 } = { createdAt: -1 } // Default: Newest
     if (sort === 'price-asc') sortOption = { priceTokens: 1 }
     if (sort === 'price-desc') sortOption = { priceTokens: -1 }
 
@@ -62,14 +101,14 @@ export default async function ServicesPage(props: PageProps) {
             model: Freelancer,
             select: 'name avatarUrl rating slug verified flag'
         })
-        .lean()
+        .lean() as ServiceListItem[]
 
     // 4. Transform to Component Props
-    const services = servicesDocs.map((doc: any) => {
+    const services = servicesDocs.map((doc) => {
         // Calculate average rating from embedded reviews
         let rating = 0;
         if (doc.reviews && doc.reviews.length > 0) {
-            const sum = doc.reviews.reduce((acc: number, r: any) => acc + r.rating, 0);
+            const sum = doc.reviews.reduce((acc, review) => acc + review.rating, 0);
             rating = sum / doc.reviews.length;
         } else {
             // Fallback to freelancer rating or default
@@ -87,7 +126,7 @@ export default async function ServicesPage(props: PageProps) {
             tags: doc.tags || [],
             freelancer: {
                 id: doc.freelancer?._id?.toString(),
-                name: getDisplayUsername(doc.freelancer?.name),
+                name: getDisplayUsername(doc.freelancer?.name || 'Freelancer'),
                 avatarUrl: canonicalAvatarByName.get(doc.freelancer?.name) || doc.freelancer?.avatarUrl || '/avatars/default.jpg',
                 slug: doc.freelancer?.slug || "#",
                 verified: doc.freelancer?.verified ?? false,
@@ -173,7 +212,7 @@ export default async function ServicesPage(props: PageProps) {
                                 <Lock className="text-primary w-10 h-10 mb-2" />
                                 <h4 className="text-xl font-bold uppercase text-white font-heading">Protected Funds</h4>
                                 <p className="text-white/40 text-sm leading-relaxed font-mono">
-                                    Your Tokens are held in smart-contract escrow and only released to the freelancer once you approve the final delivery.
+                                    Your tokens are held in platform escrow and only released once you approve the final delivery.
                                 </p>
                             </div>
                             <div className="md:px-8 flex flex-col gap-3">

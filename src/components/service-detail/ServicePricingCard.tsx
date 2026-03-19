@@ -1,7 +1,7 @@
 
 'use client';
 
-import { Clock, RefreshCw, ArrowRight, MessageSquare, ShieldCheck } from 'lucide-react';
+import { Clock, RefreshCw, ArrowRight, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import { useCurrencyStore } from '@/store/useCurrencyStore';
 import { TOKEN_EXCHANGE_RATE } from '@/lib/constants';

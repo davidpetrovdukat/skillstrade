@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link'
-import { Zap, Menu, ChevronDown } from 'lucide-react'
+import Image from 'next/image'
+import { Menu, ChevronDown } from 'lucide-react'
 import { FEATURE_FLAGS } from '@/lib/feature-flags'
 import { useCurrencyStore, CurrencyCode } from '@/store/useCurrencyStore';
 import { useState } from 'react';
@@ -23,9 +24,7 @@ export function Header() {
     return (
         <header className="sticky top-0 z-50 relative flex items-center justify-between border-b border-white/20 bg-background/95 backdrop-blur-sm px-6 py-4">
             <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                {/* <Zap className="text-primary w-6 h-6 fill-current" /> */}
-                {/* <span className="text-xl font-bold tracking-tighter uppercase font-heading">Skills-Trade</span> */}
-                <img src="/logo.png" alt="Skill Trade Logo" className="h-8 w-auto object-contain" />
+                <Image src="/logo.png" alt="Skill Trade Logo" width={160} height={32} className="h-8 w-auto object-contain" />
             </Link>
 
             <nav className="hidden md:flex gap-8 text-sm font-bold uppercase tracking-widest font-heading">

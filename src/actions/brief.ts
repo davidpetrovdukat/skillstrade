@@ -1,9 +1,20 @@
 'use server';
 
 import { Resend } from 'resend';
+import { getNotificationEmail, getResendFromEmail } from '@/lib/email';
 
 // Initialize Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
+const BRIEF_NOTIFICATION_EMAIL = getNotificationEmail('BRIEF_TO');
+const RESEND_FROM = getResendFromEmail();
+
+function getErrorMessage(error: unknown) {
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    return 'Unexpected error';
+}
 
 export async function sendBrief(formData: FormData) {
     if (!process.env.RESEND_API_KEY) {
@@ -26,7 +37,10 @@ export async function sendBrief(formData: FormData) {
 
         const finalCategory = category === 'Other' ? otherCategory : category;
 
-        const attachments = [];
+        const attachments: Array<{
+            filename: string;
+            content: Buffer;
+        }> = [];
         if (attachment && attachment.size > 0) {
             const arrayBuffer = await attachment.arrayBuffer();
             const buffer = Buffer.from(arrayBuffer);
@@ -53,8 +67,8 @@ export async function sendBrief(formData: FormData) {
         `;
 
         const { data, error } = await resend.emails.send({
-            from: 'Skill Trade <onboarding@resend.dev>',
-            to: ['info@skills-trade.com'],
+            from: RESEND_FROM,
+            to: [BRIEF_NOTIFICATION_EMAIL],
             subject: `New Brief: ${title} [${finalCategory}]`,
             html: htmlBody,
             replyTo: email,
@@ -68,8 +82,8 @@ export async function sendBrief(formData: FormData) {
 
         return { success: true, data };
 
-    } catch (e: any) {
-        console.error('Unexpected Error:', e);
-        return { success: false, error: e.message };
+    } catch (error: unknown) {
+        console.error('Unexpected Error:', error);
+        return { success: false, error: getErrorMessage(error) };
     }
 }

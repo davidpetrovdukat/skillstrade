@@ -1,10 +1,12 @@
 'use server';
 
 import { Resend } from 'resend';
+import { getNotificationEmail, getResendFromEmail } from '@/lib/email';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'info@skills-trade.com';
+const CONTACT_EMAIL = getNotificationEmail();
+const RESEND_FROM = getResendFromEmail();
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -38,9 +40,9 @@ export async function sendContactMessage(formData: FormData) {
         `;
 
         const { data, error } = await resend.emails.send({
-            from: 'Skill Trade <onboarding@resend.dev>',
+            from: RESEND_FROM,
             to: [CONTACT_EMAIL],
-            subject: `[Contact] ${subject || 'General Support'} – ${name}`,
+            subject: `[Contact] ${subject || 'General Support'} - ${name}`,
             html: htmlBody,
             replyTo: email,
         });

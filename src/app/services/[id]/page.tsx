@@ -9,6 +9,7 @@ import { Service } from '@/models/Service';
 import { Freelancer } from '@/models/Freelancer';
 import { User } from '@/models/User';
 import { buildCanonicalAvatarMap } from '@/lib/avatar-utils';
+import type { Types } from 'mongoose';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,6 +17,49 @@ interface PageProps {
     params: Promise<{
         id: string;
     }>;
+}
+
+interface ServiceReviewDoc {
+    _id?: Types.ObjectId;
+    authorName: string;
+    rating: number;
+    text: string;
+    createdAt?: Date;
+}
+
+interface ServiceAddonDoc {
+    _id?: Types.ObjectId;
+    title: string;
+    priceTokens: number;
+    description: string;
+    isStandalone: boolean;
+}
+
+interface PopulatedFreelancer {
+    _id: Types.ObjectId;
+    name: string;
+    avatarUrl?: string;
+    role: string;
+    rating?: number;
+    reviewsCount?: number;
+    verified?: boolean;
+    location: string;
+    flag: string;
+}
+
+interface PopulatedServiceDoc {
+    _id: Types.ObjectId;
+    title: string;
+    category: string;
+    overview: string;
+    deliverables?: string[];
+    imageUrl?: string;
+    displayPrice?: string;
+    deliveryDays: number;
+    priceTokens: number;
+    freelancer?: PopulatedFreelancer | null;
+    reviews?: ServiceReviewDoc[];
+    addons?: ServiceAddonDoc[];
 }
 
 export default async function ServiceDetailPage(props: PageProps) {
@@ -39,35 +83,37 @@ export default async function ServiceDetailPage(props: PageProps) {
                 select: 'firstName lastName'
             }
         })
-        .lean();
+        .lean() as PopulatedServiceDoc | null;
 
-    if (!serviceDoc) {
+    if (!serviceDoc?.freelancer) {
         notFound();
     }
 
-    // Type coercion for the populated document
-    const service = serviceDoc as any;
+    const service = serviceDoc;
     const freelancer = {
         ...service.freelancer,
         avatarUrl: canonicalAvatarByName.get(service.freelancer?.name) || service.freelancer?.avatarUrl,
+        rating: service.freelancer.rating || 5,
+        reviewsCount: service.freelancer.reviewsCount ?? 0,
+        verified: service.freelancer.verified ?? false,
     };
 
     // Transform Review Data
-    const formattedReviews = (service.reviews || []).map((r: any) => ({
-        id: r._id?.toString() || Math.random().toString(),
-        user: r.authorName, // Fixed: Component expects 'user', not 'author'
-        rating: r.rating,
-        text: r.text,
-        date: new Date(r.createdAt).toLocaleDateString(),
+    const formattedReviews = (service.reviews || []).map((review, index) => ({
+        id: review._id?.toString() || `review-${index}`,
+        user: review.authorName,
+        rating: review.rating,
+        text: review.text,
+        date: review.createdAt ? new Date(review.createdAt).toLocaleDateString() : 'Recently',
     }));
 
     // Transform Addons
-    const formattedAddons = (service.addons || []).map((a: any) => ({
-        id: a._id?.toString() || Math.random().toString(),
-        title: a.title,
-        price_tokens: a.priceTokens,
-        desc: a.description,
-        is_standalone: a.isStandalone
+    const formattedAddons = (service.addons || []).map((addon, index) => ({
+        id: addon._id?.toString() || `addon-${index}`,
+        title: addon.title,
+        price_tokens: addon.priceTokens,
+        desc: addon.description,
+        is_standalone: addon.isStandalone
     }));
 
     return (

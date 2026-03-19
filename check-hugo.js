@@ -1,6 +1,5 @@
-const { MongoClient } = require('mongodb');
-
 async function run() {
+    const { MongoClient } = await import('mongodb');
     const uri = "mongodb://localhost:27017/skillstrade"; // Adjust if needed
     const client = new MongoClient(uri);
     try {

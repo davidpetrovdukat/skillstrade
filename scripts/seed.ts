@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
-import fs from 'fs';
-import path from 'path';
 import { User, UserRole } from '../src/models/User';
 import { Freelancer } from '../src/models/Freelancer';
 import { Service } from '../src/models/Service';
@@ -11,10 +9,10 @@ import { Transaction, TxType } from '../src/models/Transaction';
 // Load env vars
 dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI || process.env.DATABASE_URL;
 
 if (!MONGODB_URI) {
-    console.error('❌ MONGODB_URI is required in .env');
+    console.error('MongoDB connection string is required in .env. Set MONGODB_URI or DATABASE_URL.');
     process.exit(1);
 }
 
@@ -42,7 +40,7 @@ async function seed() {
         await Service.collection.drop();
         await Order.collection.drop();
         await Transaction.collection.drop();
-    } catch (e) {
+    } catch {
         console.log('⚠️ Some collections might not exist, skipping drop...');
     }
     console.log('✅ Database cleared.');
@@ -90,7 +88,7 @@ async function seed() {
             role: meta.role,
             bio: bioText.substring(0, 500),
             skills: skills,
-            portfolio: portfolio.map((p: any) => ({
+            portfolio: portfolio.map((p: { title: string; category: string; image_url: string }) => ({
                 title: p.title,
                 category: p.category,
                 imageUrl: p.image_url

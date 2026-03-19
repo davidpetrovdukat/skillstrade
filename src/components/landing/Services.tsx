@@ -3,7 +3,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 interface ServicesProps {
-    services: any[];
+    services: Array<{
+        _id: string;
+        title: string;
+        imageUrl?: string | null;
+    }>;
 }
 
 export function Services({ services }: ServicesProps) {

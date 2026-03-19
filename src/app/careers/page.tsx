@@ -34,11 +34,12 @@ export default function CareersPage() {
 
                         {/* Content Placeholder / Image */}
                         <div className="absolute inset-0 flex items-center justify-center">
-                            {/* Using an abstract gradient/shape as placeholder if image fails, or the actual image from HTML */}
-                            <img
-                                alt="High-end 3D abstract wireframe"
-                                className="w-full h-full object-cover opacity-60 mix-blend-screen grayscale contrast-125 hover:grayscale-0 transition-all duration-700"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo-gw0Qyni-7JPZw5Q9q92-6sfW86f31hBCR9XLO97Yyx8uUIquUrM4D8Wkn8HN4hKottMcmX0gK2AovzIvH7e24BakvkT1N0Vhx0cVWFSVV_beQF4mrNdRaqEqW0IpEDGrl9g_FTFleUKZI76hgXkRa8pXPRYWMxAedI_5_mufPih9Rgy4rgHQViv1VUu63kJKbN3eNnw9OzsnrXi0RJ16To2gb0G638IBrz_596IUaBLfCzuzU0xr2pZlZc0S9JxcHgjQQ1S7Mzd"
+                            <div
+                                aria-label="High-end 3D abstract wireframe"
+                                className="h-full w-full bg-cover bg-center opacity-60 mix-blend-screen grayscale contrast-125 transition-all duration-700 hover:grayscale-0"
+                                style={{
+                                    backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCo-gw0Qyni-7JPZw5Q9q92-6sfW86f31hBCR9XLO97Yyx8uUIquUrM4D8Wkn8HN4hKottMcmX0gK2AovzIvH7e24BakvkT1N0Vhx0cVWFSVV_beQF4mrNdRaqEqW0IpEDGrl9g_FTFleUKZI76hgXkRa8pXPRYWMxAedI_5_mufPih9Rgy4rgHQViv1VUu63kJKbN3eNnw9OzsnrXi0RJ16To2gb0G638IBrz_596IUaBLfCzuzU0xr2pZlZc0S9JxcHgjQQ1S7Mzd')"
+                                }}
                             />
                         </div>
 
@@ -150,7 +151,7 @@ export default function CareersPage() {
 
                 {/* Bottom CTA */}
                 <section className="py-10 flex flex-col items-center gap-2">
-                    <p className="text-white text-lg font-light font-sans">Don't see a role?</p>
+                    <p className="text-white text-lg font-light font-sans">Don&apos;t see a role?</p>
                     <Link href="/contact?subject=career" className="text-2xl md:text-3xl font-bold text-primary hover:text-white transition-colors flex items-center gap-2 underline decoration-2 underline-offset-8 font-heading">
                         Pitch us your role <ArrowUpRight className="w-8 h-8" />
                     </Link>

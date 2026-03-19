@@ -34,7 +34,7 @@ export function ServiceTabs({ overview, deliverables, faq }: ServiceTabsProps) {
                         : 'text-white/60 hover:text-white border-transparent'
                         }`}
                 >
-                    What's Included
+                    What&apos;s Included
                 </button>
                 <button
                     onClick={() => setActiveTab('faq')}

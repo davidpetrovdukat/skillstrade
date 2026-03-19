@@ -7,14 +7,22 @@ export default function AdminFixPage() {
     const [status, setStatus] = useState<string>('');
     const [loading, setLoading] = useState(false);
 
+    const getErrorMessage = (error: unknown) => {
+        if (error instanceof Error) {
+            return error.message;
+        }
+
+        return 'Unknown error';
+    };
+
     const handleFix = async () => {
         setLoading(true);
         setStatus('Processing...');
         try {
             const result = await fixDashboardData();
             setStatus(result.success ? `Success: ${result.message}` : `Error: ${result.message}`);
-        } catch (err: any) {
-            setStatus(`Error: ${err.message}`);
+        } catch (error: unknown) {
+            setStatus(`Error: ${getErrorMessage(error)}`);
         } finally {
             setLoading(false);
         }

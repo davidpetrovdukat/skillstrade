@@ -8,7 +8,15 @@ import { getDisplayUsername } from '@/lib/freelancer-usernames'
 import { FEATURE_FLAGS } from '@/lib/feature-flags'
 
 interface TalentCarouselProps {
-    talents: any[];
+    talents: Array<{
+        _id: string;
+        slug?: string;
+        name: string;
+        avatarUrl?: string;
+        role: string;
+        flag: string;
+        skills?: string[];
+    }>;
 }
 
 export function TalentCarousel({ talents }: TalentCarouselProps) {

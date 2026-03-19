@@ -2,11 +2,30 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ExternalLink, Box } from 'lucide-react';
+import { Box } from 'lucide-react';
 import { getDisplayUsername } from '@/lib/freelancer-usernames';
 
+type IdLike = string | { toString(): string };
+
+interface OrderHistoryItem {
+    _id: IdLike;
+    status: string;
+    brief?: {
+        title?: string;
+    };
+    service?: {
+        title?: string;
+    };
+    freelancer?: {
+        name?: string;
+    };
+    createdAt: string | Date;
+    totalTokens: number;
+    attachments?: string[];
+}
+
 interface OrderHistoryTableProps {
-    orders: any[]; // Ideally properly typed, but using any for rapid iteration as populated types can be tricky
+    orders: OrderHistoryItem[];
 }
 
 type TabType = 'All Orders' | 'Active' | 'Completed' | 'Cancelled';
@@ -77,7 +96,7 @@ export function OrderHistoryTable({ orders }: OrderHistoryTableProps) {
                     <div className="text-center">
                         <p className="text-white font-bold uppercase tracking-wider mb-2">No active orders</p>
                         <p className="text-gray-500 text-sm max-w-xs mx-auto mb-6">
-                            You don't have any orders in this category yet. Start a new project to see it here.
+                            You don&apos;t have any orders in this category yet. Start a new project to see it here.
                         </p>
                         <Link href="/services" className="text-[#D3E97A] font-bold uppercase text-xs tracking-widest hover:underline decoration-[#D3E97A] underline-offset-4">
                             Find Talent →

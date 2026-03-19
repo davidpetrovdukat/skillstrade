@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Check, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -17,49 +17,41 @@ const TERMS_LINK = '/legal/terms';
 export default function PricingGrid({ isDashboard = false }: PricingGridProps) {
     const { convert, currency } = useCurrencyStore();
     const [customAmount, setCustomAmount] = useState<string>("");
-    const [mounted, setMounted] = useState(false);
     const [termsAgreed, setTermsAgreed] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    const router = useRouter();
+    const { data: session } = useSession();
 
     const handleCustomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCustomAmount(e.target.value);
     };
 
-    const router = useRouter();
-    const { data: session } = useSession();
-
     const handleBuy = (pkgName: string, amountEuro: number, tokens: number) => {
         if (session) {
-            // User is logged in -> Go to Checkout
             const checkoutData = {
                 planId: pkgName,
                 amount: amountEuro,
-                currency: currency,
-                tokens: tokens,
+                currency,
+                tokens,
                 description: `Purchase of ${tokens.toLocaleString()} Tokens (${pkgName})`
             };
             localStorage.setItem("checkoutData", JSON.stringify(checkoutData));
             router.push('/dashboard/checkout');
-        } else {
-            // User is Guest -> Go to Login
-            router.push('/login');
+            return;
         }
+
+        router.push('/login');
     };
 
     const getExchangeRate = () => {
         const rates: Record<string, number> = { EUR: 1.00, USD: 1.09, GBP: 0.86 };
-        // Validating currency is strictly one of the keys or fallback
         const safeCurrency = (currency in rates) ? currency : 'EUR';
         return rates[safeCurrency] || 1;
     };
 
     const getSymbol = () => {
-        const symbols: Record<string, string> = { EUR: '€', USD: '$', GBP: '£' };
+        const symbols: Record<string, string> = { EUR: 'в‚¬', USD: '$', GBP: 'ВЈ' };
         const safeCurrency = (currency in symbols) ? currency : 'EUR';
-        return symbols[safeCurrency] || '€';
+        return symbols[safeCurrency] || 'в‚¬';
     };
 
     const customAmountNum = parseFloat(customAmount) || 0;
@@ -86,8 +78,8 @@ export default function PricingGrid({ isDashboard = false }: PricingGridProps) {
                     <div className="text-center space-y-2">
                         <h3 className="text-xl font-bold uppercase tracking-widest text-white">{pkg.name}</h3>
                         <div className="flex items-center justify-center gap-1">
-                            <span className="text-3xl font-bold text-white font-mono">
-                                {mounted ? convert(pkg.price_eur) : `€${pkg.price_eur.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+                            <span className="text-3xl font-bold text-white font-mono" suppressHydrationWarning>
+                                {convert(pkg.price_eur)}
                             </span>
                         </div>
                     </div>
@@ -140,7 +132,6 @@ export default function PricingGrid({ isDashboard = false }: PricingGridProps) {
                 </div>
             ))}
 
-            {/* Custom Card */}
             <div className="relative flex flex-col p-8 gap-6 min-h-[420px] transition-all duration-300 border border-white/10 hover:border-gray-500 bg-gradient-to-b from-[#1E1E1E] to-[#121212]">
                 <div className="flex flex-col gap-2">
                     <h3 className="text-xl font-bold uppercase tracking-wider text-white">
@@ -156,10 +147,10 @@ export default function PricingGrid({ isDashboard = false }: PricingGridProps) {
                             className="text-xs uppercase font-bold text-gray-500 mb-1 block group-focus-within:text-primary transition-colors"
                             htmlFor="custom-amount"
                         >
-                            Enter Amount ({mounted ? currency : 'EUR'})
+                            Enter Amount (<span suppressHydrationWarning>{currency}</span>)
                         </label>
                         <div className="flex items-center border-b-2 border-gray-600 focus-within:border-primary transition-colors py-2">
-                            <span className="text-2xl text-gray-400 mr-2">{mounted ? getSymbol() : '€'}</span>
+                            <span className="text-2xl text-gray-400 mr-2" suppressHydrationWarning>{getSymbol()}</span>
                             <input
                                 id="custom-amount"
                                 type="number"

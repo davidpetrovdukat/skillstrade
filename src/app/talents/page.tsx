@@ -9,17 +9,28 @@ import { Freelancer } from '@/models/Freelancer'
 import { getDisplayUsername } from '@/lib/freelancer-usernames'
 import { buildCanonicalAvatarMap } from '@/lib/avatar-utils'
 import { FEATURE_FLAGS } from '@/lib/feature-flags'
+import type { Types } from 'mongoose'
 
 export const dynamic = 'force-dynamic'
 
+interface FreelancerListItem {
+    _id: Types.ObjectId;
+    name: string;
+    avatarUrl?: string;
+    flag: string;
+    role: string;
+    skills?: string[];
+    isAvailable?: boolean;
+}
+
 async function getFreelancers() {
     await connectMongo()
-    const freelancers = await Freelancer.find({}).sort({ rating: -1 }).lean()
+    const freelancers = await Freelancer.find({}).sort({ rating: -1 }).lean() as FreelancerListItem[]
     const canonicalAvatarByName = buildCanonicalAvatarMap()
 
     return freelancers.map(f => ({
-        id: (f as any)._id.toString(),
-        image: canonicalAvatarByName.get(f.name) || f.avatarUrl,
+        id: f._id.toString(),
+        image: canonicalAvatarByName.get(f.name) || f.avatarUrl || '/avatars/default.jpg',
         name: getDisplayUsername(f.name),
         flag: f.flag,
         role: f.role,

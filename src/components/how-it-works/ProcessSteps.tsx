@@ -7,7 +7,6 @@ import Image from 'next/image'
 export function ProcessSteps() {
     return (
         <section className="py-20 border-t border-white/10 space-y-32 max-w-[1200px] mx-auto px-6">
-            {/* Step 01: Curated Matching */}
             <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-32">
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
@@ -20,7 +19,7 @@ export function ProcessSteps() {
                         Find your perfect match.
                     </h2>
                     <p className="text-white/60 text-lg leading-relaxed font-mono">
-                        Don't waste time sifting through thousands of profiles. Our roster is capped at the top 1%. Browse verified portfolios, check fixed-price packages, and select the talent that fits your specific tech stack and aesthetic.
+                        Don&apos;t waste time sifting through thousands of profiles. Our roster is capped at the top 1%. Browse verified portfolios, check fixed-price packages, and select the talent that fits your specific tech stack and aesthetic.
                     </p>
                 </motion.div>
 
@@ -52,7 +51,6 @@ export function ProcessSteps() {
                 </motion.div>
             </div>
 
-            {/* Step 02: Token Escrow */}
             <div className="flex flex-col lg:flex-row-reverse items-center gap-16 lg:gap-32">
                 <motion.div
                     initial={{ opacity: 0, x: 50 }}
@@ -60,12 +58,12 @@ export function ProcessSteps() {
                     viewport={{ once: true }}
                     className="flex-1 space-y-6"
                 >
-                    <h3 className="text-primary text-sm font-bold tracking-[0.3em] uppercase font-heading">02. BRIEFING & SMART ESCROW</h3>
+                    <h3 className="text-primary text-sm font-bold tracking-[0.3em] uppercase font-heading">02. BRIEFING & ESCROW</h3>
                     <h2 className="text-3xl md:text-4xl font-bold uppercase leading-tight tracking-tighter font-heading">
                         Define the scope. Secure the funds.
                     </h2>
                     <p className="text-white/60 text-lg leading-relaxed font-mono">
-                        Clear communication starts with a clear brief. Describe your needs directly to the freelancer. Once agreed, deposit tokens into our smart escrow. Your funds are safe—the freelancer sees the proof of funds, but can't touch them until the job is done.
+                        Clear communication starts with a clear brief. Describe your needs directly to the freelancer. Once agreed, deposit tokens into platform escrow. Your funds stay protected until the job is done and you approve the delivery.
                     </p>
                 </motion.div>
 
@@ -85,7 +83,6 @@ export function ProcessSteps() {
                 </motion.div>
             </div>
 
-            {/* Step 03: Delivery & Release */}
             <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-32">
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
@@ -98,7 +95,7 @@ export function ProcessSteps() {
                         Approve the work. Own the result.
                     </h2>
                     <p className="text-white/60 text-lg leading-relaxed font-mono">
-                        Receive the deliverables on time. Review the quality and request revisions if necessary. Once you hit 'Approve', the tokens are released to the creator, and full Intellectual Property (IP) rights transfer instantly to you.
+                        Receive the deliverables on time. Review the quality and request revisions if necessary. Once you hit &apos;Approve&apos;, the tokens are released to the creator, and full Intellectual Property (IP) rights transfer instantly to you.
                     </p>
                 </motion.div>
 

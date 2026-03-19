@@ -10,6 +10,20 @@ import { connectMongo } from '@/lib/db';
 import { User } from '@/models/User';
 import { Order } from '@/models/Order';
 import { Transaction } from '@/models/Transaction';
+import type { Types } from 'mongoose';
+
+interface DashboardUser {
+    _id: Types.ObjectId;
+    walletBalance?: number;
+}
+
+interface DashboardTransaction {
+    _id: Types.ObjectId;
+    type: 'DEPOSIT' | 'SPEND' | 'EARNING' | 'WITHDRAWAL';
+    amount: number;
+    description: string;
+    createdAt: Date;
+}
 
 export default async function DashboardPage() {
     const session = await getServerSession(authOptions);
@@ -21,10 +35,10 @@ export default async function DashboardPage() {
     await connectMongo();
 
     // Fetch user data
-    const user = await User.findOne({ email: session.user.email }).lean();
+    const user = await User.findOne({ email: session.user.email }).lean() as DashboardUser | null;
     if (!user) redirect('/login');
 
-    const userId = (user as any)._id;
+    const userId = user._id;
 
     // 1. Stats: Active Orders Count (IN_PROGRESS)
     const activeOrdersCount = await Order.countDocuments({
@@ -36,14 +50,14 @@ export default async function DashboardPage() {
     const spendTxs = await Transaction.find({
         user: userId,
         type: 'SPEND'
-    }).lean();
+    }).lean() as Array<Pick<DashboardTransaction, 'amount'>>;
     const totalSpentTokens = spendTxs.reduce((sum, tx) => sum + tx.amount, 0);
 
     // 3. Recent Activity (Transactions)
     const transactions = await Transaction.find({ user: userId })
         .sort({ createdAt: -1 })
         .limit(10)
-        .lean();
+        .lean() as DashboardTransaction[];
 
     return (
         <div className="min-h-screen bg-background text-white flex flex-col font-display">

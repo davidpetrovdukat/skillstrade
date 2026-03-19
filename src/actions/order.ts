@@ -5,15 +5,32 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { connectMongo } from '@/lib/db';
 import { User } from '@/models/User';
 import { Order, OrderStatus } from '@/models/Order';
-import { Transaction } from '@/models/Transaction'; // Assuming Transaction model exists and exports TxType enum
+import { Transaction } from '@/models/Transaction';
 import { Service } from '@/models/Service';
-import { Freelancer } from '@/models/Freelancer';
 import { Resend } from 'resend';
 import { revalidatePath } from 'next/cache';
 import { writeFile } from 'fs/promises';
 import path from 'path';
+import type { Types } from 'mongoose';
+import { getNotificationEmail, getResendFromEmail } from '@/lib/email';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const ORDER_NOTIFICATION_EMAIL = getNotificationEmail('ORDER_NOTIFICATION_TO');
+const RESEND_FROM = getResendFromEmail();
+
+interface ServiceAddonSelection {
+    _id: Types.ObjectId;
+    title: string;
+    priceTokens: number;
+}
+
+function getErrorMessage(error: unknown) {
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    return 'Failed to create order';
+}
 
 export async function createOrder(formData: FormData) {
     const session = await getServerSession(authOptions);
@@ -42,11 +59,12 @@ export async function createOrder(formData: FormData) {
 
         // Validate Price (Service + Addons)
         let calculatedPrice = service.priceTokens;
-        let selectedAddons: any[] = [];
+        let selectedAddons: ServiceAddonSelection[] = [];
 
         if (addonIds.length > 0 && service.addons) {
-            selectedAddons = service.addons.filter((a: any) => addonIds.includes(a._id.toString()));
-            const addonsPrice = selectedAddons.reduce((sum: number, a: any) => sum + a.priceTokens, 0);
+            const serviceAddons = service.addons as ServiceAddonSelection[];
+            selectedAddons = serviceAddons.filter((addon) => addonIds.includes(addon._id.toString()));
+            const addonsPrice = selectedAddons.reduce((sum, addon) => sum + addon.priceTokens, 0);
             calculatedPrice += addonsPrice;
         }
 
@@ -77,9 +95,6 @@ export async function createOrder(formData: FormData) {
         user.walletBalance -= totalTokens;
         await user.save();
 
-        // 2. Create Transaction (Payment)
-        // Check TxType enum availability. If not exported, use string.
-        // Assuming 'PAYMENT' or similar.
         await Transaction.create({
             user: user._id,
             amount: totalTokens,
@@ -91,7 +106,7 @@ export async function createOrder(formData: FormData) {
         // Construct enriched brief with addons info
         let enrichedBriefDescription = requirements;
         if (selectedAddons.length > 0) {
-            const addonsList = selectedAddons.map((a: any) => `${a.title} (${a.priceTokens} T)`).join(', ');
+            const addonsList = selectedAddons.map((addon) => `${addon.title} (${addon.priceTokens} T)`).join(', ');
             enrichedBriefDescription += `\n\n--- Selected Upgrades ---\n${addonsList}`;
         }
 
@@ -114,8 +129,8 @@ export async function createOrder(formData: FormData) {
         // 4. Send Email
         if (process.env.RESEND_API_KEY) {
             await resend.emails.send({
-                from: 'Skill Trade <orders@resend.dev>', // Update domain in prod
-                to: ['info@skills-trade.com'],
+                from: RESEND_FROM,
+                to: [ORDER_NOTIFICATION_EMAIL],
                 subject: `New Order: ${service.title} (${totalTokens} T)`,
                 html: `
                     <h1>New Order Received</h1>
@@ -123,7 +138,7 @@ export async function createOrder(formData: FormData) {
                     <p><strong>Service:</strong> ${service.title}</p>
                     <p><strong>Tokens:</strong> ${totalTokens}</p>
                     <p><strong>Requirements:</strong> ${requirements}</p>
-                    ${selectedAddons.length > 0 ? `<p><strong>Add-ons:</strong> ${selectedAddons.map((a: any) => a.title).join(', ')}</p>` : ''}
+                    ${selectedAddons.length > 0 ? `<p><strong>Add-ons:</strong> ${selectedAddons.map((addon) => addon.title).join(', ')}</p>` : ''}
                     <p><strong>Order ID:</strong> ${order._id}</p>
                 `
             });
@@ -133,8 +148,8 @@ export async function createOrder(formData: FormData) {
         revalidatePath('/dashboard/orders');
         return { success: true, orderId: order._id.toString() };
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Order creation failed:', error);
-        return { success: false, error: error.message };
+        return { success: false, error: getErrorMessage(error) };
     }
 }

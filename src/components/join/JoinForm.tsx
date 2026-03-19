@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, ArrowRight, Loader2 } from 'lucide-react';
+import { ChevronDown, Loader2 } from 'lucide-react';
 import { sendJoinApplication } from '@/actions/join';
 
 // Countries and Restricted list (Duplicated from SignUpForm for safety/isolation)

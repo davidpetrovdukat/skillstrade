@@ -13,7 +13,7 @@ const FAQS: FAQItem[] = [
     {
         question: "Refunding Unused Tokens",
         answer:
-            "Unused tokens can be refunded to your original payment method at any time. A small processing fee of 2% applies to cover banking charges. Funds are released from escrow immediately upon request approval.",
+            "Entirely unused token purchases may be refunded to the original payment method within 14 days of purchase, subject to our Refund Policy. Eligible cooling-off refunds are issued without a processing fee.",
     },
     {
         question: "Token Expiry Dates",

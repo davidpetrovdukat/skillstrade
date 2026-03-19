@@ -6,6 +6,11 @@ import { connectMongo } from "@/lib/db";
 import { User, UserRole } from "@/models/User";
 import bcrypt from "bcryptjs";
 
+interface GoogleProfile {
+    given_name?: string;
+    family_name?: string;
+}
+
 // Define auth options
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -61,8 +66,7 @@ export const authOptions: NextAuthOptions = {
                     const existingUser = await User.findOne({ email: user.email });
 
                     if (!existingUser) {
-                        // Cast to any to access Google-specific fields safely or fall back to user.name
-                        const googleProfile = profile as any;
+                        const googleProfile = profile as GoogleProfile | null | undefined;
 
                         const firstName = googleProfile?.given_name || user.name?.split(" ")[0] || "User";
                         const lastName = googleProfile?.family_name || user.name?.split(" ")[1] || "";
@@ -86,17 +90,17 @@ export const authOptions: NextAuthOptions = {
             }
             return true;
         },
-        async jwt({ token, user, trigger, session }) {
+        async jwt({ token, user }) {
             if (user) {
-                token.role = (user as any).role;
+                token.role = user.role;
                 token.id = user.id;
             }
             return token;
         },
         async session({ session, token }) {
             if (session.user) {
-                (session.user as any).role = token.role;
-                (session.user as any).id = token.id;
+                session.user.role = token.role;
+                session.user.id = token.id;
             }
             return session;
         }

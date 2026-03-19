@@ -7,7 +7,7 @@ export function CustomBriefCTA() {
             <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.02)_50%,transparent_75%,transparent_100%)] bg-[length:250%_250%] animate-[shine_3s_infinite] pointer-events-none" />
 
             <div className="relative z-10 flex flex-col gap-2 md:w-2/3">
-                <h3 className="text-3xl font-black uppercase italic text-white font-heading">Can't find what you need?</h3>
+                <h3 className="text-3xl font-black uppercase italic text-white font-heading">Can&apos;t find what you need?</h3>
                 <p className="text-white/60 text-lg font-mono">
                     Post a custom brief and let our vetted talent come to you with tailored proposals.
                 </p>

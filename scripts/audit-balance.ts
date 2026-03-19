@@ -4,8 +4,30 @@ import { User } from '../src/models/User';
 import { Transaction } from '../src/models/Transaction';
 import { Order } from '../src/models/Order';
 import dotenv from 'dotenv';
+import type { Types } from 'mongoose';
 
 dotenv.config();
+
+interface AuditUser {
+    _id: Types.ObjectId;
+    email: string;
+    walletBalance: number;
+}
+
+interface AuditTransaction {
+    _id: Types.ObjectId;
+    type: 'DEPOSIT' | 'SPEND' | 'EARNING' | 'WITHDRAWAL' | 'PAYMENT';
+    amount: number;
+    description: string;
+    createdAt: Date;
+}
+
+interface AuditOrder {
+    _id: Types.ObjectId;
+    service: Types.ObjectId;
+    totalTokens: number;
+    status: string;
+}
 
 async function auditBalance() {
     try {
@@ -14,17 +36,17 @@ async function auditBalance() {
 
         // 1. Find the main user (assuming david... or we list all)
         // Adjust email if known, or list all users with balance > 0
-        const users = await User.find({}).lean();
+        const users = await User.find({}).lean() as AuditUser[];
 
         for (const user of users) {
             console.log(`\nUser: ${user.email} | ID: ${user._id}`);
             console.log(`Current Wallet Balance: ${user.walletBalance}`);
 
-            const transactions = await Transaction.find({ user: user._id }).sort({ createdAt: 1 }).lean();
+            const transactions = await Transaction.find({ user: user._id }).sort({ createdAt: 1 }).lean() as AuditTransaction[];
             console.log(`Transactions (${transactions.length}):`);
 
             let calculatedBalance = 0;
-            transactions.forEach((tx: any) => {
+            transactions.forEach((tx) => {
                 console.log(` - [${tx.type}] ${tx.amount} T | Desc: ${tx.description} | Date: ${tx.createdAt}`);
                 if (tx.type === 'DEPOSIT' || tx.type === 'EARNING') {
                     calculatedBalance += tx.amount;
@@ -36,9 +58,9 @@ async function auditBalance() {
             console.log(`Calculated Balance from Transactions: ${calculatedBalance}`);
             console.log(`Discrepancy: ${user.walletBalance - calculatedBalance}`);
 
-            const orders = await Order.find({ client: user._id }).sort({ createdAt: 1 }).lean();
+            const orders = await Order.find({ client: user._id }).sort({ createdAt: 1 }).lean() as AuditOrder[];
             console.log(`Orders (${orders.length}):`);
-            orders.forEach((order: any) => {
+            orders.forEach((order) => {
                 console.log(` - Order ID: ${order._id} | Service: ${order.service} | Total: ${order.totalTokens} | Status: ${order.status}`);
             });
         }

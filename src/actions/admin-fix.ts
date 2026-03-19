@@ -9,6 +9,14 @@ import { Freelancer } from '@/models/Freelancer';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
+function getErrorMessage(error: unknown) {
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    return 'Unknown error';
+}
+
 export async function fixDashboardData() {
     try {
         await connectMongo();
@@ -182,7 +190,7 @@ export async function fixDashboardData() {
                     description: 'Initial phase payment.'
                 },
                 createdAt: new Date('2026-01-20'),
-            }) as any;
+            });
 
             await Transaction.create({
                 user: user._id,
@@ -207,7 +215,7 @@ export async function fixDashboardData() {
                 },
                 attachments: ['/files/homepage_copy_test.pdf'],
                 createdAt: new Date('2026-02-01'),
-            }) as any;
+            });
 
             await Transaction.create({
                 user: user._id,
@@ -231,7 +239,7 @@ export async function fixDashboardData() {
                     description: 'Order cancelled by client.'
                 },
                 createdAt: new Date('2026-02-02'),
-            }) as any;
+            });
 
             await Transaction.create({
                 user: user._id,
@@ -257,8 +265,8 @@ export async function fixDashboardData() {
 
         return { success: true, message: `Data fixed for ${targetEmail}. Services repaired with reviews.` };
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Fix Data Error:', error);
-        return { success: false, message: error.message };
+        return { success: false, message: getErrorMessage(error) };
     }
 }

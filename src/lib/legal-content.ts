@@ -12,7 +12,7 @@ export interface LegalDocument {
 export const LEGAL_DOCS: Record<string, LegalDocument> = {
     "terms": {
         title: "Terms and Conditions",
-        lastUpdated: "February 26, 2026",
+        lastUpdated: "March 19, 2026",
         sections: [
             {
                 title: "Introduction",
@@ -41,7 +41,8 @@ export const LEGAL_DOCS: Record<string, LegalDocument> = {
                 content: [
                     "You may use the Platform only if: you are at least 18 years old; you have legal capacity to enter into binding contracts; your use of the Platform does not violate any applicable law or regulation; and any information you provide to us is complete, accurate, and not misleading.",
                     "If you use the Platform on behalf of a company, agency, or other legal entity, you represent and warrant that you have authority to bind that entity to these Terms.",
-                    "The Platform may be used by both business customers (B2B) and individual consumers (B2C)."
+                    "The Platform may be used by both business customers (B2B) and individual consumers (B2C).",
+                    "We do not offer the Platform or related services to any person or entity located in, resident in, organized in, or ordinarily operating from any prohibited or restricted jurisdiction designated by us for legal, sanctions, export-control, compliance, fraud, or risk reasons. As of March 19, 2026, prohibited jurisdictions include: Darfur (Sudan), Democratic Republic of the Congo, Iran, Mali, Myanmar (Burma), North Korea, South Sudan, Syria, Yemen, Afghanistan, Belarus, Central African Republic, Cuba, Haiti, Iraq, Russia, Somalia, Venezuela, and Zimbabwe. We may reject registrations, block transactions, suspend access, request enhanced verification, or terminate accounts where we reasonably believe a user is connected to a prohibited jurisdiction or restricted party."
                 ]
             },
             {
@@ -83,7 +84,7 @@ export const LEGAL_DOCS: Record<string, LegalDocument> = {
                 content: [
                     "8.1 Unused purchased tokens. A Client may request a refund of unused purchased tokens to the original payment method, provided that: the request is made within 14 days of the relevant purchase; and those purchased tokens have not been spent, committed to an active Order, reserved in escrow, or otherwise used.",
                     "8.2 Bonus tokens. Bonus tokens are non-refundable and are excluded from fiat refunds. Where a package included both purchased tokens and bonus tokens, any approved refund will be calculated only by reference to the refundable purchased portion, and bonus tokens may be removed, cancelled, or disregarded for refund purposes.",
-                    "8.3 Refund fee. Approved fiat refunds may be subject to a processing and administration fee. The applicable fee may change from time to time and will be determined by Skills-Trade acting reasonably, taking into account payment processing costs, banking charges, administrative handling, and fraud prevention costs.",
+                    "8.3 Refund fee. Where a user is legally entitled to a refund during the 14-day cooling-off period for an entirely unused Token purchase, Skills-Trade will not deduct a processing or administration fee from that refund. Any separate deduction or charge will apply only where permitted by mandatory law, clearly disclosed in advance, and justified by costs that may lawfully be passed on.",
                     "8.4 Original payment method only. Any fiat refund, if approved, will be returned only to the original payment method used for the purchase, unless otherwise required by law.",
                     "8.5 No refund in certain cases. We may refuse a fiat refund request where: the relevant purchased tokens were used in whole or in part; the refund request is late; the purchase is linked to fraud, abuse, chargeback activity, policy evasion, or suspicious conduct; we are required to withhold or refuse refund for legal, payment, or compliance reasons."
                 ]
@@ -156,10 +157,12 @@ export const LEGAL_DOCS: Record<string, LegalDocument> = {
                 title: "17. Suspension and Termination",
                 content: [
                     "17.1 Our rights. We may suspend, restrict, or terminate any account, listing, Order access, wallet functionality, or Platform access at any time where reasonably necessary to: enforce these Terms; protect other users, the Platform, or payment systems; investigate fraud, abuse, unlawful conduct, or policy breaches; comply with legal obligations, sanctions, court orders, or regulatory requirements; respond to security, technical, or reputational risks.",
-                    "17.2 Effect on active Orders. Where reasonably possible, active Orders may be allowed to proceed to resolution or completion even if one party’s account is restricted or terminated.",
-                    "17.3 Effect on Tokens and payouts. Where an active Order is completed, the related Tokens may still be released to the Freelancer for work properly performed. Pending payouts properly earned by Freelancers may still be processed, subject to fraud review, dispute status, payment risk checks, and compliance requirements.",
-                    "17.4 Access to completed work. Following termination, completed work and order records may remain accessible through the delivery channels previously used for the transaction, including the Client’s registered email. We do not guarantee indefinite dashboard hosting or permanent storage of files or order history.",
-                    "17.5 No compensation. We are not liable to you for suspension, restriction, or termination taken in good faith under these Terms."
+                    "17.2 Your right to request account closure. You may request closure of your account at any time by submitting the contact form with the subject line \"General Support\" or by contacting info@skills-trade.com from the email address associated with your account. We may request reasonable information to verify your identity and to confirm the request before processing it.",
+                    "17.3 Processing of closure requests. After verification, we will review the account for open Orders, outstanding disputes, unpaid fees, compliance holds, chargeback exposure, fraud indicators, record-retention obligations, and any other legal or operational requirement that must be resolved before closure. We may close the account immediately, place it into a restricted state while matters are completed, or refuse closure where we are legally required to keep the account active for investigation or compliance purposes.",
+                    "17.4 Effect on active Orders. Where reasonably possible, active Orders may be allowed to proceed to resolution or completion even if one party's account is restricted, scheduled for closure, or terminated.",
+                    "17.5 Effect on Tokens and payouts. Where an active Order is completed, the related Tokens may still be released to the Freelancer for work properly performed. Pending payouts properly earned by Freelancers may still be processed, subject to fraud review, dispute status, payment risk checks, and compliance requirements. Unused balances, if any, will be handled in accordance with the refund rules, payment-processor requirements, and applicable law.",
+                    "17.6 Access to completed work and retained records. Following termination, completed work and order records may remain accessible through the delivery channels previously used for the transaction, including the Client's registered email. We do not guarantee indefinite dashboard hosting or permanent storage of files or order history. We may also retain records after closure where required for tax, accounting, dispute, AML/KYC, sanctions, security, or other legal compliance reasons.",
+                    "17.7 No compensation. We are not liable to you for suspension, restriction, closure processing, or termination taken in good faith under these Terms."
                 ]
             },
             {
@@ -223,7 +226,7 @@ export const LEGAL_DOCS: Record<string, LegalDocument> = {
     },
     "privacy": {
         title: "Privacy Policy",
-        lastUpdated: "February 2, 2026",
+        lastUpdated: "March 19, 2026",
         sections: [
             {
                 title: "1. INTRODUCTION",
@@ -248,6 +251,7 @@ export const LEGAL_DOCS: Record<string, LegalDocument> = {
                     "• Professional Data (Freelancers): To maintain our \"Vetted Talent\" status, we collect portfolios, CVs/resumes, skill sets, education history, and links to external professional profiles (e.g., LinkedIn).",
                     "• Verification Data (KYC): Government-issued ID (Passport/ID Card) and proof of address to verify the identity of Freelancers before they can list services.",
                     "• Financial Data: Clients: Payment method details (partial data provided by payment processors), Token purchase history, and Wallet balance. Freelancers: Bank account details (IBAN/SWIFT) or payment method details for withdrawing earnings.",
+                    "• Payment Card Handling: We do not store full payment card numbers, CVV/CVC codes, or full card authentication data on our own servers. Card payments are processed by PCI-DSS-compliant third-party payment gateways and processors, which handle full card data directly under their own security and compliance obligations.",
                     "• User Content: Briefs, project descriptions, file uploads (deliverables), and chat history between Clients and Freelancers.",
                     "2.2. Data Collected Automatically",
                     "• Technical Data: IP address, login data, browser type and version, time zone setting, operating system, and platform.",
@@ -281,7 +285,7 @@ export const LEGAL_DOCS: Record<string, LegalDocument> = {
                 content: [
                     "To provide our services, we may share your data with trusted third parties. We require all third parties to respect the security of your personal data and to treat it in accordance with the law.",
                     "1. Counterparties: Freelancers see the Client's username and project brief. Clients see the Freelancer's full professional profile and portfolio.",
-                    "2. Payment Processors: We use secure third-party gateways to process Fiat transactions. They process your financial data independently.",
+                    "2. Payment Processors: We use PCI-DSS-compliant third-party gateways to process Fiat transactions. They process your financial data independently and are responsible for the secure handling of full payment card data entered into their systems.",
                     "3. Identity Verification Providers: Third-party services used to validate ID documents for Freelancer vetting.",
                     "4. Service Providers: Cloud hosting services (to store uploaded files), email delivery services, and IT support teams.",
                     "5. Legal & Tax Authorities: State Tax Inspectorate (VMI) of Lithuania or other regulators if required by law.",
@@ -352,13 +356,13 @@ export const LEGAL_DOCS: Record<string, LegalDocument> = {
         ]
     },
     "cookies": {
-        title: "Cookies Policy",
-        lastUpdated: "February 2, 2026",
+        title: "Cookie Policy",
+        lastUpdated: "March 19, 2026",
         sections: [
             {
                 title: "1. INTRODUCTION",
                 content: [
-                    "This Cookies Policy explains how RENATASTRADAS MB (“Company”, “we”, “us”, “SkillsTrade”) uses cookies and similar tracking technologies on our marketplace website skills-trade.com (the “Site”). This policy acts in conjunction with our Privacy Policy.",
+                    "This Cookie Policy explains how RENATASTRADAS MB (“Company”, “we”, “us”, “SkillsTrade”) uses cookies and similar tracking technologies on our marketplace website skills-trade.com (the “Site”). This policy acts in conjunction with our Privacy Policy.",
                     "Data Controller Details:",
                     "• Company: RENATASTRADAS MB",
                     "• Company Number: 307123019",
@@ -428,7 +432,7 @@ export const LEGAL_DOCS: Record<string, LegalDocument> = {
             {
                 title: "8. CHANGES TO THIS POLICY",
                 content: [
-                    "We may update this Cookies Policy from time to time. Any changes will be posted on this page with an updated \"Effective Date\"."
+                    "We may update this Cookie Policy from time to time. Any changes will be posted on this page with an updated \"Effective Date\"."
                 ]
             },
             {
@@ -444,7 +448,7 @@ export const LEGAL_DOCS: Record<string, LegalDocument> = {
     },
     "refund": {
         title: "Refund and Return Policy",
-        lastUpdated: "February 2, 2026",
+        lastUpdated: "March 19, 2026",
         sections: [
             {
                 title: "1. INTRODUCTION",
@@ -460,7 +464,7 @@ export const LEGAL_DOCS: Record<string, LegalDocument> = {
                     "Tokens are the internal utility currency used to hire Vetted Talent on the Platform. The refund of real currency (EUR, GBP, USD) for Token purchases is subject to strict conditions to comply with anti-money laundering (AML) regulations and digital content laws.",
                     "2.1. Eligibility for Fiat Refund. You may request a full refund for a purchased Token Package within 14 days of the original transaction date, provided that: 100% Unused, No Disputes.",
                     "2.2. Non-Refundable Scenarios. Partial Use: If you have used any portion of a Token package, the remaining balance is non-refundable to your bank account. Expired Period: Requests made after 14 days from the purchase date are not eligible for a Fiat refund.",
-                    "2.3. Processing Fee. For all eligible monetary refunds, we reserve the right to deduct a processing fee of 5% (or a minimum of €10.00) to cover merchant gateway fees and administrative costs."
+                    "2.3. Processing Fee. If you qualify for a refund within the 14-day cooling-off period and the Token Package is entirely unused, we will not deduct any processing or administration fee from that refund. Any deduction outside that scenario will apply only where permitted by mandatory law and clearly disclosed in advance."
                 ]
             },
             {

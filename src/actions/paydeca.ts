@@ -17,12 +17,72 @@ interface BillingInfo {
     ip?: string;
 }
 
+interface PaydecaCustomerPayload {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    country: string;
+    street: string;
+    city: string;
+    zip: string;
+    ip: string;
+    dateOfBirth: string;
+}
+
+interface PaydecaProvisionPayload {
+    amount: number;
+    currency: string;
+    customer: PaydecaCustomerPayload;
+    successUrl: string;
+    failUrl: string;
+    notifyUrl: string;
+    deviceId: string;
+    hash?: string;
+}
+
+interface PaydecaGatewayMessage {
+    message?: string;
+}
+
+interface PaydecaProvisionResponse {
+    status?: string;
+    redirectUrl?: string;
+    referenceNo?: string;
+    message?: string | PaydecaGatewayMessage;
+    error?: string | Record<string, unknown>;
+}
+
+type GeneratePaydecaSessionResult =
+    | { success: true; redirectUrl: string; paydecaRef?: string }
+    | { success: false; error: string };
+
+function getErrorMessage(data: PaydecaProvisionResponse): string {
+    if (typeof data.message === "string") {
+        return data.message;
+    }
+
+    if (data.message && typeof data.message === "object" && typeof data.message.message === "string") {
+        return data.message.message;
+    }
+
+    if (typeof data.error === "string") {
+        return data.error;
+    }
+
+    if (data.error) {
+        return JSON.stringify(data.error);
+    }
+
+    return "Payment Gateway Error";
+}
+
 export async function generatePaydecaSession(
     tokens: number,
     description: string,
-    amountPaid: number, // in EUR
+    amountPaid: number,
     billingInfo: BillingInfo
-) {
+): Promise<GeneratePaydecaSessionResult> {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user?.email) {
@@ -39,14 +99,12 @@ export async function generatePaydecaSession(
         const amountCents = Math.round(amountPaid * 100);
 
         const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
-
         const successUrl = `${baseUrl}/dashboard/checkout/success`;
         const failUrl = `${baseUrl}/dashboard/checkout/fail`;
         const notifyUrl = `${baseUrl}/api/paydeca/webhook`;
-
         const deviceId = crypto.randomBytes(16).toString("hex");
 
-        const payload: any = {
+        const payload: PaydecaProvisionPayload = {
             amount: amountCents,
             currency: "EUR",
             customer: {
@@ -59,18 +117,15 @@ export async function generatePaydecaSession(
                 city: billingInfo.city || "Riga",
                 zip: billingInfo.zip || "1000",
                 ip: billingInfo.ip || "192.168.1.1",
-                dateOfBirth: billingInfo.dateOfBirth || "2000-01-01"
+                dateOfBirth: billingInfo.dateOfBirth || "2000-01-01",
             },
             successUrl,
             failUrl,
             notifyUrl,
-            deviceId
+            deviceId,
         };
 
-        const payloadString = JSON.stringify(payload);
-        const hash = crypto.createHash('sha256').update(payloadString).digest('hex');
-
-        payload.hash = hash;
+        payload.hash = crypto.createHash('sha256').update(JSON.stringify(payload)).digest('hex');
 
         const referenceId = `PAY-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
@@ -79,7 +134,7 @@ export async function generatePaydecaSession(
             amount: tokens,
             type: TxType.DEPOSIT,
             status: TxStatus.PENDING,
-            description: `Payment for ${tokens} Tokens (EUR ${amountPaid})`,
+            description: description || `Payment for ${tokens} Tokens (EUR ${amountPaid})`,
             referenceId
         });
 
@@ -97,7 +152,7 @@ export async function generatePaydecaSession(
             body: JSON.stringify(payload)
         });
 
-        const data = await response.json();
+        const data = (await response.json()) as PaydecaProvisionResponse;
 
         if (response.ok && data.status === "successful" && data.redirectUrl) {
             await Transaction.updateOne({ _id: newTx._id }, { paydecaRef: data.referenceNo });
@@ -107,26 +162,11 @@ export async function generatePaydecaSession(
                 redirectUrl: data.redirectUrl,
                 paydecaRef: data.referenceNo
             };
-        } else {
-            console.error("Paydeca API Error:", data);
-            await Transaction.updateOne({ _id: newTx._id }, { status: TxStatus.FAILED });
-
-            let errorMessage = "Payment Gateway Error";
-            if (data?.message) {
-                if (typeof data.message === 'string') {
-                    errorMessage = data.message;
-                } else if (data.message.message) {
-                    errorMessage = data.message.message;
-                } else {
-                    errorMessage = JSON.stringify(data.message);
-                }
-            } else if (data?.error) {
-                errorMessage = typeof data.error === 'string' ? data.error : JSON.stringify(data.error);
-            }
-
-            return { success: false, error: errorMessage };
         }
 
+        console.error("Paydeca API Error:", data);
+        await Transaction.updateOne({ _id: newTx._id }, { status: TxStatus.FAILED });
+        return { success: false, error: getErrorMessage(data) };
     } catch (error) {
         console.error("GeneratePaydecaSession Error:", error);
         return { success: false, error: "Internal Server Error" };

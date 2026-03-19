@@ -9,7 +9,7 @@ export function TokenSystem() {
                 <div className="lg:w-1/3">
                     <h2 className="text-4xl font-bold uppercase tracking-tighter mb-6 leading-none font-heading">Why Tokens?</h2>
                     <p className="text-white/60 leading-relaxed font-mono">
-                        We utilize blockchain technology not for the hype, but for the fundamental utility of global finance.
+                        Tokens keep pricing simple across the platform: 100 tokens always equals EUR 1.00.
                     </p>
                 </div>
 
@@ -17,18 +17,18 @@ export function TokenSystem() {
                     {[
                         {
                             icon: Gauge,
-                            title: "Global Speed",
-                            desc: "Cross-border settlements in seconds, not 3-5 business days."
+                            title: "Clear Pricing",
+                            desc: "A fixed conversion rate keeps every package and top-up easy to understand."
                         },
                         {
                             icon: Wallet,
-                            title: "Zero FX Fees",
-                            desc: "Eliminate traditional banking spreads and international wire fees."
+                            title: "Fast Funding",
+                            desc: "Top up once, hold your balance in-app, and pay for services without recalculating every order."
                         },
                         {
                             icon: RefreshCw,
                             title: "Refundable",
-                            desc: "Smart contracts hold funds safely with algorithmic dispute resolution."
+                            desc: "Unused balances and protected order funds are handled through the platform refund workflow."
                         }
                     ].map((item, i) => (
                         <div key={i} className="space-y-4">

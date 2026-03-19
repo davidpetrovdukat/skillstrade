@@ -1,4 +1,4 @@
-import { Plus, ShoppingCart, Check } from 'lucide-react';
+import { Plus, Check } from 'lucide-react';
 import { Addon } from '@/lib/services-data';
 
 interface AddonsSectionProps {

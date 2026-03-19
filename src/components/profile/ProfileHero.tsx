@@ -1,9 +1,7 @@
 'use client'
 
-import React from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Mail, Verified } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import type { FreelancerProfile } from '@/lib/data'
 
 interface ProfileHeroProps {

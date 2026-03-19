@@ -4,21 +4,15 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Mail, MapPin, Building2, Smartphone, Send, ArrowRight } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useState } from 'react';
 import { sendContactMessage } from '@/actions/contact';
 
 function ContactForm() {
     const searchParams = useSearchParams();
-    const [subject, setSubject] = useState('General Support');
+    const initialSubject = searchParams.get('subject')?.toLowerCase() === 'career' ? 'Career' : 'General Support';
+    const [subject, setSubject] = useState(initialSubject);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
-
-    useEffect(() => {
-        const subjectParam = searchParams.get('subject');
-        if (subjectParam?.toLowerCase() === 'career') {
-            setSubject('Career');
-        }
-    }, [searchParams]);
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();

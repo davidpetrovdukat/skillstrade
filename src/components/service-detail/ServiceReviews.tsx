@@ -34,7 +34,7 @@ export function ServiceReviews({ reviews }: ServiceReviewsProps) {
                             <span className="text-xs text-white/60 font-mono">Verified Client</span>
                         </div>
                         <p className="text-white text-sm leading-relaxed">
-                            "{review.text}"
+                            &ldquo;{review.text}&rdquo;
                         </p>
                         <div className="flex items-center gap-3 mt-auto pt-4 border-t border-white/10">
                             <div className="bg-primary/20 h-8 w-8 flex items-center justify-center text-primary font-bold text-xs rounded-full">

@@ -1,7 +1,7 @@
 
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { TrendingUp, Lock, FileText, Quote, ChevronDown } from "lucide-react";
+import { TrendingUp, Lock, FileText, Quote } from "lucide-react";
 import { JoinForm } from "@/components/join/JoinForm";
 
 export default function JoinPage() {
@@ -97,8 +97,8 @@ export default function JoinPage() {
                         <div className="max-w-[900px] mx-auto text-center flex flex-col gap-6 items-center">
                             <Quote className="text-primary w-12 h-12 opacity-50 fill-current" />
                             <blockquote className="text-3xl md:text-5xl font-light italic leading-tight text-white/90 font-display">
-                                "Skills-Trade doubled my income in 3 months. The quality of
-                                briefs here is unlike anything on other platforms."
+                                &ldquo;Skills-Trade doubled my income in 3 months. The quality of
+                                briefs here is unlike anything on other platforms.&rdquo;
                             </blockquote>
                             <div className="flex items-center justify-center gap-3 mt-4">
                                 <div className="h-px w-8 bg-primary"></div>

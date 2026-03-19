@@ -3,13 +3,12 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ProfileHero } from '@/components/profile/ProfileHero'
 import { ProfileBio } from '@/components/profile/ProfileBio'
-import { PortfolioGrid } from '@/components/profile/PortfolioGrid'
 import { ServicePackages } from '@/components/profile/ServicePackages'
 import { Reviews } from '@/components/profile/Reviews'
 import { connectMongo } from '@/lib/db'
 import { Freelancer } from '@/models/Freelancer'
 import { Service } from '@/models/Service'
-import mongoose from 'mongoose'
+import mongoose, { Types } from 'mongoose'
 import { getDisplayUsername } from '@/lib/freelancer-usernames'
 import { buildCanonicalAvatarMap } from '@/lib/avatar-utils'
 
@@ -21,30 +20,70 @@ interface PageProps {
     }>
 }
 
+interface PortfolioItem {
+    _id?: Types.ObjectId
+    title: string
+    category: string
+    imageUrl: string
+}
+
+interface FreelancerProfileDoc {
+    _id: Types.ObjectId
+    slug?: string
+    name: string
+    avatarUrl?: string
+    location: string
+    flag: string
+    role: string
+    bio: string
+    skills?: string[]
+    portfolio?: PortfolioItem[]
+    isAvailable?: boolean
+    verified?: boolean
+}
+
+interface ServiceReviewDoc {
+    _id?: Types.ObjectId
+    authorName: string
+    text: string
+    rating: number
+    createdAt?: Date
+}
+
+interface FreelancerServiceDoc {
+    _id: Types.ObjectId
+    title: string
+    overview: string
+    deliverables?: string[]
+    priceTokens: number
+    deliveryDays: number
+    reviews: ServiceReviewDoc[]
+}
+
 async function getProfile(id: string) {
     await connectMongo()
     const canonicalAvatarByName = buildCanonicalAvatarMap()
 
-    let freelancer;
+    let freelancer: FreelancerProfileDoc | null = null
 
     // Check if it's a valid ObjectId, if so try to find by ID
     if (mongoose.Types.ObjectId.isValid(id)) {
-        freelancer = await Freelancer.findById(id).lean()
+        freelancer = await Freelancer.findById(id).lean() as FreelancerProfileDoc | null
     }
 
     // If not found by ID (or if id wasn't a valid ObjectId), try to find by slug
     if (!freelancer) {
-        freelancer = await Freelancer.findOne({ slug: id }).lean()
+        freelancer = await Freelancer.findOne({ slug: id }).lean() as FreelancerProfileDoc | null
     }
 
     if (!freelancer) return null
 
     // Fetch active services
-    const services = await Service.find({ freelancer: freelancer._id }).lean()
+    const services = await Service.find({ freelancer: freelancer._id }).lean() as FreelancerServiceDoc[]
 
     // Transform to match component expectations
     const profile = {
-        id: (freelancer as any)._id.toString(),
+        id: freelancer._id.toString(),
         meta: {
             name: getDisplayUsername(freelancer.name),
             role: freelancer.role,
@@ -67,30 +106,32 @@ async function getProfile(id: string) {
             skills: freelancer.skills || [],
             languages: ["English (Native)"] // Mock for now
         },
-        portfolio: freelancer.portfolio?.map((p: any) => ({
-            id: p._id?.toString() || Math.random().toString(),
-            title: p.title,
-            category: p.category,
-            image_url: p.imageUrl
+        portfolio: freelancer.portfolio?.map((item, index) => ({
+            id: item._id?.toString() || `portfolio-${index}`,
+            title: item.title,
+            category: item.category,
+            image_url: item.imageUrl
         })) || [],
-        active_services: services.map(s => ({
-            id: (s as any)._id.toString(),
-            title: s.title,
-            description: s.overview,
-            features: s.deliverables,
-            price_tokens: s.priceTokens,
-            delivery_days: s.deliveryDays,
+        active_services: services.map(service => ({
+            id: service._id.toString(),
+            title: service.title,
+            description: service.overview,
+            features: service.deliverables || [],
+            price_tokens: service.priceTokens,
+            delivery_days: service.deliveryDays,
             rating: 5.0, // Mock for now
-            reviews_count: s.reviews.length,
+            reviews_count: service.reviews.length,
             popular: false
         })),
-        reviews: services.flatMap(s => s.reviews.map(r => ({
-            id: (r as any)._id?.toString() || Math.random().toString(),
-            author: r.authorName,
-            text: r.text,
-            rating: r.rating,
-            date: r.createdAt ? new Date(r.createdAt).toLocaleDateString() : 'Recently'
-        })))
+        reviews: services.flatMap((service) =>
+            service.reviews.map((review, index) => ({
+                id: review._id?.toString() || `${service._id.toString()}-review-${index}`,
+                author: review.authorName,
+                text: review.text,
+                rating: review.rating,
+                date: review.createdAt ? new Date(review.createdAt).toLocaleDateString() : 'Recently'
+            }))
+        )
     }
 
     return profile

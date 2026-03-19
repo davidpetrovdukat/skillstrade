@@ -1,16 +1,34 @@
 'use server';
 
 import { Resend } from 'resend';
+import { getNotificationEmail, getResendFromEmail } from '@/lib/email';
 
 // Initialize Resend with API Key from environment variables
 const resend = new Resend(process.env.RESEND_API_KEY);
-const RESEND_FROM =
-    process.env.RESEND_FROM_EMAIL ||
-    process.env.RESEND_FROM ||
-    'Skill Trade <info@skills-trade.com>';
-const JOIN_APPLICATION_TO = process.env.JOIN_APPLICATION_TO || 'info@skills-trade.com';
+const RESEND_FROM = getResendFromEmail();
+const JOIN_APPLICATION_TO = getNotificationEmail('JOIN_APPLICATION_TO');
 
-export async function sendJoinApplication(formData: any) {
+interface JoinApplicationFormData {
+    fullName: string;
+    email: string;
+    portfolioUrl: string;
+    linkedinUrl: string;
+    country: string;
+    languages: string;
+    primarySkill: string;
+    otherSkill?: string;
+    whyYou: string;
+}
+
+function getErrorMessage(error: unknown) {
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    return 'Unexpected error';
+}
+
+export async function sendJoinApplication(formData: JoinApplicationFormData) {
     if (!process.env.RESEND_API_KEY) {
         console.error('RESEND_API_KEY is not defined');
         return { success: false, error: 'Server configuration error' };
@@ -52,8 +70,8 @@ export async function sendJoinApplication(formData: any) {
 
         return { success: true, data };
 
-    } catch (e: any) {
-        console.error('Unexpected Error:', e);
-        return { success: false, error: e.message };
+    } catch (error: unknown) {
+        console.error('Unexpected Error:', error);
+        return { success: false, error: getErrorMessage(error) };
     }
 }

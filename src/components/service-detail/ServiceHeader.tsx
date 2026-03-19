@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Clock, Globe, Star, Calendar } from 'lucide-react';
+import { Clock, Globe, Star } from 'lucide-react';
 import { getDisplayUsername } from '@/lib/freelancer-usernames';
 import { FEATURE_FLAGS } from '@/lib/feature-flags';
 

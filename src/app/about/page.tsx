@@ -220,7 +220,7 @@ export default function AboutPage() {
                                 </h3>
                                 <p className="text-gray-400 text-lg leading-relaxed max-w-sm font-mono">
                                     We invite 100, we accept 1. We say no to 99% of applicants so
-                                    you don't have to sift through the noise.
+                                    you don&apos;t have to sift through the noise.
                                 </p>
                             </div>
                         </div>

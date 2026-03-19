@@ -12,6 +12,14 @@ export interface RegisterState {
     };
 }
 
+function getErrorMessage(error: unknown) {
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    return 'Something went wrong. Please try again.';
+}
+
 export async function registerUser(prevState: RegisterState, formData: FormData): Promise<RegisterState> {
     try {
         await connectMongo();
@@ -70,8 +78,8 @@ export async function registerUser(prevState: RegisterState, formData: FormData)
 
         return { success: true };
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Registration Error:', error);
-        return { error: 'Something went wrong. Please try again.' };
+        return { error: getErrorMessage(error) };
     }
 }

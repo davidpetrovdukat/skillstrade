@@ -1,8 +1,18 @@
-import { Download, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
+interface OrdersTableItem {
+    _id: string;
+    brief?: {
+        title?: string;
+    };
+    freelancerName?: string;
+    status: string;
+    deadline?: string | Date;
+}
+
 interface OrdersTableProps {
-    orders: any[];
+    orders: OrdersTableItem[];
 }
 
 export function OrdersTable({ orders }: OrdersTableProps) {

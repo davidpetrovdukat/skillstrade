@@ -14,23 +14,44 @@ import { Freelancer } from '@/models/Freelancer';
 import { getDisplayUsername } from '@/lib/freelancer-usernames';
 import { buildCanonicalAvatarMap } from '@/lib/avatar-utils';
 import { FEATURE_FLAGS } from '@/lib/feature-flags';
+import type { Types } from 'mongoose';
 
 export const dynamic = 'force-dynamic';
 
+interface HomeService {
+  _id: Types.ObjectId;
+  title: string;
+  imageUrl?: string | null;
+}
+
+interface HomeTalent {
+  _id: Types.ObjectId;
+  slug?: string;
+  name: string;
+  avatarUrl?: string;
+  role: string;
+  flag: string;
+  skills?: string[];
+}
+
 export default async function Home() {
-  let topServices: any[] = [];
-  let featuredTalents: any[] = [];
+  let topServices: HomeService[] = [];
+  let featuredTalents: HomeTalent[] = [];
   const canonicalAvatarByName = buildCanonicalAvatarMap();
 
   try {
     await connectMongo();
-    topServices = await Service.find({}).limit(6).lean();
+    topServices = await Service.find({}).limit(6).lean() as HomeService[];
     if (FEATURE_FLAGS.showHomepageCollectiveBlock) {
-      const raw = await Freelancer.find({ isAvailable: true }).limit(8).lean();
-      featuredTalents = raw.map((talent: any) => ({
-        ...talent,
+      const raw = await Freelancer.find({ isAvailable: true }).limit(8).lean() as HomeTalent[];
+      featuredTalents = raw.map((talent) => ({
+        _id: talent._id,
+        slug: talent.slug,
         name: getDisplayUsername(talent.name),
         avatarUrl: canonicalAvatarByName.get(talent.name) || talent.avatarUrl,
+        role: talent.role,
+        flag: talent.flag,
+        skills: talent.skills || [],
       }));
     }
   } catch (error) {

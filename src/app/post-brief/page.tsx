@@ -5,7 +5,6 @@ import { Footer } from '@/components/layout/Footer';
 import { ChevronDown, Upload, ArrowRight, CheckCircle, X, Loader2 } from 'lucide-react';
 import { useState, useRef, useMemo } from 'react';
 import { useCurrencyStore, CURRENCY_SYMBOLS } from '@/store/useCurrencyStore';
-import { RAW_SERVICES_DATA } from '@/lib/services-data';
 import { sendBrief } from '@/actions/brief';
 
 export default function PostBriefPage() {

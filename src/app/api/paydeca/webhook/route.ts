@@ -4,31 +4,48 @@ import { Transaction, TxStatus, TxType } from '@/models/Transaction';
 import { User } from '@/models/User';
 import crypto from 'crypto';
 
+interface PaydecaWebhookMessage {
+    referenceNo?: string;
+    status?: string;
+}
+
+interface PaydecaWebhookPayload {
+    messagetype?: string;
+    referenceNo?: string;
+    message?: PaydecaWebhookMessage;
+}
+
+function isWebhookPayload(value: unknown): value is PaydecaWebhookPayload {
+    return typeof value === 'object' && value !== null;
+}
+
 export async function POST(req: Request) {
     try {
         const rawBody = await req.text();
         const payloadHash = req.headers.get('payload-hash');
         const secretKey = process.env.PAYDECA_SECRET_KEY || '14162043-09b6-49df-8c40-3d4360be9069';
 
-        let body: any;
+        let parsedBody: unknown;
         try {
-            body = JSON.parse(rawBody);
-        } catch (e) {
+            parsedBody = JSON.parse(rawBody);
+        } catch {
             return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
         }
 
-        const stringifiedBody = JSON.stringify(body);
-        const calculatedHash = crypto.createHash('sha256').update(`${stringifiedBody}${secretKey}`).digest('hex');
+        if (!isWebhookPayload(parsedBody)) {
+            return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+        }
 
+        const calculatedHash = crypto.createHash('sha256').update(`${JSON.stringify(parsedBody)}${secretKey}`).digest('hex');
         const isHashValid = payloadHash === calculatedHash;
 
         if (!isHashValid && payloadHash) {
             console.warn("Invalid Hash Detected.");
         }
 
-        const messagetype = body.messagetype;
-        const messagePayload = body.message || {};
-        const referenceNo = messagePayload.referenceNo || body.referenceNo;
+        const messageType = parsedBody.messagetype;
+        const messagePayload = parsedBody.message || {};
+        const referenceNo = messagePayload.referenceNo || parsedBody.referenceNo;
 
         if (!referenceNo) {
             return NextResponse.json({ error: "Missing referenceNo" }, { status: 400 });
@@ -51,7 +68,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: "Already processed" });
         }
 
-        if (messagetype === 'acquirerRes') {
+        if (messageType === 'acquirerRes') {
             const actionStatus = messagePayload.status;
 
             if (actionStatus === 'succeeded') {
@@ -75,9 +92,9 @@ export async function POST(req: Request) {
         }
 
         return NextResponse.json({ message: "Status ignored / unknown" });
-
-    } catch (err: any) {
+    } catch (err: unknown) {
+        const details = err instanceof Error ? err.message : "Unknown error";
         console.error("Webhook Error:", err);
-        return NextResponse.json({ error: "Internal Server Error", details: err.message }, { status: 500 });
+        return NextResponse.json({ error: "Internal Server Error", details }, { status: 500 });
     }
 }

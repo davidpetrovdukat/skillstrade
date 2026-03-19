@@ -2,9 +2,7 @@
 
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
-import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 export default function ManifestoPage() {
     return (
@@ -58,7 +56,7 @@ export default function ManifestoPage() {
                             className="text-lg md:text-2xl font-light leading-relaxed text-white/80 font-sans"
                         >
                             Gatekeepers. Bloat. The middleman tax. We are watching the slow collapse of the old guard.
-                            Clients pay for overhead they don't use, and talent gets lost in the machine. It is time to burn the
+                            Clients pay for overhead they don&apos;t use, and talent gets lost in the machine. It is time to burn the
                             bridge.
                         </motion.p>
                     </div>
@@ -164,7 +162,7 @@ export default function ManifestoPage() {
                                     </h3>
                                 </div>
                                 <p className="text-xl text-white/70 pl-0 md:pl-[3.5rem] max-w-lg font-sans">
-                                    Top 1% talent only. We don't hire bodies; we partner with minds that intimidate us.
+                                    Top 1% talent only. We don&apos;t hire bodies; we partner with minds that intimidate us.
                                 </p>
                             </motion.div>
                         </div>

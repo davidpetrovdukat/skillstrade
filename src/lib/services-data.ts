@@ -1399,7 +1399,7 @@ export const RAW_SERVICES_DATA: ServiceItemRaw[] = [
 ]
 
 // Helper to get FAQs (preserving logic from before)
-const getFaqsForService = (category: string, title: string) => {
+const getFaqsForService = (category: string) => {
     switch (category) {
         case "Design":
             return [
@@ -1515,7 +1515,7 @@ export const SERVICES_DATA = RAW_SERVICES_DATA.map(item => {
         languages: "English",
         avg_reply: "1 hr",
         gallery: [imageUrl],
-        faq: getFaqsForService(category, item.service.title),
+        faq: getFaqsForService(category),
         freelancer: {
             name: item.meta.name,
             slug: item.id, // Using ID as slug

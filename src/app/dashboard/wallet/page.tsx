@@ -8,10 +8,24 @@ import { redirect } from 'next/navigation';
 import { connectMongo } from '@/lib/db';
 import { User } from '@/models/User';
 import { Transaction } from '@/models/Transaction';
-import { ArrowDownLeft, ArrowUpRight, History } from 'lucide-react';
+import { ArrowDownLeft, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
+import type { Types } from 'mongoose';
 
 export const dynamic = 'force-dynamic';
+
+interface WalletUser {
+    _id: Types.ObjectId;
+    walletBalance: number;
+}
+
+interface WalletTransaction {
+    _id: Types.ObjectId;
+    type: 'DEPOSIT' | 'SPEND' | 'EARNING' | 'WITHDRAWAL';
+    amount: number;
+    description: string;
+    createdAt: Date;
+}
 
 export default async function WalletPage() {
     const session = await getServerSession(authOptions);
@@ -19,15 +33,14 @@ export default async function WalletPage() {
 
     await connectMongo();
 
-    const user = await User.findOne({ email: session.user.email });
+    const user = await User.findOne({ email: session.user.email }).lean() as WalletUser | null;
     if (!user) redirect('/login');
 
     const transactions = await Transaction.find({ user: user._id })
         .sort({ createdAt: -1 })
         .limit(10)
-        .lean();
+        .lean() as WalletTransaction[];
 
-    // Exchange rate logic: 100 T = 1 EUR
     const eurValue = (user.walletBalance / 100).toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
 
     return (
@@ -39,9 +52,7 @@ export default async function WalletPage() {
                 </div>
 
                 <main className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 bg-[#0e0e0e] flex flex-col gap-12">
-                    {/* 1. BALANCE CARD (Hero) */}
                     <section className="relative w-full overflow-hidden rounded-none border border-white/10 bg-[#161616] p-8 md:p-12">
-                        {/* Glassmorphism effect overlay */}
                         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent pointer-events-none" />
 
                         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
@@ -51,7 +62,8 @@ export default async function WalletPage() {
                                     <span className="text-5xl md:text-6xl font-bold font-heading text-[#D3E97A] tracking-tighter shadow-black drop-shadow-lg">
                                         {user.walletBalance.toLocaleString()} <span className="text-2xl align-top opacity-60">Tokens</span>
                                     </span>
-                                    <span className="text-xl text-gray-500 font-mono mt-2">≈ {eurValue}</span>
+                                    <span className="text-xl text-gray-500 font-mono mt-2">Approx. {eurValue}</span>
+                                    <span className="text-xs text-gray-500 font-mono mt-2 uppercase tracking-widest">100 T = EUR 1.00</span>
                                 </div>
                             </div>
 
@@ -63,7 +75,6 @@ export default async function WalletPage() {
                         </div>
                     </section>
 
-                    {/* 2. BUY TOKENS SECTION */}
                     <section className="flex flex-col gap-6">
                         <div className="flex items-center gap-4">
                             <div className="h-8 w-1 bg-[#D3E97A]"></div>
@@ -72,7 +83,6 @@ export default async function WalletPage() {
                         <PricingGrid isDashboard={true} />
                     </section>
 
-                    {/* 3. TRANSACTION HISTORY */}
                     <section className="flex flex-col gap-6 max-w-4xl">
                         <div className="flex items-center gap-4">
                             <div className="h-8 w-1 bg-white/20"></div>
@@ -80,7 +90,6 @@ export default async function WalletPage() {
                         </div>
 
                         <div className="w-full border border-white/10 bg-[#121212]">
-                            {/* Header */}
                             <div className="grid grid-cols-12 p-4 border-b border-white/10 bg-[#161616] text-xs font-bold uppercase tracking-wider text-gray-500">
                                 <div className="col-span-6 md:col-span-5">Description</div>
                                 <div className="col-span-3 md:col-span-3 text-right">Amount</div>
@@ -93,7 +102,7 @@ export default async function WalletPage() {
                                 </div>
                             ) : (
                                 <div className="divide-y divide-white/5">
-                                    {transactions.map((tx: any) => (
+                                    {transactions.map((tx) => (
                                         <div key={tx._id} className="grid grid-cols-12 p-4 items-center hover:bg-white/[0.02] transition-colors group">
                                             <div className="col-span-6 md:col-span-5 flex items-center gap-3">
                                                 <div className={`size-8 flex items-center justify-center rounded-full border ${tx.type === 'DEPOSIT' || tx.type === 'EARNING' ? 'border-green-500/30 bg-green-900/10 text-green-500' : 'border-red-500/30 bg-red-900/10 text-red-500'}`}>

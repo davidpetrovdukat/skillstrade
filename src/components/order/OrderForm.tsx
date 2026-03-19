@@ -1,16 +1,39 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { CloudUpload, Edit3, Lock, ArrowRight, ShieldCheck, Check } from "lucide-react";
-import Image from "next/image";
+import { CloudUpload, Edit3, Lock, ArrowRight, Check } from "lucide-react";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createOrder } from '@/actions/order';
 import { getDisplayUsername } from '@/lib/freelancer-usernames';
 
+interface OrderFormAddon {
+    _id: string;
+    title: string;
+    description: string;
+    priceTokens: number;
+}
+
+interface OrderFormService {
+    _id: string;
+    title: string;
+    category: string;
+    priceTokens: number;
+    addons?: OrderFormAddon[];
+}
+
+interface OrderFormUser {
+    walletBalance?: number;
+}
+
+interface OrderFormFreelancer {
+    name: string;
+    role: string;
+}
+
 interface OrderFormProps {
-    service: any;
-    user: any;
-    freelancer: any;
+    service: OrderFormService;
+    user: OrderFormUser;
+    freelancer: OrderFormFreelancer;
 }
 
 export function OrderForm({ service, user, freelancer }: OrderFormProps) {
@@ -37,8 +60,8 @@ export function OrderForm({ service, user, freelancer }: OrderFormProps) {
 
     // Calculate totals
     const addonsTotal = (service.addons || [])
-        .filter((addon: any) => selectedAddonIds.has(addon._id.toString()))
-        .reduce((sum: number, addon: any) => sum + addon.priceTokens, 0);
+        .filter((addon) => selectedAddonIds.has(addon._id.toString()))
+        .reduce((sum, addon) => sum + addon.priceTokens, 0);
 
     const totalTokens = service.priceTokens + addonsTotal;
 
@@ -118,7 +141,7 @@ export function OrderForm({ service, user, freelancer }: OrderFormProps) {
                             <h2 className="text-xl font-bold uppercase tracking-tight text-white font-heading">02 / Upgrades</h2>
                         </div>
                         <div className="flex flex-col gap-3">
-                            {service.addons.map((addon: any) => {
+                            {service.addons.map((addon) => {
                                 const isSelected = selectedAddonIds.has(addon._id.toString());
                                 return (
                                     <div

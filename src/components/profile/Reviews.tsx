@@ -32,7 +32,7 @@ export function Reviews({ reviews }: ReviewsProps) {
                                     <Star key={i} className={`w-5 h-5 ${i < review.rating ? 'fill-current' : 'text-white/20'}`} />
                                 ))}
                             </div>
-                            <p className="text-lg italic font-light text-white mb-6 font-mono">"{review.text}"</p>
+                            <p className="text-lg italic font-light text-white mb-6 font-mono">&ldquo;{review.text}&rdquo;</p>
                             <div className="flex items-center gap-3">
                                 {review.avatar ? (
                                     <div

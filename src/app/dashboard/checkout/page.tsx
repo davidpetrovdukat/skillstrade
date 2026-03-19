@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Lock, ShieldCheck, MapPin, Phone, Calendar, Globe } from "lucide-react";
+import { Loader2, Lock, MapPin, Phone, Calendar, Globe } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Sidebar } from "@/components/dashboard/Sidebar";
-
 import { generatePaydecaSession } from "@/actions/paydeca";
 
 interface CheckoutData {
@@ -17,46 +16,78 @@ interface CheckoutData {
     description: string;
 }
 
+interface BillingFormData {
+    phone: string;
+    country: string;
+    street: string;
+    city: string;
+    zip: string;
+    dateOfBirth: string;
+}
+
+const DEFAULT_BILLING_INFO: BillingFormData = {
+    phone: '',
+    country: 'GB',
+    street: '',
+    city: '',
+    zip: '',
+    dateOfBirth: '',
+};
+
+function parseCheckoutData(): CheckoutData | null {
+    if (typeof window === "undefined") {
+        return null;
+    }
+
+    const raw = window.localStorage.getItem("checkoutData");
+    if (!raw) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(raw) as CheckoutData;
+    } catch (error) {
+        console.error("Failed to parse checkout data", error);
+        return null;
+    }
+}
+
+function parseBillingInfo(): BillingFormData {
+    if (typeof window === "undefined") {
+        return DEFAULT_BILLING_INFO;
+    }
+
+    const raw = window.localStorage.getItem("billingInfo");
+    if (!raw) {
+        return DEFAULT_BILLING_INFO;
+    }
+
+    try {
+        return { ...DEFAULT_BILLING_INFO, ...(JSON.parse(raw) as Partial<BillingFormData>) };
+    } catch (error) {
+        console.error("Failed to parse saved billing info", error);
+        return DEFAULT_BILLING_INFO;
+    }
+}
+
 export default function CheckoutPage() {
     const router = useRouter();
-    const [checkout, setCheckout] = useState<CheckoutData | null>(null);
+    const [checkout] = useState<CheckoutData | null>(parseCheckoutData);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
-    const [formData, setFormData] = useState({
-        phone: '',
-        country: 'GB', // Default to GB for now
-        street: '',
-        city: '',
-        zip: '',
-        dateOfBirth: ''
-    });
+    const [formData, setFormData] = useState<BillingFormData>(parseBillingInfo);
 
     useEffect(() => {
-        const data = localStorage.getItem("checkoutData");
-        if (!data) {
-            router.push("/dashboard/wallet");
-        } else {
-            setCheckout(JSON.parse(data));
+        if (!checkout) {
+            router.replace("/dashboard/wallet");
         }
-
-        // Restore billing info from localStorage
-        const savedBillingInfo = localStorage.getItem("billingInfo");
-        if (savedBillingInfo) {
-            try {
-                setFormData(JSON.parse(savedBillingInfo));
-            } catch (e) {
-                console.error("Failed to parse saved billing info");
-            }
-        }
-    }, [router]);
+    }, [checkout, router]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => {
+        setFormData((prev) => {
             const updated = { ...prev, [name]: value };
-            // Save to localStorage so user doesn't have to re-enter
-            localStorage.setItem("billingInfo", JSON.stringify(updated));
+            window.localStorage.setItem("billingInfo", JSON.stringify(updated));
             return updated;
         });
     };
@@ -82,13 +113,14 @@ export default function CheckoutPage() {
 
             if (result.success && result.redirectUrl) {
                 window.location.href = result.redirectUrl;
-            } else {
-                setError(result.error || "Transaction failed to initiate.");
-                setIsSubmitting(false);
+                return;
             }
+
+            setError(result.error || "Transaction failed to initiate.");
         } catch (err) {
             console.error(err);
             setError("Something went wrong");
+        } finally {
             setIsSubmitting(false);
         }
     };
@@ -104,10 +136,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <main className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 bg-[#0e0e0e] flex justify-center">
-
                     <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-12">
-
-                        {/* Summary Column */}
                         <div className="flex flex-col gap-6">
                             <h1 className="text-3xl font-bold uppercase tracking-widest font-heading mb-2">Checkout</h1>
 
@@ -119,25 +148,25 @@ export default function CheckoutPage() {
                                         <p className="text-lg font-bold text-white">{checkout.planId}</p>
                                         <p className="text-sm text-gray-500">{checkout.description}</p>
                                     </div>
-                                    <p className="text-lg font-bold text-white">€{checkout.amount.toFixed(2)}</p>
+                                    <p className="text-lg font-bold text-white">в‚¬{checkout.amount.toFixed(2)}</p>
                                 </div>
 
                                 <div className="h-px bg-white/10 my-2"></div>
 
                                 <div className="flex justify-between text-sm">
                                     <span className="text-gray-400">Subtotal</span>
-                                    <span className="font-mono">€{checkout.amount.toFixed(2)}</span>
+                                    <span className="font-mono">в‚¬{checkout.amount.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="text-gray-400">VAT (20%)</span>
-                                    <span className="font-mono">€{vatAmount.toFixed(2)}</span>
+                                    <span className="font-mono">в‚¬{vatAmount.toFixed(2)}</span>
                                 </div>
 
                                 <div className="h-px bg-white/10 my-2"></div>
 
                                 <div className="flex justify-between items-end">
                                     <span className="text-lg font-bold uppercase tracking-wider text-[#D3E97A]">Total</span>
-                                    <span className="text-2xl font-bold font-mono text-[#D3E97A]">€{total.toFixed(2)}</span>
+                                    <span className="text-2xl font-bold font-mono text-[#D3E97A]">в‚¬{total.toFixed(2)}</span>
                                 </div>
                             </div>
 
@@ -147,7 +176,6 @@ export default function CheckoutPage() {
                             </div>
                         </div>
 
-                        {/* Payment / Billing Column */}
                         <div className="flex flex-col gap-6">
                             <h2 className="text-xl font-bold uppercase tracking-wider text-white">
                                 Billing Details
@@ -160,7 +188,6 @@ export default function CheckoutPage() {
                                 </div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="flex flex-col gap-1">
                                             <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Date of Birth</label>
@@ -278,9 +305,7 @@ export default function CheckoutPage() {
                                                 Processing...
                                             </>
                                         ) : (
-                                            <>
-                                                Proceed to Payment
-                                            </>
+                                            <>Proceed to Payment</>
                                         )}
                                     </button>
 
@@ -291,7 +316,6 @@ export default function CheckoutPage() {
                             )}
                         </div>
                     </div>
-
                 </main>
             </div>
             <Footer />

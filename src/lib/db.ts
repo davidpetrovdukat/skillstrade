@@ -1,23 +1,24 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI || process.env.DATABASE_URL;
 
 if (!MONGODB_URI) {
-    throw new Error("❌ MONGODB_URI is not defined in environment variables");
+    throw new Error("MongoDB connection string is missing. Set MONGODB_URI or DATABASE_URL.");
 }
 
-/**
- * Global cache for mongoose connection
- * (important for Next.js hot reload)
- */
-let cached = (global as any).mongoose;
+type MongooseCache = {
+    conn: typeof mongoose | null;
+    promise: Promise<typeof mongoose> | null;
+};
 
-if (!cached) {
-    cached = (global as any).mongoose = {
-        conn: null,
-        promise: null,
-    };
+declare global {
+    var mongooseCache: MongooseCache | undefined;
 }
+
+const cached = global.mongooseCache ?? (global.mongooseCache = {
+    conn: null,
+    promise: null,
+});
 
 export async function connectMongo() {
     if (cached.conn) {
@@ -25,7 +26,7 @@ export async function connectMongo() {
     }
 
     if (!cached.promise) {
-        cached.promise = mongoose.connect(MONGODB_URI as string, {
+        cached.promise = mongoose.connect(MONGODB_URI, {
             bufferCommands: false,
         }).then((mongoose) => {
             return mongoose;

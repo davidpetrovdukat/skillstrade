@@ -2,7 +2,7 @@
 import { connectMongo } from '../src/lib/db';
 import { User } from '../src/models/User';
 import { Transaction } from '../src/models/Transaction';
-import { Order, OrderStatus } from '../src/models/Order'; // Ensure OrderStatus is exported or use string
+import { Order } from '../src/models/Order';
 import { Service } from '../src/models/Service';
 import { Freelancer } from '../src/models/Freelancer';
 import dotenv from 'dotenv';

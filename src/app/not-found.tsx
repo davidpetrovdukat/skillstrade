@@ -36,7 +36,7 @@ export default function NotFound() {
                             System Error.
                         </h1>
                         <p className="text-white/60 font-body text-base sm:text-lg font-light leading-relaxed max-w-lg">
-                            You've reached the void. This page doesn't exist or has been deleted.
+                            You&apos;ve reached the void. This page doesn&apos;t exist or has been deleted.
                         </p>
                     </div>
 
