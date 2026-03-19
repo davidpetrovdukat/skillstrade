@@ -5,6 +5,7 @@ import { CloudUpload, Edit3, Lock, ArrowRight, Check } from "lucide-react";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createOrder } from '@/actions/order';
 import { getDisplayUsername } from '@/lib/freelancer-usernames';
+import { FEATURE_FLAGS } from '@/lib/feature-flags';
 
 interface OrderFormAddon {
     _id: string;
@@ -117,18 +118,19 @@ export function OrderForm({ service, user, freelancer }: OrderFormProps) {
                                         <span className="text-sm uppercase tracking-wider">{service.category}</span>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="h-8 w-8 rounded-full bg-white/10 overflow-hidden relative border border-white/10">
-                                        {/* Avatar Fallback */}
-                                        <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white bg-gray-800">
-                                            {getDisplayUsername(freelancer.name)[0]}
+                                {FEATURE_FLAGS.showFreelancerOnServiceDetail && (
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-8 w-8 rounded-full bg-white/10 overflow-hidden relative border border-white/10">
+                                            <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white bg-gray-800">
+                                                {getDisplayUsername(freelancer.name)[0]}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-bold text-white leading-none font-heading">{getDisplayUsername(freelancer.name)}</p>
+                                            <p className="text-xs text-white/60 uppercase mt-0.5 font-mono">{freelancer.role}</p>
                                         </div>
                                     </div>
-                                    <div>
-                                        <p className="text-sm font-bold text-white leading-none font-heading">{getDisplayUsername(freelancer.name)}</p>
-                                        <p className="text-xs text-white/60 uppercase mt-0.5 font-mono">{freelancer.role}</p>
-                                    </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </div>

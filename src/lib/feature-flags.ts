@@ -4,11 +4,11 @@
  */
 export const FEATURE_FLAGS = {
   /** When false, /talents route returns 404 and nav links to /talents are hidden. */
-  showTalentsPage: true,
+  showTalentsPage: false,
   /** When false, the "Meet The Collective" block (TalentCarousel) is hidden on the homepage. */
-  showHomepageCollectiveBlock: true,
+  showHomepageCollectiveBlock: false,
   /** When false, freelancer avatar and username are hidden on the service detail page (/services/[id]). */
-  showFreelancerOnServiceDetail: true,
+  showFreelancerOnServiceDetail: false,
   /** When false, freelancer avatar and username are hidden on service cards (/services). */
-  showFreelancerOnServiceCard: true,
+  showFreelancerOnServiceCard: false,
 } as const;

@@ -11,6 +11,7 @@ import { Service } from '@/models/Service'
 import mongoose, { Types } from 'mongoose'
 import { getDisplayUsername } from '@/lib/freelancer-usernames'
 import { buildCanonicalAvatarMap } from '@/lib/avatar-utils'
+import { FEATURE_FLAGS } from '@/lib/feature-flags'
 
 export const dynamic = 'force-dynamic'
 
@@ -138,6 +139,10 @@ async function getProfile(id: string) {
 }
 
 export default async function ProfilePage(props: PageProps) {
+    if (!FEATURE_FLAGS.showTalentsPage) {
+        notFound()
+    }
+
     const params = await props.params;
     const profile = await getProfile(params.id)
 
