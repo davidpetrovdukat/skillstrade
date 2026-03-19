@@ -90,9 +90,9 @@ async function getProfile(id: string) {
             location: freelancer.location,
             flag: freelancer.flag,
             timezone: "GMT (London)", // TODO: Store in DB
-            avatar_url: canonicalAvatarByName.get(freelancer.name) || freelancer.avatarUrl,
+            avatar_url: canonicalAvatarByName.get(freelancer.name) || freelancer.avatarUrl || '/avatars/default.jpg',
             is_available: freelancer.isAvailable ?? true,
-            verified: freelancer.verified
+            verified: freelancer.verified ?? false
         },
         stats: {
             job_success_score: 98, // Mock for now

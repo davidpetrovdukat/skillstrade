@@ -103,7 +103,7 @@ export default async function WalletPage() {
                             ) : (
                                 <div className="divide-y divide-white/5">
                                     {transactions.map((tx) => (
-                                        <div key={tx._id} className="grid grid-cols-12 p-4 items-center hover:bg-white/[0.02] transition-colors group">
+                                        <div key={tx._id.toString()} className="grid grid-cols-12 p-4 items-center hover:bg-white/[0.02] transition-colors group">
                                             <div className="col-span-6 md:col-span-5 flex items-center gap-3">
                                                 <div className={`size-8 flex items-center justify-center rounded-full border ${tx.type === 'DEPOSIT' || tx.type === 'EARNING' ? 'border-green-500/30 bg-green-900/10 text-green-500' : 'border-red-500/30 bg-red-900/10 text-red-500'}`}>
                                                     {tx.type === 'DEPOSIT' || tx.type === 'EARNING' ? <ArrowDownLeft className="w-4 h-4" /> : <ArrowUpRight className="w-4 h-4" />}

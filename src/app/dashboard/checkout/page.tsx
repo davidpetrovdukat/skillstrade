@@ -116,7 +116,12 @@ export default function CheckoutPage() {
                 return;
             }
 
-            setError(result.error || "Transaction failed to initiate.");
+            if (!result.success) {
+                setError(result.error || "Transaction failed to initiate.");
+                return;
+            }
+
+            setError("Transaction failed to initiate.");
         } catch (err) {
             console.error(err);
             setError("Something went wrong");

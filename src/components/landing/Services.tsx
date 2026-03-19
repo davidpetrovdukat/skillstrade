@@ -20,7 +20,7 @@ export function Services({ services }: ServicesProps) {
                 {displayServices.map((service, index) => (
                     <Link
                         href={`/services/${service._id}`}
-                        key={service._id}
+                        key={service._id.toString()}
                         className={`
               aspect-square border-b border-white/20 relative group cursor-pointer overflow-hidden block
               ${index === 0 || index === 3 ? 'lg:border-b-0' : ''} 

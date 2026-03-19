@@ -87,8 +87,8 @@ export function ServiceDetailClient({
                         avatarUrl: freelancer.avatarUrl,
                         role: freelancer.role,
                         rating: freelancer.rating,
-                        reviews_count: freelancer.reviewsCount,
-                        verified: freelancer.verified,
+                        reviews_count: freelancer.reviewsCount ?? 0,
+                        verified: freelancer.verified ?? false,
                         location: freelancer.location,
                         flag: freelancer.flag,
                     }}

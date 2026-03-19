@@ -145,7 +145,7 @@ export function OrderForm({ service, user, freelancer }: OrderFormProps) {
                                 const isSelected = selectedAddonIds.has(addon._id.toString());
                                 return (
                                     <div
-                                        key={addon._id}
+                                        key={addon._id.toString()}
                                         onClick={() => toggleAddon(addon._id.toString())}
                                         className={`border border-white/10 p-4 flex items-center justify-between cursor-pointer transition-all ${isSelected ? 'bg-primary/10 border-primary' : 'bg-white/5 hover:bg-white/10'}`}
                                     >

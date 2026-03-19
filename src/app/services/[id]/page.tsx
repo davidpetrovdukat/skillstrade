@@ -90,12 +90,13 @@ export default async function ServiceDetailPage(props: PageProps) {
     }
 
     const service = serviceDoc;
+    const freelancerDoc = service.freelancer as PopulatedFreelancer;
     const freelancer = {
-        ...service.freelancer,
-        avatarUrl: canonicalAvatarByName.get(service.freelancer?.name) || service.freelancer?.avatarUrl,
-        rating: service.freelancer.rating || 5,
-        reviewsCount: service.freelancer.reviewsCount ?? 0,
-        verified: service.freelancer.verified ?? false,
+        ...freelancerDoc,
+        avatarUrl: canonicalAvatarByName.get(freelancerDoc.name) || freelancerDoc.avatarUrl || '/avatars/default.jpg',
+        rating: freelancerDoc.rating || 5,
+        reviewsCount: freelancerDoc.reviewsCount ?? 0,
+        verified: freelancerDoc.verified ?? false,
     };
 
     // Transform Review Data

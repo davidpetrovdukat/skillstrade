@@ -66,7 +66,7 @@ export function TalentCarousel({ talents }: TalentCarouselProps) {
             >
                 {featuredTalents.map((talent) => (
                     <div
-                        key={talent._id}
+                        key={talent._id.toString()}
                         className="min-w-[calc(100%-48px)] md:min-w-[calc(50%-12px)] lg:min-w-[calc(25%-18px)] h-[500px] bg-white/5 border border-white/10 backdrop-blur-sm relative group snap-start cursor-pointer hover:border-primary/50 transition-colors overflow-hidden"
                     >
                         <Link href={`/talents/${talent.slug || talent._id}`} className="block h-full w-full">

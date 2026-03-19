@@ -62,7 +62,7 @@ export async function createOrder(formData: FormData) {
         let selectedAddons: ServiceAddonSelection[] = [];
 
         if (addonIds.length > 0 && service.addons) {
-            const serviceAddons = service.addons as ServiceAddonSelection[];
+            const serviceAddons = service.addons as unknown as ServiceAddonSelection[];
             selectedAddons = serviceAddons.filter((addon) => addonIds.includes(addon._id.toString()));
             const addonsPrice = selectedAddons.reduce((sum, addon) => sum + addon.priceTokens, 0);
             calculatedPrice += addonsPrice;

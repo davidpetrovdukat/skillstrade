@@ -35,7 +35,7 @@ export function RecentActivity({ transactions }: RecentActivityProps) {
                         </thead>
                         <tbody className="divide-y divide-white/10">
                             {transactions.map((tx) => (
-                                <tr key={tx._id} className="group hover:bg-white/[0.02] transition-colors">
+                                <tr key={tx._id.toString()} className="group hover:bg-white/[0.02] transition-colors">
                                     <td className="p-4 text-sm text-gray-400 font-mono">
                                         <div className="flex items-center gap-2">
                                             <Clock className="w-3 h-3 text-white/20" />

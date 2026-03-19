@@ -105,6 +105,8 @@ export default async function ServicesPage(props: PageProps) {
 
     // 4. Transform to Component Props
     const services = servicesDocs.map((doc) => {
+        const freelancerName = doc.freelancer?.name || 'Freelancer';
+
         // Calculate average rating from embedded reviews
         let rating = 0;
         if (doc.reviews && doc.reviews.length > 0) {
@@ -126,8 +128,8 @@ export default async function ServicesPage(props: PageProps) {
             tags: doc.tags || [],
             freelancer: {
                 id: doc.freelancer?._id?.toString(),
-                name: getDisplayUsername(doc.freelancer?.name || 'Freelancer'),
-                avatarUrl: canonicalAvatarByName.get(doc.freelancer?.name) || doc.freelancer?.avatarUrl || '/avatars/default.jpg',
+                name: getDisplayUsername(freelancerName),
+                avatarUrl: canonicalAvatarByName.get(freelancerName) || doc.freelancer?.avatarUrl || '/avatars/default.jpg',
                 slug: doc.freelancer?.slug || "#",
                 verified: doc.freelancer?.verified ?? false,
                 rating: doc.freelancer?.rating || 5.0,

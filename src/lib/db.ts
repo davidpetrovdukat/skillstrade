@@ -1,10 +1,14 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI || process.env.DATABASE_URL;
+const MONGODB_URI = (() => {
+    const value = process.env.MONGODB_URI || process.env.DATABASE_URL;
 
-if (!MONGODB_URI) {
-    throw new Error("MongoDB connection string is missing. Set MONGODB_URI or DATABASE_URL.");
-}
+    if (!value) {
+        throw new Error("MongoDB connection string is missing. Set MONGODB_URI or DATABASE_URL.");
+    }
+
+    return value;
+})();
 
 type MongooseCache = {
     conn: typeof mongoose | null;

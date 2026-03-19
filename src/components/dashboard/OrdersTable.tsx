@@ -42,7 +42,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
                         </thead>
                         <tbody className="divide-y divide-white/10">
                             {orders.map((order) => (
-                                <tr key={order._id} className={`group hover:bg-white/[0.02] transition-colors ${order.status === 'Review' ? 'bg-primary/5' : ''}`}>
+                                <tr key={order._id.toString()} className={`group hover:bg-white/[0.02] transition-colors ${order.status === 'Review' ? 'bg-primary/5' : ''}`}>
                                     <td className="p-4 text-sm font-medium text-white group-hover:text-primary transition-colors">
                                         {order.brief?.title || 'Custom Project'}
                                     </td>

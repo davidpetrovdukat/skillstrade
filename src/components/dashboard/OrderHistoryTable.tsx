@@ -118,7 +118,7 @@ export function OrderHistoryTable({ orders }: OrderHistoryTableProps) {
                         </thead>
                         <tbody className="divide-y divide-white/10">
                             {filteredOrders.map((order) => (
-                                <tr key={order._id} className="group hover:bg-white/[0.02] transition-colors">
+                                <tr key={order._id.toString()} className="group hover:bg-white/[0.02] transition-colors">
                                     <td className="p-4 align-top">
                                         <div className="flex flex-col">
                                             <span className="text-sm font-bold text-white group-hover:text-[#D3E97A] transition-colors leading-tight mb-1">
