@@ -1,9 +1,5 @@
 import { NextResponse } from 'next/server';
-import {
-    processQueuedAIDocumentOrders,
-    releaseReadyAIDocumentOrders,
-    sendPendingAIDocumentEmails,
-} from '@/lib/ai-order';
+import { processAIDocumentPipeline } from '@/lib/ai-order';
 
 export const runtime = 'nodejs';
 
@@ -23,15 +19,11 @@ export async function GET(request: Request) {
     }
 
     try {
-        const generation = await processQueuedAIDocumentOrders();
-        const release = await releaseReadyAIDocumentOrders();
-        const email = await sendPendingAIDocumentEmails();
+        const result = await processAIDocumentPipeline();
 
         return NextResponse.json({
             ok: true,
-            generation,
-            release,
-            email,
+            ...result,
         });
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Cron processing failed';

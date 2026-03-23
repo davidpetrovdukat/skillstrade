@@ -12,6 +12,7 @@ import { buildDeveloperPrompt, buildUserPrompt, getPromptKeyForService, getServi
 import { AIDocumentSchema, AI_DOCUMENT_FORMAT_NAME, type AIDocument } from '@/lib/ai-document-schema';
 import { getResendFromEmail } from '@/lib/email';
 import { buildMongoFileReference, getOrderFileDownloadPath, isAbsoluteUrl, parseMongoFileReference } from '@/lib/order-file-storage';
+import { assertValidPdfBuffer, readMongoStoredOrderFileFromReference } from '@/lib/server/order-file-storage';
 import { renderOrderDocumentPdf } from '@/lib/order-pdf';
 import { Order, OrderStatus, AIDocumentStatus, type IOrderServiceSnapshot, type IOrderSelectedAddonSnapshot } from '@/models/Order';
 import { OrderFile, OrderFileKind } from '@/models/OrderFile';
@@ -205,15 +206,9 @@ function getStoredFilename(storedPath: string) {
 }
 
 async function readStoredBuffer(storedPath: string) {
-    const mongoFile = parseMongoFileReference(storedPath);
+    const mongoFile = await readMongoStoredOrderFileFromReference(storedPath);
     if (mongoFile) {
-        await connectMongo();
-        const storedFile = await OrderFile.findById(mongoFile.fileId).select('data').lean();
-        if (!storedFile?.data) {
-            throw new Error('Stored file was not found.');
-        }
-
-        return Buffer.from(storedFile.data);
+        return mongoFile.buffer;
     }
 
     if (isAbsoluteUrl(storedPath)) {
@@ -233,6 +228,14 @@ function getDownloadUrl(storedPath: string) {
     return isAbsoluteUrl(downloadPath)
         ? downloadPath
         : `${getAppBaseUrl()}${downloadPath}`;
+}
+
+function getClientOrderScope(clientId?: string) {
+    if (!clientId) {
+        return {};
+    }
+
+    return { client: new Types.ObjectId(clientId) };
 }
 
 export function buildOrderServiceSnapshot(input: {
@@ -418,11 +421,15 @@ async function saveGeneratedPdf(input: {
     const { orderId, serviceTitle, document } = input;
     const safeBaseName = sanitizeFilename(serviceTitle) || 'skills-trade-document';
     const filename = `${safeBaseName}-document.pdf`;
-    const buffer = await renderOrderDocumentPdf({
+    const rawBuffer = await renderOrderDocumentPdf({
         document,
         orderId,
         serviceTitle,
     });
+    const buffer = Buffer.isBuffer(rawBuffer) ? rawBuffer : Buffer.from(rawBuffer);
+
+    assertValidPdfBuffer(buffer);
+
     await connectMongo();
 
     if (isBlobStorageEnabled()) {
@@ -519,17 +526,98 @@ export async function generateImmediateAIDocument(input: {
 async function markOrderFailed(orderId: string, errorMessage: string) {
     await Order.findByIdAndUpdate(orderId, {
         $set: {
+            status: OrderStatus.IN_PROGRESS,
             'aiDocument.status': AIDocumentStatus.FAILED,
             'aiDocument.error': errorMessage,
         },
     });
 }
 
-export async function processQueuedAIDocumentOrders(limit = 10) {
+export async function submitRequestedAIDocumentOrders(limit = 10, clientId?: string) {
     await connectMongo();
 
     const orders = await Order.find({
+        ...getClientOrderScope(clientId),
         'aiDocument.status': AIDocumentStatus.REQUESTED,
+        $or: [
+            { 'aiDocument.openAIResponseId': { $exists: false } },
+            { 'aiDocument.openAIResponseId': null },
+            { 'aiDocument.openAIResponseId': '' },
+        ],
+    })
+        .sort({ createdAt: 1 })
+        .limit(limit)
+        .lean();
+
+    let submittedCount = 0;
+    let failedCount = 0;
+
+    if (orders.length === 0) {
+        return { submittedCount, failedCount };
+    }
+
+    for (const order of orders) {
+        const orderId = order._id.toString();
+        if (!order.serviceSnapshot || !order.brief?.description) {
+            await markOrderFailed(orderId, 'Order is missing AI generation metadata.');
+            failedCount += 1;
+            continue;
+        }
+
+        try {
+            const lockedOrder = await Order.findOneAndUpdate(
+                {
+                    _id: order._id,
+                    'aiDocument.status': AIDocumentStatus.REQUESTED,
+                    $or: [
+                        { 'aiDocument.openAIResponseId': { $exists: false } },
+                        { 'aiDocument.openAIResponseId': null },
+                        { 'aiDocument.openAIResponseId': '' },
+                    ],
+                },
+                {
+                    $set: {
+                        'aiDocument.status': AIDocumentStatus.GENERATING,
+                        'aiDocument.error': '',
+                    },
+                },
+                { new: true }
+            );
+
+            if (!lockedOrder) {
+                continue;
+            }
+
+            const backgroundRequest = await submitBackgroundAIDocumentRequest({
+                serviceSnapshot: lockedOrder.serviceSnapshot!,
+                projectBrief: lockedOrder.brief?.description || '',
+                inputAttachments: lockedOrder.inputAttachments || [],
+            });
+
+            await Order.findByIdAndUpdate(order._id, {
+                $set: {
+                    'aiDocument.promptKey': backgroundRequest.promptKey,
+                    'aiDocument.model': backgroundRequest.model,
+                    'aiDocument.openAIResponseId': backgroundRequest.responseId,
+                },
+            });
+
+            submittedCount += 1;
+        } catch (error) {
+            await markOrderFailed(orderId, formatErrorMessage(error));
+            failedCount += 1;
+        }
+    }
+
+    return { submittedCount, failedCount };
+}
+
+export async function pollGeneratingAIDocumentOrders(limit = 10, clientId?: string) {
+    await connectMongo();
+
+    const orders = await Order.find({
+        ...getClientOrderScope(clientId),
+        'aiDocument.status': AIDocumentStatus.GENERATING,
         'aiDocument.openAIResponseId': { $exists: true, $ne: '' },
     })
         .sort({ createdAt: 1 })
@@ -550,8 +638,8 @@ export async function processQueuedAIDocumentOrders(limit = 10) {
         const orderId = order._id.toString();
         const responseId = order.aiDocument?.openAIResponseId;
 
-        if (!responseId || !order.serviceSnapshot || !order.brief?.description) {
-            await markOrderFailed(orderId, 'Order is missing AI generation metadata.');
+        if (!responseId) {
+            await markOrderFailed(orderId, 'OpenAI response ID is missing.');
             failedCount += 1;
             continue;
         }
@@ -570,24 +658,10 @@ export async function processQueuedAIDocumentOrders(limit = 10) {
                 continue;
             }
 
-            const lockedOrder = await Order.findOneAndUpdate(
-                { _id: order._id, 'aiDocument.status': AIDocumentStatus.REQUESTED },
-                {
-                    $set: {
-                        'aiDocument.status': AIDocumentStatus.GENERATING,
-                    },
-                },
-                { new: true }
-            );
-
-            if (!lockedOrder) {
-                continue;
-            }
-
             const document = parseAIDocumentResponse(response.output_text);
             const pdf = await saveGeneratedPdf({
                 orderId,
-                serviceTitle: lockedOrder.serviceSnapshot?.title || lockedOrder.brief?.title || 'skills-trade-document',
+                serviceTitle: order.serviceSnapshot?.title || order.brief?.title || 'skills-trade-document',
                 document,
             });
 
@@ -596,18 +670,30 @@ export async function processQueuedAIDocumentOrders(limit = 10) {
                 ? generatedAt
                 : getRandomAvailabilityDate(generatedAt);
 
-            await Order.findByIdAndUpdate(order._id, {
-                $set: {
-                    status: OrderStatus.IN_PROGRESS,
-                    deliveryDate: availableAt,
-                    'aiDocument.status': AIDocumentStatus.GENERATED,
-                    'aiDocument.error': '',
-                    'aiDocument.generatedPdfPath': pdf.publicPath,
-                    'aiDocument.generatedPdfFilename': pdf.filename,
-                    'aiDocument.generatedAt': generatedAt,
-                    'aiDocument.availableAt': availableAt,
+            const updatedOrder = await Order.findOneAndUpdate(
+                {
+                    _id: order._id,
+                    'aiDocument.status': AIDocumentStatus.GENERATING,
+                    'aiDocument.openAIResponseId': responseId,
                 },
-            });
+                {
+                    $set: {
+                        status: OrderStatus.IN_PROGRESS,
+                        deliveryDate: availableAt,
+                        'aiDocument.status': AIDocumentStatus.GENERATED,
+                        'aiDocument.error': '',
+                        'aiDocument.generatedPdfPath': pdf.publicPath,
+                        'aiDocument.generatedPdfFilename': pdf.filename,
+                        'aiDocument.generatedAt': generatedAt,
+                        'aiDocument.availableAt': availableAt,
+                    },
+                },
+                { new: true }
+            );
+
+            if (!updatedOrder) {
+                continue;
+            }
 
             generatedCount += 1;
         } catch (error) {
@@ -619,11 +705,12 @@ export async function processQueuedAIDocumentOrders(limit = 10) {
     return { generatedCount, waitingCount, failedCount };
 }
 
-export async function releaseReadyAIDocumentOrders(limit = 10) {
+export async function releaseReadyAIDocumentOrders(limit = 10, clientId?: string) {
     await connectMongo();
 
     const now = new Date();
     const orders = await Order.find({
+        ...getClientOrderScope(clientId),
         'aiDocument.status': AIDocumentStatus.GENERATED,
         'aiDocument.availableAt': { $lte: now },
     })
@@ -724,10 +811,11 @@ async function sendAIDocumentReadyEmail(orderId: string) {
     return true;
 }
 
-export async function sendPendingAIDocumentEmails(limit = 10) {
+export async function sendPendingAIDocumentEmails(limit = 10, clientId?: string) {
     await connectMongo();
 
     const orders = await Order.find({
+        ...getClientOrderScope(clientId),
         'aiDocument.status': AIDocumentStatus.RELEASED,
         'aiDocument.generatedPdfPath': { $exists: true, $ne: '' },
         $or: [
@@ -759,6 +847,28 @@ export async function sendPendingAIDocumentEmails(limit = 10) {
     }
 
     return { emailedCount, failedCount };
+}
+
+export async function processAIDocumentPipeline(options?: {
+    clientId?: string;
+    submitLimit?: number;
+    pollLimit?: number;
+    releaseLimit?: number;
+    emailLimit?: number;
+}) {
+    const clientId = options?.clientId;
+
+    const submission = await submitRequestedAIDocumentOrders(options?.submitLimit || 10, clientId);
+    const generation = await pollGeneratingAIDocumentOrders(options?.pollLimit || 10, clientId);
+    const release = await releaseReadyAIDocumentOrders(options?.releaseLimit || 10, clientId);
+    const email = await sendPendingAIDocumentEmails(options?.emailLimit || 10, clientId);
+
+    return {
+        submission,
+        generation,
+        release,
+        email,
+    };
 }
 
 export async function cleanupFailedOrderArtifacts(orderId: string) {

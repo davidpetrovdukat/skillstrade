@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Box } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { getDisplayUsername } from '@/lib/freelancer-usernames';
 import { getOrderFileDownloadPath } from '@/lib/order-file-storage';
 
@@ -38,6 +39,64 @@ type TabType = 'All Orders' | 'Active' | 'Completed' | 'Cancelled';
 
 export function OrderHistoryTable({ orders }: OrderHistoryTableProps) {
     const [activeTab, setActiveTab] = useState<TabType>('All Orders');
+    const router = useRouter();
+
+    const hasActiveAIDocumentOrders = orders.some((order) => {
+        const aiStatus = order.aiDocument?.status?.toUpperCase();
+        const orderStatus = order.status.toUpperCase();
+
+        return Boolean(aiStatus)
+            && orderStatus !== 'COMPLETED'
+            && orderStatus !== 'CANCELLED'
+            && aiStatus !== 'FAILED'
+            && aiStatus !== 'RELEASED';
+    });
+
+    useEffect(() => {
+        if (!hasActiveAIDocumentOrders) {
+            return;
+        }
+
+        let isCancelled = false;
+        let timeoutId: number | undefined;
+        let isProcessing = false;
+
+        const runProcessingCycle = async () => {
+            if (isCancelled || isProcessing) {
+                return;
+            }
+
+            isProcessing = true;
+
+            try {
+                const response = await fetch('/api/orders/process', {
+                    method: 'POST',
+                    cache: 'no-store',
+                });
+
+                if (response.ok && !isCancelled) {
+                    router.refresh();
+                }
+            } catch {
+                // Ignore transient polling failures and retry on the next cycle.
+            } finally {
+                isProcessing = false;
+
+                if (!isCancelled) {
+                    timeoutId = window.setTimeout(runProcessingCycle, 12000);
+                }
+            }
+        };
+
+        void runProcessingCycle();
+
+        return () => {
+            isCancelled = true;
+            if (timeoutId !== undefined) {
+                window.clearTimeout(timeoutId);
+            }
+        };
+    }, [hasActiveAIDocumentOrders, router]);
 
     const filteredOrders = orders.filter(order => {
         if (activeTab === 'All Orders') return true;

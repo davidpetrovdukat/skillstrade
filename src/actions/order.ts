@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { connectMongo } from '@/lib/db';
 import { User } from '@/models/User';
-import { Order, OrderStatus } from '@/models/Order';
+import { Order, OrderStatus, AIDocumentStatus } from '@/models/Order';
 import { Transaction } from '@/models/Transaction';
 import { Service } from '@/models/Service';
 import { Resend } from 'resend';
@@ -15,11 +15,7 @@ import {
     buildOrderServiceSnapshot,
     cleanupFailedOrderArtifacts,
     createPreparedOrderId,
-    generateImmediateAIDocument,
-    isAIDocumentTestMode,
     saveOrderInputAttachments,
-    sendAIDocumentReadyEmailForOrder,
-    submitBackgroundAIDocumentRequest,
 } from '@/lib/ai-order';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -142,59 +138,12 @@ export async function createOrder(formData: FormData) {
             })),
         });
 
-        let status = OrderStatus.IN_PROGRESS;
-        let attachments: string[] = [];
+        const status = OrderStatus.IN_PROGRESS;
+        const attachments: string[] = [];
         let deliveryDate: Date | undefined;
-        let aiDocument:
-            | {
-                status: string;
-                promptKey: string;
-                model: string;
-                openAIResponseId: string;
-                generatedPdfPath?: string;
-                generatedPdfFilename?: string;
-                generatedAt?: Date;
-                availableAt?: Date;
-                releasedAt?: Date;
-            }
-            | undefined;
-
-        if (isAIDocumentTestMode()) {
-            const immediateResult = await generateImmediateAIDocument({
-                orderId,
-                serviceSnapshot,
-                projectBrief: requirements,
-                inputAttachments,
-            });
-
-            status = OrderStatus.COMPLETED;
-            attachments = [immediateResult.pdf.publicPath];
-            deliveryDate = immediateResult.generatedAt;
-            aiDocument = {
-                status: 'RELEASED',
-                promptKey: immediateResult.promptKey,
-                model: immediateResult.model,
-                openAIResponseId: immediateResult.responseId,
-                generatedPdfPath: immediateResult.pdf.publicPath,
-                generatedPdfFilename: immediateResult.pdf.filename,
-                generatedAt: immediateResult.generatedAt,
-                availableAt: immediateResult.generatedAt,
-                releasedAt: immediateResult.generatedAt,
-            };
-        } else {
-            const backgroundRequest = await submitBackgroundAIDocumentRequest({
-                serviceSnapshot,
-                projectBrief: requirements,
-                inputAttachments,
-            });
-
-            aiDocument = {
-                status: 'REQUESTED',
-                promptKey: backgroundRequest.promptKey,
-                model: backgroundRequest.model,
-                openAIResponseId: backgroundRequest.responseId,
-            };
-        }
+        const aiDocument = {
+            status: AIDocumentStatus.REQUESTED,
+        };
 
         user.walletBalance -= totalTokens;
         totalTokensToRollback = totalTokens;
@@ -246,14 +195,6 @@ export async function createOrder(formData: FormData) {
                 });
             } catch (emailError) {
                 console.error('Admin order notification failed:', emailError);
-            }
-        }
-
-        if (isAIDocumentTestMode()) {
-            try {
-                await sendAIDocumentReadyEmailForOrder(order._id.toString());
-            } catch (emailError) {
-                console.error('Immediate order-ready email failed:', emailError);
             }
         }
 

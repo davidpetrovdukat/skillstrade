@@ -2,8 +2,8 @@ import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { connectMongo } from '@/lib/db';
+import { readMongoStoredOrderFile } from '@/lib/server/order-file-storage';
 import { Order } from '@/models/Order';
-import { OrderFile } from '@/models/OrderFile';
 import { User } from '@/models/User';
 
 export const runtime = 'nodejs';
@@ -27,13 +27,23 @@ export async function GET(_request: Request, context: { params: Promise<unknown>
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const storedFile = await OrderFile.findById(fileId).select('order filename contentType data').lean();
+    let storedFile: Awaited<ReturnType<typeof readMongoStoredOrderFile>>;
+
+    try {
+        storedFile = await readMongoStoredOrderFile(fileId);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'File not found';
+        const status = message === 'Stored file was not found.' ? 404 : 500;
+
+        return NextResponse.json({ error: message }, { status });
+    }
+
     if (!storedFile) {
         return NextResponse.json({ error: 'File not found' }, { status: 404 });
     }
 
     const authorizedOrder = await Order.findOne({
-        _id: storedFile.order,
+        _id: storedFile.orderId,
         client: userId,
     })
         .select('_id')
@@ -43,10 +53,11 @@ export async function GET(_request: Request, context: { params: Promise<unknown>
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    return new NextResponse(Buffer.from(storedFile.data), {
+    return new NextResponse(new Uint8Array(storedFile.buffer), {
         headers: {
             'Content-Type': storedFile.contentType || 'application/octet-stream',
             'Content-Disposition': `attachment; filename="${storedFile.filename}"`,
+            'Content-Length': storedFile.buffer.length.toString(),
             'Cache-Control': 'private, no-store',
         },
     });
