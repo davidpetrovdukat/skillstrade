@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Zap, Instagram, Linkedin } from 'lucide-react'
+import { Zap, Instagram, Twitter } from 'lucide-react'
 import { FEATURE_FLAGS } from '@/lib/feature-flags'
 
 export function Footer() {
@@ -63,11 +63,11 @@ export function Footer() {
                 <div className="lg:col-span-1 lg:pl-8 lg:border-l border-white/10">
                     <h4 className="text-primary text-xs font-bold uppercase tracking-widest mb-6 font-heading">Social</h4>
                     <div className="flex gap-4">
-                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="size-10 border border-white/20 flex items-center justify-center hover:bg-primary hover:text-black hover:border-primary transition-colors">
+                        <a href="https://www.instagram.com/skillstrade_com/" target="_blank" rel="noopener noreferrer" className="size-10 border border-white/20 flex items-center justify-center hover:bg-primary hover:text-black hover:border-primary transition-colors">
                             <Instagram className="w-5 h-5" />
                         </a>
-                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="size-10 border border-white/20 flex items-center justify-center hover:bg-primary hover:text-black hover:border-primary transition-colors">
-                            <Linkedin className="w-5 h-5" />
+                        <a href="https://x.com/skillstradecom?s=21" target="_blank" rel="noopener noreferrer" className="size-10 border border-white/20 flex items-center justify-center hover:bg-primary hover:text-black hover:border-primary transition-colors">
+                            <Twitter className="w-5 h-5" />
                         </a>
                     </div>
                 </div>

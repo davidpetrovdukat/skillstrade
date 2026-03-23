@@ -42,7 +42,7 @@ export function OrderForm({ service, user, freelancer }: OrderFormProps) {
     const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
     const [requirements, setRequirements] = useState("");
-    const [file, setFile] = useState<File | null>(null);
+    const [files, setFiles] = useState<File[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     // Initial addons from URL
@@ -82,8 +82,12 @@ export function OrderForm({ service, user, freelancer }: OrderFormProps) {
             formData.append('addons', id);
         });
 
-        if (file) {
-            formData.append('file', file);
+        files.forEach((currentFile) => {
+            formData.append('files', currentFile);
+        });
+
+        if (files[0]) {
+            formData.append('file', files[0]);
         }
 
         startTransition(async () => {
@@ -197,17 +201,26 @@ export function OrderForm({ service, user, freelancer }: OrderFormProps) {
                     <div className="border-2 border-dashed border-white/10 hover:border-primary hover:bg-white/5 transition-all duration-300 p-12 flex flex-col items-center justify-center gap-4 group cursor-pointer rounded-none relative">
                         <input
                             type="file"
+                            multiple
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                            onChange={(e) => setFile(e.target.files?.[0] || null)}
+                            onChange={(e) => setFiles(Array.from(e.target.files || []))}
                         />
                         <div className="h-16 w-16 bg-white/5 flex items-center justify-center rounded-none group-hover:bg-primary group-hover:text-black transition-colors duration-300 border border-white/10 relative">
                             <CloudUpload className="text-3xl" />
                         </div>
                         <div className="text-center">
                             <p className="text-lg font-bold text-white uppercase tracking-wide group-hover:text-primary transition-colors font-heading">
-                                {file ? file.name : "Drag & drop assets"}
+                                {files.length > 0
+                                    ? files.length === 1
+                                        ? files[0]?.name
+                                        : `${files.length} files selected`
+                                    : "Drag & drop assets"}
                             </p>
-                            <p className="text-white/40 text-sm mt-1 font-mono">or click to browse local files</p>
+                            <p className="text-white/40 text-sm mt-1 font-mono">
+                                {files.length > 1
+                                    ? files.map((currentFile) => currentFile.name).join(', ')
+                                    : 'or click to browse local files'}
+                            </p>
                         </div>
                     </div>
                 </div>

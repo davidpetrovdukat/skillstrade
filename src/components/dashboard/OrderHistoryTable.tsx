@@ -22,6 +22,11 @@ interface OrderHistoryItem {
     createdAt: string | Date;
     totalTokens: number;
     attachments?: string[];
+    aiDocument?: {
+        status?: string;
+        generatedPdfPath?: string;
+        availableAt?: string | Date;
+    };
 }
 
 interface OrderHistoryTableProps {
@@ -59,6 +64,30 @@ export function OrderHistoryTable({ orders }: OrderHistoryTableProps) {
             return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-900/30 text-red-500 border border-red-500/30">Cancelled</span>;
         }
         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-800 text-gray-300">Pending</span>;
+    };
+
+    const getDownloadHref = (order: OrderHistoryItem) => {
+        return order.aiDocument?.generatedPdfPath || order.attachments?.[0] || '#';
+    };
+
+    const getOrderStateLabel = (order: OrderHistoryItem) => {
+        const aiStatus = order.aiDocument?.status?.toUpperCase();
+        if (order.status.toUpperCase() === 'COMPLETED') {
+            return 'Ready';
+        }
+        if (aiStatus === 'GENERATED' && order.aiDocument?.availableAt) {
+            return `Release scheduled for ${new Date(order.aiDocument.availableAt).toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+            })}`;
+        }
+        if (aiStatus === 'FAILED') {
+            return 'Generation failed';
+        }
+
+        return 'Generating AI document';
     };
 
     return (
@@ -158,10 +187,10 @@ export function OrderHistoryTable({ orders }: OrderHistoryTableProps) {
                                         {getStatusBadge(order.status)}
                                     </td>
                                     <td className="p-4 align-top text-right">
-                                        <div className="flex justify-end">
-                                            {order.status === 'COMPLETED' ? (
-                                                <a
-                                                    href={order.attachments?.[0] || '#'}
+                                            <div className="flex justify-end">
+                                                {order.status === 'COMPLETED' ? (
+                                                    <a
+                                                    href={getDownloadHref(order)}
                                                     download
                                                     target="_blank"
                                                     className="text-xs font-bold uppercase tracking-wider bg-[#D3E97A] text-black px-4 py-2 hover:bg-white transition-colors flex items-center gap-2"
@@ -172,11 +201,17 @@ export function OrderHistoryTable({ orders }: OrderHistoryTableProps) {
                                                 <button
                                                     disabled
                                                     className="text-xs font-bold uppercase tracking-wider border border-white/10 text-white/20 px-4 py-2 flex items-center gap-2 cursor-not-allowed"
+                                                    title={getOrderStateLabel(order)}
                                                 >
                                                     Download <Box className="w-3 h-3" />
                                                 </button>
                                             )}
                                         </div>
+                                        {order.status !== 'COMPLETED' && (
+                                            <p className="mt-2 text-[10px] uppercase tracking-wider text-white/40">
+                                                {getOrderStateLabel(order)}
+                                            </p>
+                                        )}
                                     </td>
                                 </tr>
                             ))}
