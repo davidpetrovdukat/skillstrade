@@ -3,19 +3,13 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { connectMongo } from "@/lib/db";
+import { completeDepositTransaction, type PurchaseBillingInfo } from "@/lib/deposit-transactions";
+import { isWithoutPaymentEnabled } from "@/lib/runtime-config";
 import { User } from "@/models/User";
-import { Transaction, TxType, TxStatus } from "@/models/Transaction";
+import { Transaction, TxPaymentMethod, TxType, TxStatus } from "@/models/Transaction";
 import crypto from 'crypto';
 
-interface BillingInfo {
-    phone: string;
-    country: string;
-    street: string;
-    city: string;
-    zip: string;
-    dateOfBirth: string;
-    ip?: string;
-}
+const DEFAULT_VAT_RATE = 0.2;
 
 interface PaydecaCustomerPayload {
     firstName: string;
@@ -81,7 +75,7 @@ export async function generatePaydecaSession(
     tokens: number,
     description: string,
     amountPaid: number,
-    billingInfo: BillingInfo
+    billingInfo: PurchaseBillingInfo
 ): Promise<GeneratePaydecaSessionResult> {
     try {
         const session = await getServerSession(authOptions);
@@ -99,6 +93,10 @@ export async function generatePaydecaSession(
         const amountCents = Math.round(amountPaid * 100);
 
         const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+        if (!baseUrl) {
+            return { success: false, error: "NEXT_PUBLIC_APP_URL is not configured" };
+        }
+
         const successUrl = `${baseUrl}/dashboard/checkout/success`;
         const failUrl = `${baseUrl}/dashboard/checkout/fail`;
         const notifyUrl = `${baseUrl}/api/paydeca/webhook`;
@@ -135,8 +133,32 @@ export async function generatePaydecaSession(
             type: TxType.DEPOSIT,
             status: TxStatus.PENDING,
             description: description || `Payment for ${tokens} Tokens (EUR ${amountPaid})`,
-            referenceId
+            referenceId,
+            amountPaid,
+            currency: "EUR",
+            vatRate: DEFAULT_VAT_RATE,
+            paymentMethod: isWithoutPaymentEnabled() ? TxPaymentMethod.BYPASS : TxPaymentMethod.PAYDECA,
+            billingSnapshot: {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                phone: billingInfo.phone || user.phone || '',
+                country: billingInfo.country || user.address?.country || '',
+                street: billingInfo.street || user.address?.street || '',
+                city: billingInfo.city || user.address?.city || '',
+                zip: billingInfo.zip || user.address?.postcode || '',
+                dateOfBirth: billingInfo.dateOfBirth || (user.dob ? user.dob.toISOString().slice(0, 10) : ''),
+            },
         });
+
+        if (isWithoutPaymentEnabled()) {
+            await completeDepositTransaction(newTx._id.toString());
+
+            return {
+                success: true,
+                redirectUrl: successUrl,
+            };
+        }
 
         const apiUrl = process.env.PAYDECA_API_URL
             ? `${process.env.PAYDECA_API_URL.replace(/\/$/, '')}/provision/req`

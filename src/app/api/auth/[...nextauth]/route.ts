@@ -2,6 +2,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { sendRegistrationEmail } from "@/lib/customer-email";
 import { connectMongo } from "@/lib/db";
 import { User, UserRole } from "@/models/User";
 import bcrypt from "bcryptjs";
@@ -81,6 +82,15 @@ export const authOptions: NextAuthOptions = {
                             walletBalance: 0,
                             // No password for Google users
                         });
+
+                        try {
+                            await sendRegistrationEmail({
+                                to: user.email,
+                                firstName,
+                            });
+                        } catch (emailError) {
+                            console.error("Google registration email failed:", emailError);
+                        }
                     }
                     return true;
                 } catch (error) {

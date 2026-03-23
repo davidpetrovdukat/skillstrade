@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { connectMongo } from '@/lib/db';
-import { Transaction, TxStatus, TxType } from '@/models/Transaction';
-import { User } from '@/models/User';
+import { completeDepositTransaction } from '@/lib/deposit-transactions';
+import { Transaction, TxStatus } from '@/models/Transaction';
 import crypto from 'crypto';
 
 interface PaydecaWebhookMessage {
@@ -64,27 +64,25 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
         }
 
-        if (tx.status === TxStatus.COMPLETED) {
-            return NextResponse.json({ message: "Already processed" });
-        }
-
         if (messageType === 'acquirerRes') {
             const actionStatus = messagePayload.status;
 
             if (actionStatus === 'succeeded') {
-                tx.status = TxStatus.COMPLETED;
-                await tx.save();
+                const result = await completeDepositTransaction(tx._id.toString());
 
-                const user = await User.findById(tx.user);
-                if (user && tx.type === TxType.DEPOSIT) {
-                    user.walletBalance = (user.walletBalance || 0) + tx.amount;
-                    await user.save();
-                }
-
-                return NextResponse.json({ success: true, message: "Payment accepted" });
+                return NextResponse.json({
+                    success: true,
+                    message: tx.status === TxStatus.COMPLETED ? "Already processed" : "Payment accepted",
+                    invoiceEmailSent: result.invoiceEmailSent,
+                    invoiceEmailSkipped: result.invoiceEmailSkipped,
+                });
             }
 
             if (actionStatus === 'failed') {
+                if (tx.status === TxStatus.COMPLETED) {
+                    return NextResponse.json({ message: "Already processed" });
+                }
+
                 tx.status = TxStatus.FAILED;
                 await tx.save();
                 return NextResponse.json({ success: true, message: "Payment failed marked" });

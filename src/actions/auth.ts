@@ -1,6 +1,7 @@
 'use server';
 
 import { connectMongo } from '@/lib/db';
+import { sendRegistrationEmail } from '@/lib/customer-email';
 import { User, UserRole } from '@/models/User';
 import bcrypt from 'bcryptjs';
 
@@ -75,6 +76,15 @@ export async function registerUser(prevState: RegisterState, formData: FormData)
             role: UserRole.CLIENT, // Default role
             walletBalance: 0
         });
+
+        try {
+            await sendRegistrationEmail({
+                to: email,
+                firstName,
+            });
+        } catch (emailError) {
+            console.error('Registration email failed:', emailError);
+        }
 
         return { success: true };
 
