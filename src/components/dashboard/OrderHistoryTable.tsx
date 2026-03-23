@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Box } from 'lucide-react';
 import { getDisplayUsername } from '@/lib/freelancer-usernames';
+import { getOrderFileDownloadPath } from '@/lib/order-file-storage';
 
 type IdLike = string | { toString(): string };
 
@@ -67,7 +68,8 @@ export function OrderHistoryTable({ orders }: OrderHistoryTableProps) {
     };
 
     const getDownloadHref = (order: OrderHistoryItem) => {
-        return order.aiDocument?.generatedPdfPath || order.attachments?.[0] || '#';
+        const storedPath = order.aiDocument?.generatedPdfPath || order.attachments?.[0];
+        return storedPath ? getOrderFileDownloadPath(storedPath) : '#';
     };
 
     const getOrderStateLabel = (order: OrderHistoryItem) => {

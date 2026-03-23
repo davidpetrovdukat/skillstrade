@@ -2,7 +2,7 @@ import { del, list, put } from '@vercel/blob';
 import OpenAI from 'openai';
 import { zodTextFormat } from 'openai/helpers/zod';
 import mammoth from 'mammoth';
-import { mkdir, readFile, rm, writeFile } from 'fs/promises';
+import { readFile } from 'fs/promises';
 import { createRequire } from 'module';
 import path from 'path';
 import { Types } from 'mongoose';
@@ -11,8 +11,10 @@ import { connectMongo } from '@/lib/db';
 import { buildDeveloperPrompt, buildUserPrompt, getPromptKeyForService, getServicePromptConfig } from '@/lib/ai-document-prompts';
 import { AIDocumentSchema, AI_DOCUMENT_FORMAT_NAME, type AIDocument } from '@/lib/ai-document-schema';
 import { getResendFromEmail } from '@/lib/email';
+import { buildMongoFileReference, getOrderFileDownloadPath, isAbsoluteUrl, parseMongoFileReference } from '@/lib/order-file-storage';
 import { renderOrderDocumentPdf } from '@/lib/order-pdf';
 import { Order, OrderStatus, AIDocumentStatus, type IOrderServiceSnapshot, type IOrderSelectedAddonSnapshot } from '@/models/Order';
+import { OrderFile, OrderFileKind } from '@/models/OrderFile';
 import { User } from '@/models/User';
 import type { IService } from '@/models/Service';
 
@@ -39,20 +41,6 @@ function getLegacyPdfParse() {
 
 function isBlobStorageEnabled() {
     return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
-}
-
-function isVercelRuntime() {
-    return process.env.VERCEL === '1' || process.env.VERCEL === 'true';
-}
-
-function isAbsoluteUrl(value: string) {
-    return /^https?:\/\//i.test(value);
-}
-
-function assertPersistentOrderStorageConfigured() {
-    if (isVercelRuntime() && !isBlobStorageEnabled()) {
-        throw new Error('BLOB_READ_WRITE_TOKEN is required on Vercel to store order attachments and generated PDFs.');
-    }
 }
 
 function getOpenAIClient() {
@@ -127,24 +115,12 @@ function getLocalPublicAbsolutePath(publicPath: string) {
     return path.join(LOCAL_PUBLIC_ROOT, normalized);
 }
 
-function getLocalOrderUploadsDirectory(orderId: string) {
-    return path.join(LOCAL_PUBLIC_ROOT, 'uploads', 'orders', orderId, 'inputs');
-}
-
-function getLocalOrderGeneratedDirectory(orderId: string) {
-    return path.join(LOCAL_PUBLIC_ROOT, 'generated-documents', 'orders', orderId);
-}
-
 function getBlobUploadsPrefix(orderId: string) {
     return `uploads/orders/${orderId}/`;
 }
 
 function getBlobGeneratedPrefix(orderId: string) {
     return `generated-documents/orders/${orderId}/`;
-}
-
-async function ensureDirectory(directoryPath: string) {
-    await mkdir(directoryPath, { recursive: true });
 }
 
 async function cleanupBlobPrefix(prefix: string) {
@@ -168,8 +144,7 @@ async function cleanupOrderArtifacts(orderId: string) {
         return;
     }
 
-    await rm(path.join(LOCAL_PUBLIC_ROOT, 'uploads', 'orders', orderId), { recursive: true, force: true });
-    await rm(path.join(LOCAL_PUBLIC_ROOT, 'generated-documents', 'orders', orderId), { recursive: true, force: true });
+    await OrderFile.deleteMany({ order: orderId });
 }
 
 function toDataUrl(buffer: Buffer, mimeType: string) {
@@ -213,6 +188,11 @@ function formatErrorMessage(error: unknown) {
 }
 
 function getStoredFilename(storedPath: string) {
+    const mongoFile = parseMongoFileReference(storedPath);
+    if (mongoFile?.filename) {
+        return mongoFile.filename;
+    }
+
     if (isAbsoluteUrl(storedPath)) {
         try {
             return path.basename(new URL(storedPath).pathname);
@@ -225,6 +205,17 @@ function getStoredFilename(storedPath: string) {
 }
 
 async function readStoredBuffer(storedPath: string) {
+    const mongoFile = parseMongoFileReference(storedPath);
+    if (mongoFile) {
+        await connectMongo();
+        const storedFile = await OrderFile.findById(mongoFile.fileId).select('data').lean();
+        if (!storedFile?.data) {
+            throw new Error('Stored file was not found.');
+        }
+
+        return Buffer.from(storedFile.data);
+    }
+
     if (isAbsoluteUrl(storedPath)) {
         const response = await fetch(storedPath);
         if (!response.ok) {
@@ -238,9 +229,10 @@ async function readStoredBuffer(storedPath: string) {
 }
 
 function getDownloadUrl(storedPath: string) {
-    return isAbsoluteUrl(storedPath)
-        ? storedPath
-        : `${getAppBaseUrl()}${storedPath}`;
+    const downloadPath = getOrderFileDownloadPath(storedPath);
+    return isAbsoluteUrl(downloadPath)
+        ? downloadPath
+        : `${getAppBaseUrl()}${downloadPath}`;
 }
 
 export function buildOrderServiceSnapshot(input: {
@@ -269,13 +261,7 @@ export async function saveOrderInputAttachments(orderId: string, files: File[]) 
 
     const savedPaths: string[] = [];
     const useBlobStorage = isBlobStorageEnabled();
-
-    assertPersistentOrderStorageConfigured();
-
-    if (!useBlobStorage) {
-        const uploadDir = getLocalOrderUploadsDirectory(orderId);
-        await ensureDirectory(uploadDir);
-    }
+    await connectMongo();
 
     for (const [index, file] of files.entries()) {
         const buffer = Buffer.from(await file.arrayBuffer());
@@ -294,9 +280,16 @@ export async function saveOrderInputAttachments(orderId: string, files: File[]) 
             continue;
         }
 
-        const filePath = path.join(getLocalOrderUploadsDirectory(orderId), filename);
-        await writeFile(filePath, buffer);
-        savedPaths.push(`/${storagePathname}`);
+        const storedFile = await OrderFile.create({
+            order: orderId,
+            kind: OrderFileKind.INPUT,
+            filename,
+            contentType: file.type || 'application/octet-stream',
+            size: buffer.length,
+            data: buffer,
+        });
+
+        savedPaths.push(buildMongoFileReference(storedFile._id.toString(), filename));
     }
 
     return savedPaths;
@@ -430,8 +423,7 @@ async function saveGeneratedPdf(input: {
         orderId,
         serviceTitle,
     });
-
-    assertPersistentOrderStorageConfigured();
+    await connectMongo();
 
     if (isBlobStorageEnabled()) {
         const uploaded = await put(`generated-documents/orders/${orderId}/${filename}`, buffer, {
@@ -448,17 +440,19 @@ async function saveGeneratedPdf(input: {
         };
     }
 
-    const outputDir = getLocalOrderGeneratedDirectory(orderId);
-    await ensureDirectory(outputDir);
-    const publicPath = `/generated-documents/orders/${orderId}/${filename}`;
-    const absolutePath = path.join(outputDir, filename);
-
-    await writeFile(absolutePath, buffer);
+    const storedFile = await OrderFile.create({
+        order: orderId,
+        kind: OrderFileKind.OUTPUT,
+        filename,
+        contentType: 'application/pdf',
+        size: buffer.length,
+        data: buffer,
+    });
 
     return {
         buffer,
         filename,
-        publicPath,
+        publicPath: buildMongoFileReference(storedFile._id.toString(), filename),
     };
 }
 
