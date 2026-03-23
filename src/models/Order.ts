@@ -30,6 +30,7 @@ export interface IOrderServiceSnapshot {
     deliverables: string[];
     deliveryDays: number;
     priceTokens: number;
+    availableUpgrades: IOrderSelectedAddonSnapshot[];
     selectedAddons: IOrderSelectedAddonSnapshot[];
 }
 
@@ -84,6 +85,7 @@ const ServiceSnapshotSchema = new Schema(
         deliverables: [{ type: String }],
         deliveryDays: { type: Number, required: true },
         priceTokens: { type: Number, required: true },
+        availableUpgrades: [SelectedAddonSnapshotSchema],
         selectedAddons: [SelectedAddonSnapshotSchema],
     },
     { _id: false }

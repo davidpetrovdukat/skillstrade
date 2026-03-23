@@ -245,13 +245,22 @@ export function buildUserPrompt(input: {
     attachmentSummaries: string[];
 }) {
     const { serviceSnapshot, projectBrief, attachmentSummaries } = input;
+    const availableUpgradesList = serviceSnapshot.availableUpgrades || [];
+    const selectedUpgradesList = serviceSnapshot.selectedAddons || [];
 
-    const selectedAddons =
-        serviceSnapshot.selectedAddons.length > 0
-            ? serviceSnapshot.selectedAddons
+    const availableUpgrades =
+        availableUpgradesList.length > 0
+            ? availableUpgradesList
+                .map((upgrade) => `- ${upgrade.title}: ${upgrade.description} (${upgrade.priceTokens} tokens)`)
+                .join('\n')
+            : '- No upgrades available for this service';
+
+    const selectedUpgrades =
+        selectedUpgradesList.length > 0
+            ? selectedUpgradesList
                 .map((addon) => `- ${addon.title}: ${addon.description} (${addon.priceTokens} tokens)`)
                 .join('\n')
-            : '- None selected';
+            : '- No upgrades selected';
 
     const deliverables =
         serviceSnapshot.deliverables.length > 0
@@ -272,8 +281,10 @@ export function buildUserPrompt(input: {
         `- Base token price: ${serviceSnapshot.priceTokens}`,
         'Service deliverables:',
         deliverables,
-        'Selected add-ons:',
-        selectedAddons,
+        'Available upgrades:',
+        availableUpgrades,
+        'Selected upgrades:',
+        selectedUpgrades,
         'Project brief:',
         projectBrief,
         'Attachment context:',

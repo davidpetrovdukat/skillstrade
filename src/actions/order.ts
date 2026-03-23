@@ -117,6 +117,11 @@ export async function createOrder(formData: FormData) {
                 deliveryDays: service.deliveryDays,
                 priceTokens: service.priceTokens,
             },
+            availableUpgrades: (service.addons || []).map((addon) => ({
+                title: addon.title,
+                description: addon.description,
+                priceTokens: addon.priceTokens,
+            })),
             selectedAddons: selectedAddons.map((addon) => ({
                 title: addon.title,
                 description: addon.description,

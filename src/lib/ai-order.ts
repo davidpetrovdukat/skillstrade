@@ -155,9 +155,10 @@ function formatErrorMessage(error: unknown) {
 
 export function buildOrderServiceSnapshot(input: {
     service: Pick<IService, 'title' | 'category' | 'overview' | 'deliverables' | 'deliveryDays' | 'priceTokens'>;
+    availableUpgrades: IOrderSelectedAddonSnapshot[];
     selectedAddons: IOrderSelectedAddonSnapshot[];
 }): IOrderServiceSnapshot {
-    const { service, selectedAddons } = input;
+    const { service, availableUpgrades, selectedAddons } = input;
 
     return {
         title: service.title,
@@ -166,6 +167,7 @@ export function buildOrderServiceSnapshot(input: {
         deliverables: service.deliverables || [],
         deliveryDays: service.deliveryDays || 7,
         priceTokens: service.priceTokens,
+        availableUpgrades,
         selectedAddons,
     };
 }
