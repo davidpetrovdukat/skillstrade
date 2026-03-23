@@ -45,8 +45,21 @@ function extractFiles(formData: FormData) {
     const filesFromArray = formData.getAll('files');
     const legacyFile = formData.get('file');
     const candidates = [...filesFromArray, legacyFile].filter(Boolean);
+    const seen = new Set<string>();
 
-    return candidates.filter((value): value is File => value instanceof File && value.size > 0);
+    return candidates.filter((value): value is File => {
+        if (!(value instanceof File) || value.size <= 0) {
+            return false;
+        }
+
+        const key = [value.name, value.size, value.lastModified, value.type].join(':');
+        if (seen.has(key)) {
+            return false;
+        }
+
+        seen.add(key);
+        return true;
+    });
 }
 
 export async function createOrder(formData: FormData) {

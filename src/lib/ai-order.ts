@@ -1,3 +1,4 @@
+import { del, list, put } from '@vercel/blob';
 import OpenAI from 'openai';
 import { zodTextFormat } from 'openai/helpers/zod';
 import mammoth from 'mammoth';
@@ -24,6 +25,7 @@ const textExtensions = new Set(['.txt', '.md', '.csv', '.json']);
 const docxExtensions = new Set(['.docx']);
 const pdfExtensions = new Set(['.pdf']);
 const require = createRequire(import.meta.url);
+const LOCAL_PUBLIC_ROOT = path.join(process.cwd(), 'public');
 
 type LegacyPdfParseResult = {
     text?: string;
@@ -33,6 +35,24 @@ type LegacyPdfParse = (dataBuffer: Buffer) => Promise<LegacyPdfParseResult>;
 
 function getLegacyPdfParse() {
     return require('pdf-parse/lib/pdf-parse.js') as LegacyPdfParse;
+}
+
+function isBlobStorageEnabled() {
+    return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+}
+
+function isVercelRuntime() {
+    return process.env.VERCEL === '1' || process.env.VERCEL === 'true';
+}
+
+function isAbsoluteUrl(value: string) {
+    return /^https?:\/\//i.test(value);
+}
+
+function assertPersistentOrderStorageConfigured() {
+    if (isVercelRuntime() && !isBlobStorageEnabled()) {
+        throw new Error('BLOB_READ_WRITE_TOKEN is required on Vercel to store order attachments and generated PDFs.');
+    }
 }
 
 function getOpenAIClient() {
@@ -102,26 +122,54 @@ function truncateText(value: string, maxChars: number) {
     return `${normalized.slice(0, Math.max(0, maxChars - 3)).trim()}...`;
 }
 
-function getPublicAbsolutePath(publicPath: string) {
+function getLocalPublicAbsolutePath(publicPath: string) {
     const normalized = publicPath.replace(/^\/+/, '').replace(/\//g, path.sep);
-    return path.join(process.cwd(), 'public', normalized);
+    return path.join(LOCAL_PUBLIC_ROOT, normalized);
 }
 
-function getOrderUploadsDirectory(orderId: string) {
-    return path.join(process.cwd(), 'public', 'uploads', 'orders', orderId, 'inputs');
+function getLocalOrderUploadsDirectory(orderId: string) {
+    return path.join(LOCAL_PUBLIC_ROOT, 'uploads', 'orders', orderId, 'inputs');
 }
 
-function getOrderGeneratedDirectory(orderId: string) {
-    return path.join(process.cwd(), 'public', 'generated-documents', 'orders', orderId);
+function getLocalOrderGeneratedDirectory(orderId: string) {
+    return path.join(LOCAL_PUBLIC_ROOT, 'generated-documents', 'orders', orderId);
+}
+
+function getBlobUploadsPrefix(orderId: string) {
+    return `uploads/orders/${orderId}/`;
+}
+
+function getBlobGeneratedPrefix(orderId: string) {
+    return `generated-documents/orders/${orderId}/`;
 }
 
 async function ensureDirectory(directoryPath: string) {
     await mkdir(directoryPath, { recursive: true });
 }
 
+async function cleanupBlobPrefix(prefix: string) {
+    let cursor: string | undefined;
+
+    do {
+        const result = await list({ prefix, cursor, limit: 1000 });
+        if (result.blobs.length > 0) {
+            await del(result.blobs.map((blob) => blob.url));
+        }
+        cursor = result.hasMore ? result.cursor : undefined;
+    } while (cursor);
+}
+
 async function cleanupOrderArtifacts(orderId: string) {
-    await rm(path.join(process.cwd(), 'public', 'uploads', 'orders', orderId), { recursive: true, force: true });
-    await rm(path.join(process.cwd(), 'public', 'generated-documents', 'orders', orderId), { recursive: true, force: true });
+    if (isBlobStorageEnabled()) {
+        await Promise.all([
+            cleanupBlobPrefix(getBlobUploadsPrefix(orderId)),
+            cleanupBlobPrefix(getBlobGeneratedPrefix(orderId)),
+        ]);
+        return;
+    }
+
+    await rm(path.join(LOCAL_PUBLIC_ROOT, 'uploads', 'orders', orderId), { recursive: true, force: true });
+    await rm(path.join(LOCAL_PUBLIC_ROOT, 'generated-documents', 'orders', orderId), { recursive: true, force: true });
 }
 
 function toDataUrl(buffer: Buffer, mimeType: string) {
@@ -164,6 +212,37 @@ function formatErrorMessage(error: unknown) {
     return 'Unexpected error';
 }
 
+function getStoredFilename(storedPath: string) {
+    if (isAbsoluteUrl(storedPath)) {
+        try {
+            return path.basename(new URL(storedPath).pathname);
+        } catch {
+            return path.basename(storedPath);
+        }
+    }
+
+    return path.basename(getLocalPublicAbsolutePath(storedPath));
+}
+
+async function readStoredBuffer(storedPath: string) {
+    if (isAbsoluteUrl(storedPath)) {
+        const response = await fetch(storedPath);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch stored file (${response.status}).`);
+        }
+
+        return Buffer.from(await response.arrayBuffer());
+    }
+
+    return readFile(getLocalPublicAbsolutePath(storedPath));
+}
+
+function getDownloadUrl(storedPath: string) {
+    return isAbsoluteUrl(storedPath)
+        ? storedPath
+        : `${getAppBaseUrl()}${storedPath}`;
+}
+
 export function buildOrderServiceSnapshot(input: {
     service: Pick<IService, 'title' | 'category' | 'overview' | 'deliverables' | 'deliveryDays' | 'priceTokens'>;
     availableUpgrades: IOrderSelectedAddonSnapshot[];
@@ -188,37 +267,52 @@ export async function saveOrderInputAttachments(orderId: string, files: File[]) 
         return [];
     }
 
-    const uploadDir = getOrderUploadsDirectory(orderId);
-    await ensureDirectory(uploadDir);
-
     const savedPaths: string[] = [];
+    const useBlobStorage = isBlobStorageEnabled();
+
+    assertPersistentOrderStorageConfigured();
+
+    if (!useBlobStorage) {
+        const uploadDir = getLocalOrderUploadsDirectory(orderId);
+        await ensureDirectory(uploadDir);
+    }
 
     for (const [index, file] of files.entries()) {
         const buffer = Buffer.from(await file.arrayBuffer());
         const extension = path.extname(file.name) || '';
         const baseName = sanitizeFilename(path.basename(file.name, extension)) || `attachment-${index + 1}`;
         const filename = `${Date.now()}-${index + 1}-${baseName}${extension.toLowerCase()}`;
-        const filePath = path.join(uploadDir, filename);
+        const storagePathname = `uploads/orders/${orderId}/inputs/${filename}`;
 
+        if (useBlobStorage) {
+            const uploaded = await put(storagePathname, buffer, {
+                access: 'public',
+                addRandomSuffix: false,
+                contentType: file.type || undefined,
+            });
+            savedPaths.push(uploaded.url);
+            continue;
+        }
+
+        const filePath = path.join(getLocalOrderUploadsDirectory(orderId), filename);
         await writeFile(filePath, buffer);
-        savedPaths.push(`/uploads/orders/${orderId}/inputs/${filename}`);
+        savedPaths.push(`/${storagePathname}`);
     }
 
     return savedPaths;
 }
 
-async function extractAttachmentContext(publicPaths: string[]) {
+async function extractAttachmentContext(storedPaths: string[]) {
     const attachmentSummaries: string[] = [];
     const imageInputs: Array<{ type: 'input_image'; image_url: string; detail: 'auto' }> = [];
     let usedChars = 0;
 
-    for (const publicPath of publicPaths) {
-        const absolutePath = getPublicAbsolutePath(publicPath);
-        const filename = path.basename(absolutePath);
-        const extension = path.extname(absolutePath).toLowerCase();
+    for (const storedPath of storedPaths) {
+        const filename = getStoredFilename(storedPath);
+        const extension = path.extname(filename).toLowerCase();
 
         try {
-            const fileBuffer = await readFile(absolutePath);
+            const fileBuffer = await readStoredBuffer(storedPath);
 
             if (imageExtensions.has(extension)) {
                 imageInputs.push({
@@ -329,19 +423,35 @@ async function saveGeneratedPdf(input: {
     document: AIDocument;
 }) {
     const { orderId, serviceTitle, document } = input;
-    const outputDir = getOrderGeneratedDirectory(orderId);
-    await ensureDirectory(outputDir);
-
     const safeBaseName = sanitizeFilename(serviceTitle) || 'skills-trade-document';
     const filename = `${safeBaseName}-document.pdf`;
-    const publicPath = `/generated-documents/orders/${orderId}/${filename}`;
-    const absolutePath = path.join(outputDir, filename);
-
     const buffer = await renderOrderDocumentPdf({
         document,
         orderId,
         serviceTitle,
     });
+
+    assertPersistentOrderStorageConfigured();
+
+    if (isBlobStorageEnabled()) {
+        const uploaded = await put(`generated-documents/orders/${orderId}/${filename}`, buffer, {
+            access: 'public',
+            addRandomSuffix: false,
+            allowOverwrite: true,
+            contentType: 'application/pdf',
+        });
+
+        return {
+            buffer,
+            filename,
+            publicPath: uploaded.downloadUrl,
+        };
+    }
+
+    const outputDir = getLocalOrderGeneratedDirectory(orderId);
+    await ensureDirectory(outputDir);
+    const publicPath = `/generated-documents/orders/${orderId}/${filename}`;
+    const absolutePath = path.join(outputDir, filename);
 
     await writeFile(absolutePath, buffer);
 
@@ -589,8 +699,8 @@ async function sendAIDocumentReadyEmail(orderId: string) {
         throw new Error('Generated PDF path is missing.');
     }
 
-    const fileBuffer = await readFile(getPublicAbsolutePath(pdfPath));
-    const downloadUrl = `${getAppBaseUrl()}${pdfPath}`;
+    const fileBuffer = await readStoredBuffer(pdfPath);
+    const downloadUrl = getDownloadUrl(pdfPath);
 
     await resendClient.emails.send({
         from: getResendFromEmail(),
