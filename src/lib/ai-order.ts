@@ -1,8 +1,8 @@
 import OpenAI from 'openai';
 import { zodTextFormat } from 'openai/helpers/zod';
 import mammoth from 'mammoth';
-import { PDFParse } from 'pdf-parse';
 import { mkdir, readFile, rm, writeFile } from 'fs/promises';
+import { createRequire } from 'module';
 import path from 'path';
 import { Types } from 'mongoose';
 import { Resend } from 'resend';
@@ -23,6 +23,17 @@ const imageExtensions = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif']);
 const textExtensions = new Set(['.txt', '.md', '.csv', '.json']);
 const docxExtensions = new Set(['.docx']);
 const pdfExtensions = new Set(['.pdf']);
+const require = createRequire(import.meta.url);
+
+type LegacyPdfParseResult = {
+    text?: string;
+};
+
+type LegacyPdfParse = (dataBuffer: Buffer) => Promise<LegacyPdfParseResult>;
+
+function getLegacyPdfParse() {
+    return require('pdf-parse/lib/pdf-parse.js') as LegacyPdfParse;
+}
 
 function getOpenAIClient() {
     const apiKey = process.env.OPENAI_API_KEY;
@@ -224,8 +235,8 @@ async function extractAttachmentContext(publicPaths: string[]) {
             if (textExtensions.has(extension)) {
                 extractedText = fileBuffer.toString('utf8');
             } else if (pdfExtensions.has(extension)) {
-                const parser = new PDFParse({ data: fileBuffer });
-                const parsed = await parser.getText();
+                const pdfParse = getLegacyPdfParse();
+                const parsed = await pdfParse(fileBuffer);
                 extractedText = parsed.text || '';
             } else if (docxExtensions.has(extension)) {
                 const parsed = await mammoth.extractRawText({ buffer: fileBuffer });
