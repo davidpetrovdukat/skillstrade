@@ -25,7 +25,7 @@ export const LEGAL_DOCS: Record<string, LegalDocument> = {
                 title: "1. Who We Are",
                 content: [
                     "The Platform is owned and operated by RENATASTRADAS MB (“Skills-Trade”, “Company”, “we”, “us”, or “our”), a company registered in Lithuania.",
-                    "Company details: RENATASTRADAS MB. Company No.: 307123019. VAT No.: LT100017846812. Registered address: Šiauliai, Vytauto g. 147-18, LT-76341, Lithuania. Email: info@skills-trade.com. Phone: +370 80000487."
+                    "Company details: RENATASTRADAS MB. Company No.: 307123019. VAT No.: LT100017846812. Registered address: Šiauliai, Vytauto g. 147-18, LT-76341, Lithuania. Email: info@skills-trade.com. Phone: +370 66806166."
                 ]
             },
             {
@@ -350,7 +350,7 @@ export const LEGAL_DOCS: Record<string, LegalDocument> = {
                     "RENATASTRADAS MB",
                     "• Address: Šiauliai, Vytauto g. 147-18, LT-76341, Lithuania",
                     "• Email: info@skills-trade.com",
-                    "• Phone: +37080000487"
+                    "• Phone: +37066806166"
                 ]
             }
         ]
@@ -512,7 +512,7 @@ export const LEGAL_DOCS: Record<string, LegalDocument> = {
                     "RENATASTRADAS MB",
                     "• Email: info@skills-trade.com",
                     "• Address: Šiauliai, Vytauto g. 147-18, LT-76341",
-                    "• Phone: +37080000487"
+                    "• Phone: +37066806166"
                 ]
             }
         ]

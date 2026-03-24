@@ -161,13 +161,13 @@ export default function ContactPage() {
                                 <h3 className="text-sm font-bold uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
                                     <Smartphone className="w-4 h-4" /> Phone
                                 </h3>
-                                <a href="tel:+37080000487" className="group flex items-center gap-4 p-6 border border-white/10 bg-white/5 hover:bg-primary hover:border-primary transition-all duration-300">
+                                <a href="tel:+37066806166" className="group flex items-center gap-4 p-6 border border-white/10 bg-white/5 hover:bg-primary hover:border-primary transition-all duration-300">
                                     <div className="size-10 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-black/10 transition-colors">
                                         <Smartphone className="w-5 h-5 group-hover:text-black" />
                                     </div>
                                     <div className="flex flex-col">
                                         <span className="text-xs uppercase text-white/40 group-hover:text-black/60 font-bold">Call Us</span>
-                                        <span className="text-xl font-bold group-hover:text-black">+370 80000487</span>
+                                        <span className="text-xl font-bold group-hover:text-black">+370 66806166</span>
                                     </div>
                                     <ArrowRight className="ml-auto w-5 h-5 group-hover:text-black transform group-hover:translate-x-1 transition-transform" />
                                 </a>
