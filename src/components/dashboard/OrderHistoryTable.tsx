@@ -131,37 +131,6 @@ export function OrderHistoryTable({ orders }: OrderHistoryTableProps) {
         return storedPath ? getOrderFileDownloadPath(storedPath) : '#';
     };
 
-    const getOrderStateLabel = (order: OrderHistoryItem) => {
-        const aiStatus = order.aiDocument?.status?.toUpperCase();
-        if (order.status.toUpperCase() === 'COMPLETED') {
-            return 'Ready';
-        }
-        if (aiStatus === 'GENERATED' && order.aiDocument?.availableAt) {
-            return `Release scheduled for ${new Date(order.aiDocument.availableAt).toLocaleString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: '2-digit',
-            })}`;
-        }
-        if (aiStatus === 'FAILED') {
-            return 'Generation failed';
-        }
-
-        return 'Generating AI document';
-    };
-
-    const shouldShowOrderStateLabel = (order: OrderHistoryItem) => {
-        const orderStatus = order.status.toUpperCase();
-        const aiStatus = order.aiDocument?.status?.toUpperCase();
-
-        if (orderStatus === 'COMPLETED' || orderStatus === 'CANCELLED') {
-            return false;
-        }
-
-        return aiStatus === 'FAILED' || aiStatus === 'GENERATED';
-    };
-
     return (
         <div className="flex flex-col gap-6">
             {/* Page Header */}
@@ -273,17 +242,12 @@ export function OrderHistoryTable({ orders }: OrderHistoryTableProps) {
                                                 <button
                                                     disabled
                                                     className="text-xs font-bold uppercase tracking-wider border border-white/10 text-white/20 px-4 py-2 flex items-center gap-2 cursor-not-allowed"
-                                                    title={getOrderStateLabel(order)}
+                                                    title="Download unavailable"
                                                 >
                                                     Download <Box className="w-3 h-3" />
                                                 </button>
                                             )}
                                         </div>
-                                        {shouldShowOrderStateLabel(order) && (
-                                            <p className="mt-2 text-[10px] uppercase tracking-wider text-white/40">
-                                                {getOrderStateLabel(order)}
-                                            </p>
-                                        )}
                                     </td>
                                 </tr>
                             ))}
