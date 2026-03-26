@@ -151,6 +151,17 @@ export function OrderHistoryTable({ orders }: OrderHistoryTableProps) {
         return 'Generating AI document';
     };
 
+    const shouldShowOrderStateLabel = (order: OrderHistoryItem) => {
+        const orderStatus = order.status.toUpperCase();
+        const aiStatus = order.aiDocument?.status?.toUpperCase();
+
+        if (orderStatus === 'COMPLETED' || orderStatus === 'CANCELLED') {
+            return false;
+        }
+
+        return aiStatus === 'FAILED' || aiStatus === 'GENERATED';
+    };
+
     return (
         <div className="flex flex-col gap-6">
             {/* Page Header */}
@@ -268,7 +279,7 @@ export function OrderHistoryTable({ orders }: OrderHistoryTableProps) {
                                                 </button>
                                             )}
                                         </div>
-                                        {order.status !== 'COMPLETED' && (
+                                        {shouldShowOrderStateLabel(order) && (
                                             <p className="mt-2 text-[10px] uppercase tracking-wider text-white/40">
                                                 {getOrderStateLabel(order)}
                                             </p>
