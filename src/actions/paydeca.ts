@@ -159,8 +159,8 @@ export async function generatePaydecaSession(
                 redirectUrl: successUrl,
             };
         }
-        
-        const apiUrl = process.env.PAYDECA_API_URL;
+
+        const apiUrl = process.env.PAYDECA_API_URL || "https://sandbox.paydeca.com/fn-execute/provision/req";
 
         const response = await fetch(apiUrl, {
             method: 'POST',
