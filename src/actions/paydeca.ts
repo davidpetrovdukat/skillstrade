@@ -2,6 +2,7 @@
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { headers } from "next/headers";
 import { connectMongo } from "@/lib/db";
 import { completeDepositTransaction, type PurchaseBillingInfo } from "@/lib/deposit-transactions";
 import { isWithoutPaymentEnabled } from "@/lib/runtime-config";
@@ -102,6 +103,11 @@ export async function generatePaydecaSession(
         const notifyUrl = `${baseUrl}/api/paydeca/webhook`;
         const deviceId = crypto.randomBytes(16).toString("hex");
 
+        const headersList = await headers();
+        const forwardedFor = headersList.get("x-forwarded-for");
+        const realIp = headersList.get("x-real-ip");
+        const clientIp = billingInfo.ip || (forwardedFor ? forwardedFor.split(',')[0] : realIp) || "127.0.0.1";
+
         const payload: PaydecaProvisionPayload = {
             amount: amountCents,
             currency: "EUR",
@@ -114,7 +120,7 @@ export async function generatePaydecaSession(
                 street: billingInfo.street || "Unknown St",
                 city: billingInfo.city || "Riga",
                 zip: billingInfo.zip || "1000",
-                ip: billingInfo.ip || "192.168.1.1",
+                ip: clientIp,
                 dateOfBirth: billingInfo.dateOfBirth || "2000-01-01",
             },
             successUrl,
