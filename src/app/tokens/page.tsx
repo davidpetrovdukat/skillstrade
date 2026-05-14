@@ -16,6 +16,11 @@ export default function TokenPage() {
                     <p className="text-white/60 text-lg md:text-xl font-normal max-w-xl font-mono">
                         100 Tokens = EUR 1.00. Clear pricing, protected checkout, and internal escrow until approval.
                     </p>
+                    <p className="text-white/60 text-lg md:text-xl font-normal max-w-xl font-mono">
+                    Tokens are optional. You can always purchase any service directly without
+                    pre-buying Tokens. Token packages offer convenience and bonus credits for clients
+                    who plan to use the Platform regularly.
+                    </p>
                 </header>
 
                 <PricingGrid />

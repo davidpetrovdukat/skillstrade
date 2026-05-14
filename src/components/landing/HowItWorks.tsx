@@ -24,7 +24,8 @@ export function HowItWorks() {
                     </div>
                     <h3 className="text-3xl font-bold uppercase mb-4 font-heading">BRIEF & DEPOSIT</h3>
                     <p className="text-black/60 max-w-xs leading-relaxed font-mono text-sm">
-                        Describe your project goals. Secure the funds in escrow using tokens. Work begins only when you say go.
+                        Describe your project goals. Pay directly at checkout or use Tokens from your wallet. Funds are held in escrow
+                        until you approve the work. Work begins only when you say go.
                     </p>
                 </div>
 
